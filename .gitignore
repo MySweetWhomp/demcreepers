@@ -1,0 +1,3 @@
+scripts/vendor/*
+scripts/js/*
+node_modules/*
