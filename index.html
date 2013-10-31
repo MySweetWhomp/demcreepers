@@ -1,10 +1,29 @@
 <!DOCTYPE html5>
 <html>
     <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <title>GitHub Game Off 2013</title>
+
         <script type="text/javascript" src="./scripts/vendor/jaws.js"></script>
         <script type="text/javascript" src="./scripts/js/game.js"></script>
+        <script type="text/javascript" src="./scripts/js/maingame.js"></script>
+        <script type="text/javascript" src="./scripts/js/character.js"></script>
+
+        <style type="text/css">
+            canvas#viewport {
+                display: block;
+                width: 800px;
+                margin: 0 auto;
+            }
+        </style>
     </head>
     <body>
+        <canvas id="viewport" width="800" height="600"></canvas>
     </body>
+    <script type="text/javascript">
+        if (window.Gauntlet != null && window.Gauntlet.Game != null) {
+            var game = new window.Gauntlet.Game();
+            game.start();
+        }
+    </script>
 </html>
