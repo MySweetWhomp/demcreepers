@@ -7,7 +7,7 @@ class DrawBatch
 
     draw : =>
         @_toDraw = _.sortBy @_toDraw, 'y'
-        @_toDraw.map (item) =>
+        _.map @_toDraw, (item) =>
             do item.draw
         @_toDraw = []
 

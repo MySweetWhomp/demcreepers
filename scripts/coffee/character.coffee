@@ -6,12 +6,26 @@ class Character
             width : width
             height : height
             anchor : 'center'
+        @_vx = 0
+        @_vy = 0
 
-    update : =>
-        @_box.moveTo @x, @y
+    update : (map) =>
+        @move map
 
     draw : =>
         do (do @_box.rect).draw
+
+    move : (map) =>
+        @x += @_vx
+        @_box.moveTo @x, @y
+        if (map.atRect (do @_box.rect)).length > 0
+            @x -= @_vx
+            @_box.moveTo @x, @y
+        @y += @_vy
+        @_box.moveTo @x, @y
+        if (map.atRect (do @_box.rect)).length > 0
+            @y -= @_vy
+            @_box.moveTo @x, @y
 
 class Player extends Character
     constructor : (@x, @y) ->
@@ -22,13 +36,13 @@ class Player extends Character
             image : 'assets/img/Barbarian.gif'
             anchor : 'center'
 
-    update : =>
+    update : (map) =>
         @x = @_sprite.x
         @y = @_sprite.y
         do @handleInputs
-        @_sprite.moveTo @x, @y
         try
-            do super
+            super map
+        @_sprite.moveTo @x, @y
 
     draw : =>
         do @_sprite.draw
@@ -45,8 +59,8 @@ class Player extends Character
             ++mov.y
         if jaws.pressed 'left'
             --mov.x
-        @x += @speed * mov.x
-        @y += @speed * mov.y
+        @_vx = @speed * mov.x
+        @_vy = @speed * mov.y
 
 if window.Gauntlet?
     window.Gauntlet.Character = Character
