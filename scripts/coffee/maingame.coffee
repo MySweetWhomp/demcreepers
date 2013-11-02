@@ -14,7 +14,8 @@ class MainGame
     draw : =>
         do jaws.clear
         @_viewport.apply =>
-            do @_player.draw
+            window.Gauntlet.DrawBatch.add @_player
+            do window.Gauntlet.DrawBatch.draw
 
         (document.getElementById 'playerX').innerHTML = @_player.x
         (document.getElementById 'playerY').innerHTML = @_player.y
