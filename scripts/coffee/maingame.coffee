@@ -2,33 +2,45 @@ class MainGame
     constructor : ->
 
     setup : =>
-        @_viewport = new jaws.Viewport
-            max_x : 2000 - 800
-            max_y : 2000 - 600
-        @_map = new window.Gauntlet.Map ((blocks) =>
-            x = y = 0
-            while y < 1
-                while x < 20
-                    blocks.push new jaws.Sprite
-                        x : x * 40
-                        y : y * 40
-                        width : 40
-                        height : 40
-                    ++x
-                ++y
-        ), 40, 40, 20, 15
-        @_player = new window.Gauntlet.Player 0, 100
+        req = new XMLHttpRequest
+        req.onload = () =>
+            lines = req.response.split '\n'
+            [rows, cols] = _.map (lines[0].split ' '), (e) => parseInt e
+            lines = _.last lines, lines.length - 1
+            @_viewport = new jaws.Viewport
+                x : 0
+                y : 0
+                max_x : rows * 40
+                max_y : cols * 40
+            @_map = new window.Gauntlet.Map ((blocks) =>
+                y = 0
+                while y < cols
+                    x = 0
+                    while x < rows
+                        if lines[y][x] is 'x'
+                            blocks.push new jaws.Sprite
+                                x : x * 40
+                                y : y * 40
+                                width : 40
+                                height : 40
+                        ++x
+                    ++y
+            ), 40, 40, rows, cols
+            @_player = new window.Gauntlet.Player 100, 100
+        req.open 'get', './assets/maps/0.txt', no
+        req.overrideMimeType("text/plain; charset=x-user-defined");
+        do req.send
 
     update : =>
         @_player.update @_map._map
-        @_viewport.forceInsideVisibleArea @_player._sprite, 20
+        @_viewport.centerAround @_player._box
 
     draw : =>
         do jaws.clear
         @_viewport.apply =>
             window.Gauntlet.DrawBatch.add @_player
             _.map (do @_map.all), (tile) =>
-                do tile.draw
+                window.Gauntlet.DrawBatch.add tile
             do window.Gauntlet.DrawBatch.draw
 
         (document.getElementById 'playerX').innerHTML = @_player.x

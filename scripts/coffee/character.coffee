@@ -29,7 +29,7 @@ class Character
 
 class Player extends Character
     constructor : (@x, @y) ->
-        super @x, @y, 7, 40, 40
+        super @x, @y, 5, 25, 25
         @_sprite = new jaws.Sprite
             x : @x
             y : @y
