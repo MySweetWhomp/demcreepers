@@ -15,7 +15,7 @@ class Game
     constructor : ->
         if jaws?
             jaws.preventDefaultKeys ['up', 'right', 'down', 'left']
-            jaws.assets.add ['assets/img/Barbarian.gif']
+            jaws.assets.add ['assets/img/BarbarianTurnAround.gif']
         else
             throw "Not Implemented"
 

@@ -2,3 +2,4 @@ scripts/vendor/*
 scripts/js/*
 node_modules/*
 assets/img/*
+assets/maps/*
