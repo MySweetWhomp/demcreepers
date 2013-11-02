@@ -12,3 +12,9 @@ canvas#viewport {
 div#jaws-log {
     background: #000;
 }
+
+p {
+    text-align: center;
+    color: #000;
+    font-family: Helvetica;
+}
