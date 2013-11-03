@@ -15,7 +15,8 @@ class Game
     constructor : ->
         if jaws?
             jaws.preventDefaultKeys ['up', 'right', 'down', 'left']
-            jaws.assets.add ['assets/img/BarbarianTurnAround.gif']
+            jaws.assets.add ['assets/img/BarbarianTurnAround.gif'
+                             'assets/img/GobTurnaround.gif']
         else
             throw "Not Implemented"
 
@@ -25,3 +26,12 @@ class Game
 window.Gauntlet =
     Game : Game
     DrawBatch : new DrawBatch
+    ActiveControls : 0
+    Controls : [
+        {
+            'up' : 'w'
+            'right' : 'd'
+            'down' : 's'
+            'left' : 'a'
+        }
+    ]

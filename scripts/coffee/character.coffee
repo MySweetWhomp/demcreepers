@@ -68,16 +68,17 @@ class Player extends Character
         mov = x : 0, y : 0
         vComp = ''
         hComp = ''
-        if jaws.pressed 'up'
+        controls = window.Gauntlet.Controls[window.Gauntlet.ActiveControls]
+        if jaws.pressed "up #{controls.up}"
             --mov.y
             vComp = 'N'
-        if jaws.pressed 'right'
+        if jaws.pressed "right #{controls.right}"
             ++mov.x
             hComp = 'E'
-        if jaws.pressed 'down'
+        if jaws.pressed "down #{controls.down}"
             ++mov.y
             vComp = 'S'
-        if jaws.pressed 'left'
+        if jaws.pressed "left #{controls.left}"
             --mov.x
             hComp = 'W'
         @_orientation = (vComp + hComp) || @_orientation

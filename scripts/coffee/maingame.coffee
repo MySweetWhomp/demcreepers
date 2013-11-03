@@ -1,5 +1,6 @@
 class MainGame
     constructor : ->
+        @_paused = no
 
     setup : =>
         req = new XMLHttpRequest
@@ -32,8 +33,11 @@ class MainGame
         do req.send
 
     update : =>
-        @_player.update @_map._map
-        @_viewport.centerAround @_player._box
+        if jaws.pressedWithoutRepeat 'space'
+            @_paused = not @_paused
+        if not @_paused
+            @_player.update @_map._map
+            @_viewport.centerAround @_player._box
 
     draw : =>
         do jaws.clear
