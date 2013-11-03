@@ -14,7 +14,8 @@ class DrawBatch
 class Game
     constructor : ->
         if jaws?
-            jaws.preventDefaultKeys ['up', 'right', 'down', 'left']
+            jaws.preventDefaultKeys ['up', 'right', 'down', 'left', 'w', 'a',
+                                     's', 'd', 'space']
             jaws.assets.add ['assets/img/BarbarianTurnAround.gif'
                              'assets/img/GobTurnaround.gif']
         else
@@ -33,5 +34,17 @@ window.Gauntlet =
             'right' : 'd'
             'down' : 's'
             'left' : 'a'
+        }
+        {
+            'up' : 'up'
+            'right' : 'right'
+            'down' : 'down'
+            'left' : 'left'
+        }
+        {
+            'up' : 'z'
+            'right' : 'd'
+            'down' : 's'
+            'left' : 'q'
         }
     ]
