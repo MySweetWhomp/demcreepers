@@ -13,11 +13,13 @@ class Character
         @_vx = 0
         @_vy = 0
         @_orientation = 'S'
+        @_bump = no
 
     getToDraw : =>
         @
 
     update : (map) =>
+        @_bump = no
         @move map
         @_sprite.moveTo @x, @y
 
@@ -30,11 +32,13 @@ class Character
         if (map.atRect (do @_box.rect)).length > 0
             @x -= @_vx
             @_box.moveTo @x, @y
+            @_bump = yes
         @y += @_vy
         @_box.moveTo @x, @y
         if (map.atRect (do @_box.rect)).length > 0
             @y -= @_vy
             @_box.moveTo @x, @y
+            @_bump = yes
 
 class Player extends Character
     constructor : (@x, @y) ->
@@ -114,12 +118,24 @@ class Axe extends Character
     constructor : (dir, @x, @y) ->
         super @x, @y, 3, 10, 10
         @_toGo = 300
+        @_dirx = @_diry = 0
+        if (dir.indexOf 'N') >= 0
+            @_diry = -1
+        else if (dir.indexOf 'S') >= 0
+            @_diry = 1
+        if (dir.indexOf 'W') >= 0
+            @_dirx = -1
+        else if (dir.indexOf 'E') >= 0
+            @_dirx = 1
 
     update : (map) =>
-        @_vx = @speed
+        @_vx = @speed * @_dirx
+        @_vy = @speed * @_diry
         @_toGo -= @speed
         try
-            do super
+            super map
+            if @_bump
+                @_toGo = 0
 
     draw : =>
         try
