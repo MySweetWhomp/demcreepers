@@ -42,7 +42,7 @@ class MainGame
     draw : =>
         do jaws.clear
         @_viewport.apply =>
-            window.Gauntlet.DrawBatch.add @_player
+            window.Gauntlet.DrawBatch.add do @_player.getToDraw
             _.map (do @_map.all), (tile) =>
                 window.Gauntlet.DrawBatch.add tile
             do window.Gauntlet.DrawBatch.draw

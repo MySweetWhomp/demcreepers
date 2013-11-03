@@ -3,7 +3,11 @@ class DrawBatch
         @_toDraw = []
 
     add : (elem) =>
-        @_toDraw.push elem
+        if jaws.isArray elem
+            _.map elem, (e) =>
+                @_toDraw.push e
+        else
+            @_toDraw.push elem
 
     draw : =>
         @_toDraw = _.sortBy @_toDraw, 'y'
@@ -27,7 +31,7 @@ class Game
 window.Gauntlet =
     Game : Game
     DrawBatch : new DrawBatch
-    ActiveControls : 0
+    ActiveControls : 1
     Controls : [
         {
             'up' : 'w'

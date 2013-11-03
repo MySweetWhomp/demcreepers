@@ -14,6 +14,9 @@ class Character
         @_vy = 0
         @_orientation = 'S'
 
+    getToDraw : =>
+        @
+
     update : (map) =>
         @move map
         @_sprite.moveTo @x, @y
@@ -36,6 +39,7 @@ class Character
 class Player extends Character
     constructor : (@x, @y) ->
         super @x, @y, 5, 25, 25
+        @_hp = 100
         @_sheet = new jaws.Animation
             sprite_sheet : 'assets/img/BarbarianTurnAround.gif'
             frame_size : [40, 40]
@@ -49,7 +53,10 @@ class Player extends Character
             'SW' : @_sheet.slice 1, 2
             'W' : @_sheet.slice 2, 3
             'NW' : @_sheet.slice 3, 4
+        @_axes = []
 
+    getToDraw : =>
+        _.union @_axes, @
 
     update : (map) =>
         @x = @_sprite.x
@@ -58,6 +65,16 @@ class Player extends Character
         try
             super map
         @_sprite.setImage do @_anims[@_orientation].next
+        ###
+        # Manage axes
+        ###
+        toDel = []
+        _.map @_axes, (axe, index) =>
+            axe.update map
+            if axe._toGo <= 0
+                toDel.push index + 1
+        _.map toDel, (index) =>
+            @_axes = @_axes.splice index, 1
 
     draw : =>
         do @_sprite.draw
@@ -65,6 +82,9 @@ class Player extends Character
             do super
 
     handleInputs : =>
+        ###
+        # Movements
+        ###
         mov = x : 0, y : 0
         vComp = ''
         hComp = ''
@@ -84,6 +104,26 @@ class Player extends Character
         @_orientation = (vComp + hComp) || @_orientation
         @_vx = @speed * mov.x
         @_vy = @speed * mov.y
+        ###
+        # Attacks
+        ###
+        if jaws.pressedWithoutRepeat "left_mouse_button"
+            @_axes.push new Axe @_orientation, @x, @y
+
+class Axe extends Character
+    constructor : (dir, @x, @y) ->
+        super @x, @y, 3, 10, 10
+        @_toGo = 300
+
+    update : (map) =>
+        @_vx = @speed
+        @_toGo -= @speed
+        try
+            do super
+
+    draw : =>
+        try
+            do super
 
 if window.Gauntlet?
     window.Gauntlet.Character = Character
