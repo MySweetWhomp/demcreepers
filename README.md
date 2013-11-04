@@ -4,7 +4,7 @@
 
 ## The team
 
-**Dem Creepers** is developed by **H-Bomb**.
+**Dem Creepers!** is developed by **H-Bomb**.
 
 * Harlan Chomarat ([@Mister_Haru](https://twitter.com/Mister_Haru)), game designer
 * Matthieu Godet ([@MatthieuGodet](https://twitter.com/MatthieuGodet)), animator
