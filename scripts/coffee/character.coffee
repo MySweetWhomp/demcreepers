@@ -6,10 +6,12 @@ class Character
             width : width
             height : height
             anchor : 'center'
+            scale : 2
         @_sprite = new jaws.Sprite
             x : @x
             y : @y
             anchor : 'center'
+            scale : 2
         @_vx = 0
         @_vy = 0
         @_orientation = 'S'
