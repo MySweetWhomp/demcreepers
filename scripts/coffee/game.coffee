@@ -19,7 +19,7 @@ class Game
     constructor : ->
         if jaws?
             jaws.preventDefaultKeys ['up', 'right', 'down', 'left', 'w', 'a',
-                                     's', 'd', 'space']
+                                     's', 'd', 'space', 'left_mouse_button']
             jaws.assets.add ['assets/img/BarbarianTurnAround.gif'
                              'assets/img/GobTurnaround.gif']
         else
@@ -28,8 +28,15 @@ class Game
     start : =>
         jaws.start window.DemCreepers.MainGame
 
+class Utils
+    pointDirection : do ->
+        _RADTODEGRATIO = 57.29577951308232
+        (x1, y1, x2, y2) ->
+            _RADTODEGRATIO * (Math.atan2 (y1 - y2), (x2 - x1))
+
 window.DemCreepers =
     Game : Game
+    Utils : new Utils
     DrawBatch : new DrawBatch
     ActiveControls : 1
     Controls : [
