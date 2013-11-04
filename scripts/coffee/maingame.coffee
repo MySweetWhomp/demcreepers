@@ -45,8 +45,8 @@ class MainGame
         do jaws.clear
         @_viewport.apply =>
             window.DemCreepers.DrawBatch.add do @_player.getToDraw
-            _.map (do @_map.all), (tile) =>
-                window.DemCreepers.DrawBatch.add tile
+            # _.map (do @_map.all), (tile) =>
+            #     window.DemCreepers.DrawBatch.add tile
             do window.DemCreepers.DrawBatch.draw
 
         ###
