@@ -76,9 +76,10 @@ class Player extends Character
         _.map @_axes, (axe, index) =>
             axe.update map
             if axe._toGo <= 0
-                toDel.push index + 1
+                toDel.push index
+        toDel = toDel.sort (a, b) => b - a
         _.map toDel, (index) =>
-            @_axes = @_axes.splice index, 1
+            @_axes.splice index, 1
 
     draw : =>
         do @_sprite.draw
@@ -92,7 +93,7 @@ class Player extends Character
         mov = x : 0, y : 0
         vComp = ''
         hComp = ''
-        controls = window.DemCreepers.Controls[window.DewCreepers.ActiveControls]
+        controls = window.DemCreepers.Controls[window.DemCreepers.ActiveControls]
         if jaws.pressed "#{controls.up}"
             --mov.y
             vComp = 'N'

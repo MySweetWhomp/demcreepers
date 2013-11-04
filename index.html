@@ -21,9 +21,11 @@
         <p>Viewport : <span id="viewportX"></span> - <span id="viewportY"></span></p>
     </body>
     <script type="text/javascript">
-        if (window.Gauntlet != null && window.Gauntlet.Game != null) {
-            var game = new window.Gauntlet.Game();
+        if (window.DemCreepers != null && window.DemCreepers.Game != null) {
+            var game = new window.DemCreepers.Game();
             game.start();
+        } else {
+            throw("Not Implemented")
         }
     </script>
 </html>
