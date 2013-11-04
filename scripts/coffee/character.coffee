@@ -92,7 +92,7 @@ class Player extends Character
         mov = x : 0, y : 0
         vComp = ''
         hComp = ''
-        controls = window.Gauntlet.Controls[window.Gauntlet.ActiveControls]
+        controls = window.DemCreepers.Controls[window.DewCreepers.ActiveControls]
         if jaws.pressed "#{controls.up}"
             --mov.y
             vComp = 'N'
@@ -141,6 +141,6 @@ class Axe extends Character
         try
             do super
 
-if window.Gauntlet?
-    window.Gauntlet.Character = Character
-    window.Gauntlet.Player = Player
+if window.DemCreepers?
+    window.DemCreepers.Character = Character
+    window.DemCreepers.Player = Player

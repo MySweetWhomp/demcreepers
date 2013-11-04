@@ -26,9 +26,9 @@ class Game
             throw "Not Implemented"
 
     start : =>
-        jaws.start window.Gauntlet.MainGame
+        jaws.start window.DemCreepers.MainGame
 
-window.Gauntlet =
+window.DemCreepers =
     Game : Game
     DrawBatch : new DrawBatch
     ActiveControls : 1

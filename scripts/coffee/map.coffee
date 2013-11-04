@@ -10,5 +10,5 @@ class Map
     all : =>
         do @_map.all
 
-if window.Gauntlet?
-    window.Gauntlet.Map = Map
+if window.DemCreepers?
+    window.DemCreepers.Map = Map
