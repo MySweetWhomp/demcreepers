@@ -159,13 +159,13 @@ class Monster extends Character
             frame_size : frameSize
             orientation : 'right'
         @_move =
-            'N' : () => @_vy = -@speed
+            'N' : () => @_vy = -@speed ; @_vx = 0
             'NE' : () => @_vy = -@speed ; @_vx = @speed
-            'E' : () => @_vx = @speed
+            'E' : () => @_vy = 0 ; @_vx = @speed
             'SE' : () => @_vy = @speed ; @_vx = @speed
-            'S' : () => @_vy = @speed
+            'S' : () => @_vy = @speed ; @_vx = 0
             'SW' : () => @_vy = @speed ; @_vx = -@speed
-            'W' : () => @_vx = -@speed
+            'W' : () => @_vx = -@speed ; @_vx = 0
             'NW' : () => @_vy = -@speed ; @_vx = -@speed
 
     update : (player, map) =>
