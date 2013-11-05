@@ -1,13 +1,4 @@
-_ORFROMDIR =
-    '4' : 'E'
-    '3' : 'SE'
-    '2' : 'S'
-    '1' : 'SW'
-    '0' : 'W'
-    '-1' : 'NW'
-    '-2' : 'N'
-    '-3' : 'NE'
-    '-4' : 'E'
+_ORFROMDIR = [ 'E', 'NE', 'N', 'NW', 'W', 'SW', 'S', 'SE', 'E' ]
 
 class Character
     constructor : (@x, @y, @speed, width, height) ->
@@ -126,7 +117,8 @@ class Player extends Character
         # Attacks
         ###
         if jaws.pressedWithoutRepeat "left_mouse_button"
-            dir = Math.round ((window.DemCreepers.Utils.pointDirection jaws.mouse_x, jaws.mouse_y, @x, @y) / 45)
+            dir = (Math.round ((window.DemCreepers.Utils.pointDirection jaws.mouse_x, jaws.mouse_y,
+                @x, @y) / 45)) + 4
             dir = _ORFROMDIR[dir]
             @_axes.push new Axe dir, @x, @y
 
