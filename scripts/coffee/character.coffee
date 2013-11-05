@@ -117,17 +117,10 @@ class Player extends Character
         # Attacks
         ###
         if jaws.pressedWithoutRepeat "left_mouse_button"
-            console.log viewport
             relX = @x - viewport.x
             relY = @y - viewport.y
-            console.log """
-                #{jaws.mouse_x} - #{jaws.mouse_y}
-                #{relX} - #{relY}
-                #{window.DemCreepers.Utils.pointDirection jaws.mouse_x, jaws.mouse_y, relX, relY}
-            """
             dir = (Math.round ((window.DemCreepers.Utils.pointDirection jaws.mouse_x, jaws.mouse_y,
                 relX, relY) / 45)) + 4
-            console.log dir
             dir = _ORFROMDIR[dir]
             @_axes.push new Axe dir, @x, @y
 
