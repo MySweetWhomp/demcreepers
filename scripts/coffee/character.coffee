@@ -151,6 +151,41 @@ class Axe extends Character
         try
             do super
 
+class Monster extends Character
+    constructor : (@x, @y, @speed, width, height, sheetName, frameSize) ->
+        super @x, @y, @speed, width, height
+        @_sheet = new jaws.Animation
+            sprite_sheet : "assets/img/#{sheetName}"
+            frame_size : frameSize
+            orientation : 'right'
+
+class Gob extends Monster
+    constructor : (@x, @y) ->
+        super @x, @y, 3, 15, 15, 'GobTurnaround.gif', [40, 40]
+        @_anims =
+            'N' : @_sheet.slice 4, 5
+            'NW' : @_sheet.slice 5, 6
+            'W' : @_sheet.slice 6, 7
+            'SW' : @_sheet.slice 7, 8
+            'S' : @_sheet.slice 0, 1
+            'SE' : @_sheet.slice 1, 2
+            'E' : @_sheet.slice 2, 3
+            'NE' : @_sheet.slice 3, 4
+
+    update : (player, map) =>
+        dir = (Math.round ((window.DemCreepers.Utils.pointDirection player.x, player.y,
+            @x, @y) / 45)) + 4
+        @orientation = _ORFROMDIR[dir]
+        @_sprite.setImage @_anims[@orientation].frames[0]
+        try
+            super map
+
+    draw : =>
+        do @_sprite.draw
+        try
+            do super
+
 if window.DemCreepers?
     window.DemCreepers.Character = Character
     window.DemCreepers.Player = Player
+    window.DemCreepers.Gob = Gob
