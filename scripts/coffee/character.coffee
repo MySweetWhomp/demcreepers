@@ -19,8 +19,7 @@ class Character
         @_orientation = 'S'
         @_bump = no
 
-    getToDraw : =>
-        @
+    getToDraw : => @
 
     update : (map) =>
         @_bump = no
@@ -123,10 +122,15 @@ class Player extends Character
                 relX, relY) / 45)) + 4
             dir = _ORFROMDIR[dir]
             @_axes.push new Axe dir, @x, @y
+        ###
+        # DEBUG
+        ###
+        if jaws.pressedWithoutRepeat "shift"
+            @_axes.push new Axe @_orientation, @x, @y
 
 class Axe extends Character
     constructor : (dir, @x, @y) ->
-        super @x, @y, 3, 10, 10
+        super @x, @y, 7, 10, 10
         @_toGo = 300
         @_dirx = @_diry = 0
         if (dir.indexOf 'N') >= 0
@@ -152,7 +156,7 @@ class Axe extends Character
             do super
 
 class Monster extends Character
-    constructor : (@x, @y, @speed, width, height, sheetName, frameSize) ->
+    constructor : (@x, @y, @speed, @pv, width, height, sheetName, frameSize) ->
         super @x, @y, @speed, width, height
         @_sheet = new jaws.Animation
             sprite_sheet : "assets/img/#{sheetName}"
@@ -165,16 +169,16 @@ class Monster extends Character
             'SE' : () => @_vy = @speed ; @_vx = @speed
             'S' : () => @_vy = @speed ; @_vx = 0
             'SW' : () => @_vy = @speed ; @_vx = -@speed
-            'W' : () => @_vx = -@speed ; @_vx = 0
+            'W' : () => @_vy = 0 ; @_vx = -@speed
             'NW' : () => @_vy = -@speed ; @_vx = -@speed
 
     update : (player, map) =>
         dir = (Math.round ((window.DemCreepers.Utils.pointDirection player.x, player.y,
             @x, @y) / 45)) + 4
-        @orientation = _ORFROMDIR[dir]
-        @_sprite.setImage @_anims[@orientation].frames[0]
+        @_orientation = _ORFROMDIR[dir]
+        @_sprite.setImage @_anims[@_orientation].frames[0]
         if not (do @_box.rect).collideRect (do player._box.rect)
-            do @_move[@orientation]
+            do @_move[@_orientation]
         else
             @_vx = @_vy = 0
         try
@@ -182,7 +186,7 @@ class Monster extends Character
 
 class Gob extends Monster
     constructor : (@x, @y) ->
-        super @x, @y, 2, 15, 15, 'GobTurnaround.gif', [40, 40]
+        super @x, @y, 2, 1, 15, 15, 'GobTurnaround.gif', [40, 40]
         @_anims =
             'N' : @_sheet.slice 4, 5
             'NW' : @_sheet.slice 5, 6

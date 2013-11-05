@@ -1,3 +1,27 @@
+class Wave
+    constructor : ->
+        @_mobs = []
+        @_mobs.push new window.DemCreepers.Gob 300, 300
+        @_mobs.push new window.DemCreepers.Gob 350, 300
+        @_mobs.push new window.DemCreepers.Gob 400, 300
+
+    update : (player, map) =>
+        toDel = []
+        _.map @_mobs, (mob, index) =>
+            del = no
+            _.map player._axes, (axe) =>
+                if ((do axe._box.rect).collideRect (do mob._box.rect)) and axe._toGo >= 0
+                    axe._toGo = -1
+                    if --mob.pv <= 0
+                        toDel.push index
+                        del = yes
+            if not del
+                mob.update player, map
+        toDel = toDel.sort (a, b) => b - a
+        _.map toDel, (index) => @_mobs.splice index, 1
+
+    getToDraw : => @_mobs
+
 class MainGame
     constructor : ->
         @_paused = no
@@ -11,7 +35,7 @@ class MainGame
             max_y : rows * 40
         @_map = new window.DemCreepers.Map 40, 40, rows, cols
         @_player = new window.DemCreepers.Player 100, 100
-        @_gob = new window.DemCreepers.Gob 500, 500
+        @_wave = new Wave
         @_pauseText = new jaws.Text
             text : 'PAUSE'
 
@@ -19,17 +43,24 @@ class MainGame
         if jaws.pressedWithoutRepeat 'space'
             @_paused = not @_paused
         if not @_paused
+            ### Player ###
             @_player.update @_viewport, @_map._map
-            @_gob.update @_player, @_map._map
+            ### Monsters ###
+            @_wave.update @_player, @_map._map
+            ### Center viewport on Player ###
             @_viewport.centerAround @_player._box
 
     draw : =>
         do jaws.clear
+        ### Player ###
+        window.DemCreepers.DrawBatch.add do @_player.getToDraw
+        ### Ground ###
+        # _.map (do @_map.all), (tile) =>
+        #     window.DemCreepers.DrawBatch.add tile
+        ### Monsters ###
+        window.DemCreepers.DrawBatch.add do @_wave.getToDraw
         @_viewport.apply =>
-            window.DemCreepers.DrawBatch.add do @_player.getToDraw
-            window.DemCreepers.DrawBatch.add do @_gob.getToDraw
-            _.map (do @_map.all), (tile) =>
-                window.DemCreepers.DrawBatch.add tile
+            ### Draw all ###
             do window.DemCreepers.DrawBatch.draw
 
         ###
