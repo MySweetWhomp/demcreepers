@@ -158,10 +158,28 @@ class Monster extends Character
             sprite_sheet : "assets/img/#{sheetName}"
             frame_size : frameSize
             orientation : 'right'
+        @_move =
+            'N' : () => @_vy = -@speed
+            'NE' : () => @_vy = -@speed ; @_vx = @speed
+            'E' : () => @_vx = @speed
+            'SE' : () => @_vy = @speed ; @_vx = @speed
+            'S' : () => @_vy = @speed
+            'SW' : () => @_vy = @speed ; @_vx = -@speed
+            'W' : () => @_vx = -@speed
+            'NW' : () => @_vy = -@speed ; @_vx = -@speed
+
+    update : (player, map) =>
+        dir = (Math.round ((window.DemCreepers.Utils.pointDirection player.x, player.y,
+            @x, @y) / 45)) + 4
+        @orientation = _ORFROMDIR[dir]
+        @_sprite.setImage @_anims[@orientation].frames[0]
+        do @_move[@orientation]
+        try
+            super map
 
 class Gob extends Monster
     constructor : (@x, @y) ->
-        super @x, @y, 3, 15, 15, 'GobTurnaround.gif', [40, 40]
+        super @x, @y, 2, 15, 15, 'GobTurnaround.gif', [40, 40]
         @_anims =
             'N' : @_sheet.slice 4, 5
             'NW' : @_sheet.slice 5, 6
@@ -173,12 +191,8 @@ class Gob extends Monster
             'NE' : @_sheet.slice 3, 4
 
     update : (player, map) =>
-        dir = (Math.round ((window.DemCreepers.Utils.pointDirection player.x, player.y,
-            @x, @y) / 45)) + 4
-        @orientation = _ORFROMDIR[dir]
-        @_sprite.setImage @_anims[@orientation].frames[0]
         try
-            super map
+            super player, map
 
     draw : =>
         do @_sprite.draw

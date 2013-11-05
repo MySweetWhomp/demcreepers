@@ -11,7 +11,7 @@ class MainGame
             max_y : rows * 40
         @_map = new window.DemCreepers.Map 40, 40, rows, cols
         @_player = new window.DemCreepers.Player 100, 100
-        @_gob = new window.DemCreepers.Gob 200, 200
+        @_gob = new window.DemCreepers.Gob 500, 500
         @_pauseText = new jaws.Text
             text : 'PAUSE'
 
@@ -28,8 +28,8 @@ class MainGame
         @_viewport.apply =>
             window.DemCreepers.DrawBatch.add do @_player.getToDraw
             window.DemCreepers.DrawBatch.add do @_gob.getToDraw
-            # _.map (do @_map.all), (tile) =>
-            #     window.DemCreepers.DrawBatch.add tile
+            _.map (do @_map.all), (tile) =>
+                window.DemCreepers.DrawBatch.add tile
             do window.DemCreepers.DrawBatch.draw
 
         ###
