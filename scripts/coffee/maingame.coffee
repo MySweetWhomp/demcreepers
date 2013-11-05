@@ -9,7 +9,6 @@ class MainGame
             y : 0
             max_x : cols * 40
             max_y : rows * 40
-        console.log @_viewport
         @_map = new window.DemCreepers.Map 40, 40, rows, cols
         @_player = new window.DemCreepers.Player 100, 100
         @_pauseText = new jaws.Text
@@ -19,7 +18,7 @@ class MainGame
         if jaws.pressedWithoutRepeat 'space'
             @_paused = not @_paused
         if not @_paused
-            @_player.update @_map._map
+            @_player.update @_viewport, @_map._map
             @_viewport.centerAround @_player._box
 
     draw : =>

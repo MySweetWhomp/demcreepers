@@ -66,10 +66,10 @@ class Player extends Character
     getToDraw : =>
         _.union @_axes, @
 
-    update : (map) =>
+    update : (viewport, map) =>
         @x = @_sprite.x
         @y = @_sprite.y
-        do @handleInputs
+        @handleInputs viewport
         try
             super map
         @_sprite.setImage do @_anims[@_orientation].next
@@ -90,7 +90,7 @@ class Player extends Character
         try
             do super
 
-    handleInputs : =>
+    handleInputs : (viewport) =>
         ###
         # Movements
         ###
@@ -117,8 +117,17 @@ class Player extends Character
         # Attacks
         ###
         if jaws.pressedWithoutRepeat "left_mouse_button"
+            console.log viewport
+            relX = @x - viewport.x
+            relY = @y - viewport.y
+            console.log """
+                #{jaws.mouse_x} - #{jaws.mouse_y}
+                #{relX} - #{relY}
+                #{window.DemCreepers.Utils.pointDirection jaws.mouse_x, jaws.mouse_y, relX, relY}
+            """
             dir = (Math.round ((window.DemCreepers.Utils.pointDirection jaws.mouse_x, jaws.mouse_y,
-                @x, @y) / 45)) + 4
+                relX, relY) / 45)) + 4
+            console.log dir
             dir = _ORFROMDIR[dir]
             @_axes.push new Axe dir, @x, @y
 
