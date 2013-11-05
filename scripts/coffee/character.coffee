@@ -173,7 +173,10 @@ class Monster extends Character
             @x, @y) / 45)) + 4
         @orientation = _ORFROMDIR[dir]
         @_sprite.setImage @_anims[@orientation].frames[0]
-        do @_move[@orientation]
+        if not (do @_box.rect).collideRect (do player._box.rect)
+            do @_move[@orientation]
+        else
+            @_vx = @_vy = 0
         try
             super map
 
