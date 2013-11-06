@@ -165,6 +165,15 @@ class Monster extends Character
             sprite_sheet : "assets/img/#{sheetName}"
             frame_size : frameSize
             orientation : 'right'
+        @_anims =
+            'N' : @_sheet.slice 4, 5
+            'NE' : @_sheet.slice 5, 6
+            'E' : @_sheet.slice 6, 7
+            'SE' : @_sheet.slice 7, 8
+            'S' : @_sheet.slice 0, 1
+            'SW' : @_sheet.slice 1, 2
+            'W' : @_sheet.slice 2, 3
+            'NW' : @_sheet.slice 3, 4
         ###
         # Define orientation based move methods
         # Allows not to check direction each game loop iteration
@@ -192,15 +201,6 @@ class Monster extends Character
 class Gob extends Monster
     constructor : (@x, @y) ->
         super @x, @y, 2, 1, 15, 15, 'GobTurnaround.gif', [40, 40]
-        @_anims =
-            'N' : @_sheet.slice 4, 5
-            'NW' : @_sheet.slice 5, 6
-            'W' : @_sheet.slice 6, 7
-            'SW' : @_sheet.slice 7, 8
-            'S' : @_sheet.slice 0, 1
-            'SE' : @_sheet.slice 1, 2
-            'E' : @_sheet.slice 2, 3
-            'NE' : @_sheet.slice 3, 4
 
     update : (player, map) =>
         try
