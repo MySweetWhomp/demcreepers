@@ -41,17 +41,8 @@ class Character
 
     move : (map) =>
         @x += @_vx
-        @_box.moveTo @x, @y
-        if (map.atRect (do @_box.rect)).length > 0
-            @x -= @_vx
-            @_box.moveTo @x, @y
-            @_bump = yes
         @y += @_vy
         @_box.moveTo @x, @y
-        if (map.atRect (do @_box.rect)).length > 0
-            @y -= @_vy
-            @_box.moveTo @x, @y
-            @_bump = yes
 
 class Player extends Character
     constructor : (@x, @y) ->
@@ -76,6 +67,7 @@ class Player extends Character
         _.union @_axes, @
 
     update : (viewport, map) =>
+        viewport.forceInsideVisibleArea @_sprite, 20
         @x = @_sprite.x
         @y = @_sprite.y
         @handleInputs viewport
