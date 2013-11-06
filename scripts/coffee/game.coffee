@@ -21,8 +21,7 @@ class DrawBatch
     draw : (viewport) =>
         @_toDraw = _.sortBy @_toDraw, 'y'
         _.map @_toDraw, (item) =>
-            if viewport.isPartlyInside item._sprite
-                do item.draw
+            do item.draw
         @_toDraw = []
 
 class Game
@@ -31,7 +30,8 @@ class Game
             jaws.preventDefaultKeys ['up', 'right', 'down', 'left', 'w', 'a',
                                      's', 'd', 'space', 'left_mouse_button']
             jaws.assets.add ['assets/img/BarbarianTurnAround.gif'
-                             'assets/img/GobTurnaround.gif']
+                             'assets/img/GobTurnaround.gif'
+                             'assets/img/ground.gif']
         else
             throw "Not Implemented"
 

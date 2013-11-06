@@ -29,7 +29,7 @@ class Wave
         toDel = toDel.sort (a, b) => b - a
         _.map toDel, (index) => @_mobs.splice index, 1
 
-    getToDraw : => @_mobs
+    getToDraw : (viewport) => _.filter @_mobs, (mob) -> viewport.isPartlyInside mob._sprite
 
 class MainGame
     constructor : ->
@@ -61,13 +61,15 @@ class MainGame
 
     draw : =>
         do jaws.clear
+        ### Draw the ground below everything ###
+        @_viewport.drawTileMap @_map._ground
         ### Player ###
         window.DemCreepers.DrawBatch.add do @_player.getToDraw
         ### Ground ###
         # _.map (do @_map.all), (tile) =>
         #     window.DemCreepers.DrawBatch.add tile
         ### Monsters ###
-        window.DemCreepers.DrawBatch.add do @_wave.getToDraw
+        window.DemCreepers.DrawBatch.add @_wave.getToDraw @_viewport
         @_viewport.apply =>
             ### Draw all ###
             window.DemCreepers.DrawBatch.draw @_viewport
