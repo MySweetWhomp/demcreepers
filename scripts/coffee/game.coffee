@@ -18,10 +18,11 @@ class DrawBatch
         else
             @_toDraw.push elem
 
-    draw : =>
+    draw : (viewport) =>
         @_toDraw = _.sortBy @_toDraw, 'y'
         _.map @_toDraw, (item) =>
-            do item.draw
+            if viewport.isPartlyInside item._sprite
+                do item.draw
         @_toDraw = []
 
 class Game

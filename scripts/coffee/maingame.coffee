@@ -70,7 +70,7 @@ class MainGame
         window.DemCreepers.DrawBatch.add do @_wave.getToDraw
         @_viewport.apply =>
             ### Draw all ###
-            do window.DemCreepers.DrawBatch.draw
+            window.DemCreepers.DrawBatch.draw @_viewport
 
         ###
         # PAUSE
