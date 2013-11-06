@@ -1,9 +1,18 @@
+#####
+##
+# Dem Creepers!
+# Entry for the GitHub Game Off 2013
+# Author : Paul Joannon for H-Bomb
+# <paul.joannon@gmail.com>
+##
+#####
+
 class Wave
     constructor : ->
         @_mobs = []
         @_mobs.push new window.DemCreepers.Gob 300, 300
-        @_mobs.push new window.DemCreepers.Gob 350, 300
         @_mobs.push new window.DemCreepers.Gob 400, 300
+        @_mobs.push new window.DemCreepers.Gob 300, 400
 
     update : (player, map) =>
         toDel = []
@@ -31,9 +40,9 @@ class MainGame
         @_viewport = new jaws.Viewport
             x : 0
             y : 0
-            max_x : cols * 40
-            max_y : rows * 40
-        @_map = new window.DemCreepers.Map 40, 40, rows, cols
+            max_x : cols * window.DemCreepers.Config.TileSize[0]
+            max_y : rows * window.DemCreepers.Config.TileSize[1]
+        @_map = new window.DemCreepers.Map rows, cols
         @_player = new window.DemCreepers.Player 100, 100
         @_wave = new Wave
         @_pauseText = new jaws.Text

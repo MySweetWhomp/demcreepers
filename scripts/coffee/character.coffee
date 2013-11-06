@@ -1,5 +1,15 @@
-_ORFROMDIR = [ 'E', 'NE', 'N', 'NW', 'W', 'SW', 'S', 'SE', 'E' ]
+#####
+##
+# Dem Creepers!
+# Entry for the GitHub Game Off 2013
+# Author : Paul Joannon for H-Bomb
+# <paul.joannon@gmail.com>
+##
+#####
 
+###
+# Characters base class
+###
 class Character
     constructor : (@x, @y, @speed, width, height) ->
         @_box = new jaws.Sprite
@@ -96,7 +106,7 @@ class Player extends Character
         mov = x : 0, y : 0
         vComp = ''
         hComp = ''
-        controls = window.DemCreepers.Controls[window.DemCreepers.ActiveControls]
+        controls = window.DemCreepers.Controls[window.DemCreepers.Config.ActiveControls]
         if jaws.pressed "#{controls.up}"
             --mov.y
             vComp = 'N'
@@ -118,9 +128,7 @@ class Player extends Character
         if jaws.pressedWithoutRepeat "left_mouse_button"
             relX = @x - viewport.x
             relY = @y - viewport.y
-            dir = (Math.round ((window.DemCreepers.Utils.pointDirection jaws.mouse_x, jaws.mouse_y,
-                relX, relY) / 45)) + 4
-            dir = _ORFROMDIR[dir]
+            dir = window.DemCreepers.Utils.pointOrientation jaws.mouse_x, jaws.mouse_y, relX, relY
             @_axes.push new Axe dir, @x, @y
         ###
         # DEBUG
@@ -155,6 +163,9 @@ class Axe extends Character
         try
             do super
 
+###
+# Monsters base class
+###
 class Monster extends Character
     constructor : (@x, @y, @speed, @pv, width, height, sheetName, frameSize) ->
         super @x, @y, @speed, width, height
@@ -162,6 +173,10 @@ class Monster extends Character
             sprite_sheet : "assets/img/#{sheetName}"
             frame_size : frameSize
             orientation : 'right'
+        ###
+        # Define orientation based move methods
+        # Allows not to check direction each game loop iteration
+        ###
         @_move =
             'N' : () => @_vy = -@speed ; @_vx = 0
             'NE' : () => @_vy = -@speed ; @_vx = @speed
@@ -173,9 +188,7 @@ class Monster extends Character
             'NW' : () => @_vy = -@speed ; @_vx = -@speed
 
     update : (player, map) =>
-        dir = (Math.round ((window.DemCreepers.Utils.pointDirection player.x, player.y,
-            @x, @y) / 45)) + 4
-        @_orientation = _ORFROMDIR[dir]
+        @_orientation = window.DemCreepers.Utils.pointOrientation player.x, player.y, @x, @y
         @_sprite.setImage @_anims[@_orientation].frames[0]
         if not (do @_box.rect).collideRect (do player._box.rect)
             do @_move[@_orientation]

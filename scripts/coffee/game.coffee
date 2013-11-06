@@ -1,3 +1,12 @@
+#####
+##
+# Dem Creepers!
+# Entry for the GitHub Game Off 2013
+# Author : Paul Joannon for H-Bomb
+# <paul.joannon@gmail.com>
+##
+#####
+
 class DrawBatch
     constructor : ->
         @_toDraw = []
@@ -34,11 +43,18 @@ class Utils
         (x1, y1, x2, y2) ->
             _RADTODEGRATIO * (Math.atan2 (y1 - y2), (x2 - x1))
 
+    pointOrientation : do ->
+        _ORFROMDIR = [ 'E', 'NE', 'N', 'NW', 'W', 'SW', 'S', 'SE', 'E' ]
+        (x1, y1, x2, y2) ->
+            _ORFROMDIR[(Math.round ((@pointDirection x1, y1, x2, y2) / 45)) + 4]
+
 window.DemCreepers =
     Game : Game
     Utils : new Utils
     DrawBatch : new DrawBatch
-    ActiveControls : 1
+    Config :
+        ActiveControls : 1
+        TileSize : [40, 40]
     Controls : [
         {
             'up' : 'w'

@@ -14,4 +14,4 @@ module.exports = (grunt) ->
     grunt.loadNpmTasks 'grunt-contrib-coffee'
     grunt.loadNpmTasks 'grunt-contrib-watch'
 
-    grunt.registerTask 'default', 'Watches scripts for changes', [ 'watch' ]
+    grunt.registerTask 'default', 'Watches scripts for changes', [ 'coffee', 'watch' ]
