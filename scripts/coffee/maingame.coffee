@@ -10,9 +10,9 @@
 class Wave
     constructor : ->
         @_mobs = []
-        @_mobs.push new window.DemCreepers.Gob 300, 300
-        @_mobs.push new window.DemCreepers.Gob 400, 300
-        @_mobs.push new window.DemCreepers.Gob 300, 400
+        @_mobs.push window.DemCreepers.Pools.Gobs.get 300, 300
+        @_mobs.push window.DemCreepers.Pools.Gobs.get 400, 300
+        @_mobs.push window.DemCreepers.Pools.Gobs.get 300, 400
 
     update : (player, map) =>
         toDel = []
@@ -27,7 +27,8 @@ class Wave
             if not del
                 mob.update player, map
         toDel = toDel.sort (a, b) => b - a
-        _.map toDel, (index) => @_mobs.splice index, 1
+        _.map toDel, (index) =>
+            window.DemCreepers.Pools.Gobs.add (@_mobs.splice index, 1)[0]
 
     getToDraw : (viewport) => _.filter @_mobs, (mob) -> viewport.isPartlyInside mob._sprite
 
