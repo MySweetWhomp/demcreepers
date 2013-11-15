@@ -257,7 +257,7 @@ class Monster extends Character
 
 class Gob extends Monster
     constructor : (@x, @y) ->
-        super @x, @y, 2, 1, 15, 15, 'Gob.gif', [50, 50]
+        super @x, @y, 3, 1, 15, 15, 'Gob.gif', [50, 50]
 
     update : (player, map) =>
         try
