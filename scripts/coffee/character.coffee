@@ -194,7 +194,7 @@ class Axe extends Character
             sprite_sheet : 'assets/img/Axe.gif'
             frame_size : [20, 20]
             orientation : 'right'
-            frame_duration : 150
+            frame_duration : 75
 
     update : (map) =>
         @_vx = @speed * @_dirx
