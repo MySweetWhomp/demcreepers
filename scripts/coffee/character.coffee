@@ -26,8 +26,9 @@ class Character
             scale : 2
         @_vx = 0
         @_vy = 0
-        @_orientation = 'S'
+        @_orientation = 'E'
         @_bump = no
+        @_state = 'idle'
 
     getToDraw : => @
 
@@ -49,31 +50,42 @@ class Player extends Character
         super @x, @y, 5, 25, 25
         @_hp = 100
         @_sheet = new jaws.Animation
-            sprite_sheet : 'assets/img/BarbarianTurnAround.gif'
-            frame_size : [40, 40]
+            sprite_sheet : 'assets/img/Barbarian.gif'
+            frame_size : [50, 50]
             orientation : 'right'
         @_anims =
-            'N' : @_sheet.slice 4, 5
-            'NE' : @_sheet.slice 5, 6
-            'E' : @_sheet.slice 6, 7
-            'SE' : @_sheet.slice 7, 8
-            'S' : @_sheet.slice 0, 1
-            'SW' : @_sheet.slice 1, 2
-            'W' : @_sheet.slice 2, 3
-            'NW' : @_sheet.slice 3, 4
+            'idle' :
+                'N' : @_sheet.slice 24, 28
+                'NE' : @_sheet.slice 30, 34
+                'E' : @_sheet.slice 36, 40
+                'SE' : @_sheet.slice 44, 48
+                'S' : @_sheet.slice 0, 4
+                'SW' : @_sheet.slice 6, 10
+                'W' : @_sheet.slice 12, 16
+                'NW' : @_sheet.slice 18, 22
+            'run' :
+                'N' : @_sheet.slice 72, 78
+                'NE' : @_sheet.slice 78, 84
+                'E' : @_sheet.slice 84, 90
+                'SE' : @_sheet.slice 90, 96
+                'S' : @_sheet.slice 48, 54
+                'SW' : @_sheet.slice 54, 60
+                'W' : @_sheet.slice 60, 66
+                'NW' : @_sheet.slice 66, 72
         @_axes = []
 
     getToDraw : =>
         _.union @_axes, @
 
     update : (viewport, map) =>
+        @_vx = @_vy = 0
         viewport.forceInsideVisibleArea @_sprite, 20
         @x = @_sprite.x
         @y = @_sprite.y
         @handleInputs viewport
         try
             super map
-        @_sprite.setImage do @_anims[@_orientation].next
+        @_sprite.setImage do @_anims[@_state][@_orientation].next
         ###
         # Manage axes
         ###
@@ -100,18 +112,26 @@ class Player extends Character
         hComp = ''
         controls = window.DemCreepers.Controls[window.DemCreepers.Config.ActiveControls]
         if jaws.pressed "#{controls.up}"
+            @_state = 'run'
             --mov.y
             vComp = 'N'
         if jaws.pressed "#{controls.right}"
+            @_state = 'run'
             ++mov.x
             hComp = 'E'
         if jaws.pressed "#{controls.down}"
+            @_state = 'run'
             ++mov.y
             vComp = 'S'
         if jaws.pressed "#{controls.left}"
+            @_state = 'run'
             --mov.x
             hComp = 'W'
-        @_orientation = (vComp + hComp) || @_orientation
+
+        if not (newOr = vComp + hComp)
+            @_state = 'idle'
+        else
+            @_orientation = (vComp + hComp)
         @_vx = @speed * mov.x
         @_vy = @speed * mov.y
         ###
@@ -200,7 +220,7 @@ class Monster extends Character
 
 class Gob extends Monster
     constructor : (@x, @y) ->
-        super @x, @y, 2, 1, 15, 15, 'GobTurnaround.gif', [40, 40]
+        super @x, @y, 2, 1, 15, 15, 'Gob.gif', [40, 40]
 
     update : (player, map) =>
         try

@@ -29,8 +29,9 @@ class Game
         if jaws?
             jaws.preventDefaultKeys ['up', 'right', 'down', 'left', 'w', 'a',
                                      's', 'd', 'space', 'left_mouse_button']
-            jaws.assets.add ['assets/img/BarbarianTurnAround.gif'
-                             'assets/img/GobTurnaround.gif'
+            jaws.assets.add ['assets/img/Barbarian.gif'
+                             'assets/img/Gob.gif'
+                             'assets/img/Axe.gif'
                              'assets/img/ground.gif']
         else
             throw "Not Implemented"

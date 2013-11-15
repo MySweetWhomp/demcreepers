@@ -56,7 +56,7 @@ class MainGame
             ### Player ###
             @_player.update @_viewport, @_map._map
             ### Monsters ###
-            @_wave.update @_player, @_map._map
+            # @_wave.update @_player, @_map._map
             ### Center viewport on Player ###
             @_viewport.centerAround @_player._box
 
@@ -70,7 +70,7 @@ class MainGame
         # _.map (do @_map.all), (tile) =>
         #     window.DemCreepers.DrawBatch.add tile
         ### Monsters ###
-        window.DemCreepers.DrawBatch.add @_wave.getToDraw @_viewport
+        # window.DemCreepers.DrawBatch.add @_wave.getToDraw @_viewport
         @_viewport.apply =>
             ### Draw all ###
             window.DemCreepers.DrawBatch.draw @_viewport
