@@ -161,6 +161,10 @@ class Axe extends Character
             @_dirx = -1
         else if (dir.indexOf 'E') >= 0
             @_dirx = 1
+        @_sheet = new jaws.Animation
+            sprite_sheet : 'assets/img/Axe.gif'
+            frame_size : [20, 20]
+            orientation : 'right'
 
     update : (map) =>
         @_vx = @speed * @_dirx
@@ -170,8 +174,10 @@ class Axe extends Character
             super map
             if @_bump
                 @_toGo = 0
+        @_sprite.setImage do @_sheet.next
 
     draw : =>
+        do @_sprite.draw
         try
             do super
 
