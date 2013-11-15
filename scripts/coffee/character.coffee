@@ -124,10 +124,13 @@ class Player extends Character
 
     attack : (dir) =>
         if @_state isnt 'attack'
+            old = @_orientation
+            @_orientation = dir
             @_axes.push new Axe dir, @x, @y
             @_state = 'attack'
             @_changeStateOr = =>
             @_onlasframe = =>
+                @_orientation = old
                 @_changeStateOr = @changeStateOr
                 @_onlasframe = =>
 
