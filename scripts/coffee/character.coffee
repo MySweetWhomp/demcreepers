@@ -221,15 +221,16 @@ class Monster extends Character
             sprite_sheet : "assets/img/#{sheetName}"
             frame_size : frameSize
             orientation : 'right'
+            frame_duration : 70
         @_anims =
-            'N' : @_sheet.slice 4, 5
-            'NE' : @_sheet.slice 5, 6
-            'E' : @_sheet.slice 6, 7
-            'SE' : @_sheet.slice 7, 8
-            'S' : @_sheet.slice 0, 1
-            'SW' : @_sheet.slice 1, 2
-            'W' : @_sheet.slice 2, 3
-            'NW' : @_sheet.slice 3, 4
+            'N' : @_sheet.slice 20, 30
+            'NE' : @_sheet.slice 30, 40
+            'E' : @_sheet.slice 30, 40
+            'SE' : @_sheet.slice 30, 40
+            'S' : @_sheet.slice 0, 10
+            'SW' : @_sheet.slice 10, 20
+            'W' : @_sheet.slice 10, 20
+            'NW' : @_sheet.slice 10, 20
         ###
         # Define orientation based move methods
         # Allows not to check direction each game loop iteration
@@ -246,7 +247,7 @@ class Monster extends Character
 
     update : (player, map) =>
         @_orientation = window.DemCreepers.Utils.pointOrientation player.x, player.y, @x, @y
-        @_sprite.setImage @_anims[@_orientation].frames[0]
+        @_sprite.setImage do @_anims[@_orientation].next
         if not (do @_box.rect).collideRect (do player._box.rect)
             do @_move[@_orientation]
         else
@@ -256,7 +257,7 @@ class Monster extends Character
 
 class Gob extends Monster
     constructor : (@x, @y) ->
-        super @x, @y, 2, 1, 15, 15, 'Gob.gif', [40, 40]
+        super @x, @y, 2, 1, 15, 15, 'Gob.gif', [50, 50]
 
     update : (player, map) =>
         try
