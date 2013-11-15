@@ -49,16 +49,19 @@ class Player extends Character
     constructor : (@x, @y) ->
         super @x, @y, 5, 25, 25
         @_hp = 100
+        @_changeStateOr = @changeStateOr
+        @_onlasframe = =>
         @_sheet = new jaws.Animation
             sprite_sheet : 'assets/img/Barbarian.gif'
             frame_size : [50, 50]
             orientation : 'right'
+        @_state = 'attack'
         @_anims =
             'idle' :
                 'N' : @_sheet.slice 24, 28
                 'NE' : @_sheet.slice 30, 34
                 'E' : @_sheet.slice 36, 40
-                'SE' : @_sheet.slice 44, 48
+                'SE' : @_sheet.slice 42, 46
                 'S' : @_sheet.slice 0, 4
                 'SW' : @_sheet.slice 6, 10
                 'W' : @_sheet.slice 12, 16
@@ -72,12 +75,23 @@ class Player extends Character
                 'SW' : @_sheet.slice 54, 60
                 'W' : @_sheet.slice 60, 66
                 'NW' : @_sheet.slice 66, 72
+            'attack' :
+                'N' : @_sheet.slice 108, 111
+                'NE' : @_sheet.slice 111, 114
+                'E' : @_sheet.slice 114, 117
+                'SE' : @_sheet.slice 117, 120
+                'S' : @_sheet.slice 96, 99
+                'SW' : @_sheet.slice 99, 102
+                'W' : @_sheet.slice 102, 105
+                'NW' : @_sheet.slice 105, 108
         @_axes = []
 
     getToDraw : =>
         _.union @_axes, @
 
     update : (viewport, map) =>
+        if do @_anims[@_state][@_orientation].atLastFrame
+            do @_onlasframe
         @_vx = @_vy = 0
         viewport.forceInsideVisibleArea @_sprite, 20
         @x = @_sprite.x
@@ -103,6 +117,20 @@ class Player extends Character
         try
             do super
 
+    changeStateOr : (state, orientation) =>
+        @_state = state
+        if orientation?
+            @_orientation = orientation
+
+    attack : (dir) =>
+        if @_state isnt 'attack'
+            @_axes.push new Axe dir, @x, @y
+            @_state = 'attack'
+            @_changeStateOr = =>
+            @_onlasframe = =>
+                @_changeStateOr = @changeStateOr
+                @_onlasframe = =>
+
     handleInputs : (viewport) =>
         ###
         # Movements
@@ -112,26 +140,22 @@ class Player extends Character
         hComp = ''
         controls = window.DemCreepers.Controls[window.DemCreepers.Config.ActiveControls]
         if jaws.pressed "#{controls.up}"
-            @_state = 'run'
             --mov.y
             vComp = 'N'
         if jaws.pressed "#{controls.right}"
-            @_state = 'run'
             ++mov.x
             hComp = 'E'
         if jaws.pressed "#{controls.down}"
-            @_state = 'run'
             ++mov.y
             vComp = 'S'
         if jaws.pressed "#{controls.left}"
-            @_state = 'run'
             --mov.x
             hComp = 'W'
 
         if not (newOr = vComp + hComp)
-            @_state = 'idle'
+            @_changeStateOr 'idle'
         else
-            @_orientation = (vComp + hComp)
+            @_changeStateOr 'run', (vComp + hComp)
         @_vx = @speed * mov.x
         @_vy = @speed * mov.y
         ###
@@ -141,12 +165,12 @@ class Player extends Character
             relX = @x - viewport.x
             relY = @y - viewport.y
             dir = window.DemCreepers.Utils.pointOrientation jaws.mouse_x, jaws.mouse_y, relX, relY
-            @_axes.push new Axe dir, @x, @y
+            @attack dir
         ###
         # DEBUG
         ###
         if jaws.pressedWithoutRepeat "shift"
-            @_axes.push new Axe @_orientation, @x, @y
+            @attack @_orientation
 
 class Axe extends Character
     constructor : (dir, @x, @y) ->
