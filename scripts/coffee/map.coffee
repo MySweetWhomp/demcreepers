@@ -39,6 +39,18 @@ class Map
                 block.setImage 'assets/img/ground.gif'
                 @_ground.push block
 
+    add : (x, y, type) =>
+        tileWidth = window.DemCreepers.Config.TileSize[0]
+        tileHeight = window.DemCreepers.Config.TileSize[1]
+        posX = Math.ceil x / tileWidth
+        posY = Math.ceil y / tileHeight
+        if (@_map.at posY, posX).length <= 0
+            @_map.pushToCell posY, posX, new jaws.Sprite
+                x : (posX - 1) * tileWidth
+                y : (posY - 1) * tileHeight
+                width : tileWidth
+                height : tileHeight
+
     all : =>
         do @_map.all
 

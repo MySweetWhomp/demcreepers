@@ -24,8 +24,9 @@ class Wave
                     if --mob.pv <= 0
                         toDel.push index
                         del = yes
+                        map.add mob.x, mob.y, 1
             if not del
-                mob.update player, map
+                mob.update player, map._map
         toDel = toDel.sort (a, b) => b - a
         _.map toDel, (index) =>
             window.DemCreepers.Pools.Gobs.add (@_mobs.splice index, 1)[0]
@@ -56,7 +57,7 @@ class MainGame
             ### Player ###
             @_player.update @_viewport, @_map._map
             ### Monsters ###
-            @_wave.update @_player, @_map._map
+            @_wave.update @_player, @_map
             ### Center viewport on Player ###
             @_viewport.centerAround @_player._box
 
@@ -67,8 +68,8 @@ class MainGame
         ### Player ###
         window.DemCreepers.DrawBatch.add do @_player.getToDraw
         ### Ground ###
-        # _.map (do @_map.all), (tile) =>
-        #     window.DemCreepers.DrawBatch.add tile
+        _.map (do @_map.all), (tile) =>
+            window.DemCreepers.DrawBatch.add tile
         ### Monsters ###
         window.DemCreepers.DrawBatch.add @_wave.getToDraw @_viewport
         @_viewport.apply =>
