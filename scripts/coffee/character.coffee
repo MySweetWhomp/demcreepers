@@ -49,6 +49,7 @@ class Player extends Character
     constructor : (@x, @y) ->
         super @x, @y, 5, 25, 25
         @_hp = 100
+        @_attack = @attack
         @_changeStateOr = @changeStateOr
         @_onlasframe = =>
         @_sheet = new jaws.Animation
@@ -123,16 +124,17 @@ class Player extends Character
             @_orientation = orientation
 
     attack : (dir) =>
-        if @_state isnt 'attack'
-            old = @_orientation
-            @_orientation = dir
-            @_axes.push new Axe dir, @x, @y
-            @_state = 'attack'
-            @_changeStateOr = =>
+        old = @_orientation
+        @_orientation = dir
+        @_axes.push new Axe dir, @x, @y
+        @_state = 'attack'
+        @_attack = =>
+        @_changeStateOr = =>
+        @_onlasframe = =>
+            @_orientation = old
+            @_changeStateOr = @changeStateOr
             @_onlasframe = =>
-                @_orientation = old
-                @_changeStateOr = @changeStateOr
-                @_onlasframe = =>
+            @_attack = @attack
 
     handleInputs : (viewport) =>
         ###
@@ -168,12 +170,12 @@ class Player extends Character
             relX = @x - viewport.x
             relY = @y - viewport.y
             dir = window.DemCreepers.Utils.pointOrientation jaws.mouse_x, jaws.mouse_y, relX, relY
-            @attack dir
+            @_attack dir
         ###
         # DEBUG
         ###
         if jaws.pressedWithoutRepeat "shift"
-            @attack @_orientation
+            @_attack @_orientation
 
 class Axe extends Character
     constructor : (dir, @x, @y) ->
@@ -192,6 +194,7 @@ class Axe extends Character
             sprite_sheet : 'assets/img/Axe.gif'
             frame_size : [20, 20]
             orientation : 'right'
+            frame_duration : 150
 
     update : (map) =>
         @_vx = @speed * @_dirx
