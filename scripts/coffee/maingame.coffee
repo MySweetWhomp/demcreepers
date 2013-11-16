@@ -24,7 +24,7 @@ class Wave
                     if --mob.pv <= 0
                         toDel.push index
                         del = yes
-                        map.add mob.x, mob.y, 1
+                        map.add mob
             if not del
                 mob.update player, map._map
         toDel = toDel.sort (a, b) => b - a
