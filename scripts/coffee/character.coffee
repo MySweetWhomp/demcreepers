@@ -216,6 +216,25 @@ class Axe extends Character
             orientation : 'right'
             frame_duration : 75
 
+    move : (map) =>
+        if @_vx is 0 and @_vy is 0
+            return
+        box = do @_box.rect
+        @x += @_vx
+        @_box.moveTo @x, @y
+        atRect = map.atRect box
+        if atRect.length > 0
+            for cell in atRect
+                if (do cell.rect).collideRect box
+                    break
+        @y += @_vy
+        @_box.moveTo @x, @y
+        atRect = map.atRect box
+        if atRect.length > 0
+            for cell in atRect
+                if (do cell.rect).collideRect box
+                    break
+
     update : (map) =>
         @_vx = @speed * @_dirx
         @_vy = @speed * @_diry
