@@ -44,7 +44,7 @@ class Map
         tileHeight = window.DemCreepers.Config.TileSize[1]
         posX = Math.ceil mob.x / tileWidth
         posY = Math.ceil mob.y / tileHeight
-        if (@_map.at posY, posX).length <= 0
+        if (@_map.at posX - 1, posY - 1).length <= 0
             cell = new jaws.Sprite
                 x : (posX - 1) * tileWidth
                 y : (posY - 1) * tileHeight
@@ -52,7 +52,7 @@ class Map
                 height : tileHeight
             if mob instanceof window.DemCreepers.Gob
                 cell.type = 'Gob'
-            @_map.pushToCell posY, posX, cell
+            @_map.pushToCell posX - 1, posY - 1, cell
 
     all : =>
         do @_map.all
