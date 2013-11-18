@@ -32,6 +32,9 @@ class Game
             jaws.assets.add ['assets/img/Barbarian.gif'
                              'assets/img/Gob.gif'
                              'assets/img/Axe.gif'
+                             'assets/img/HUD.gif'
+                             'assets/img/HUDTEXT.gif'
+                             'assets/img/HUDICONS.gif'
                              'assets/img/ground.gif']
         else
             throw "Not Implemented"

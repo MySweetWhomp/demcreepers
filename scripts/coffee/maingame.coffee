@@ -37,6 +37,59 @@ class Wave
 
     getToDraw : (viewport) => _.filter @_mobs, (mob) -> viewport.isPartlyInside mob._sprite
 
+class HUD
+    constructor : ->
+        @_sheet = new jaws.SpriteSheet
+            image : 'assets/img/HUD.gif'
+            frame_size : [390, 80]
+        @_texts = new jaws.SpriteSheet
+            image : 'assets/img/HUDTEXT.gif'
+            frame_size : [90, 20]
+        @_icons = new jaws.SpriteSheet
+            image : 'assets/img/HUDICONS.gif'
+            frame_size : [20, 20]
+        @_bg = new jaws.Sprite
+            image : @_sheet.frames[0]
+            scale : 2
+            x : 10
+            y : -20
+        @_lifeIcon = new jaws.Sprite
+            image : @_icons.frames[0]
+            x : 30
+            y : 15
+            scale : 2
+        @_wave = new jaws.Sprite
+            image : @_texts.frames[0]
+            scale : 2
+            x : 200
+            y : 20
+        @_ennemies = new jaws.Sprite
+            image : @_texts.frames[2]
+            scale : 2
+            x : 300
+            y : 20
+        @_combo = new jaws.Sprite
+            image : @_texts.frames[1]
+            scale : 2
+            x : 450
+            y : 20
+        @_score = new jaws.Sprite
+            image : @_texts.frames[3]
+            scale : 2
+            x : 600
+            y : 20
+
+    update : =>
+
+    draw : =>
+        do @_bg.draw
+        do @_lifeIcon.draw
+        do @_wave.draw
+        do @_ennemies.draw
+        do @_combo.draw
+        do @_score.draw
+
+
 class MainGame
     constructor : ->
         @_paused = no
@@ -48,11 +101,10 @@ class MainGame
             y : 0
             max_x : cols * window.DemCreepers.Config.TileSize[0]
             max_y : rows * window.DemCreepers.Config.TileSize[1]
+        @_hud = new HUD
         @_map = new window.DemCreepers.Map rows, cols
         @_player = new window.DemCreepers.Player 100, 100
         @_wave = new Wave
-        @_pauseText = new jaws.Text
-            text : 'PAUSE'
 
     update : =>
         if jaws.pressedWithoutRepeat 'space'
@@ -80,11 +132,13 @@ class MainGame
             ### Draw all ###
             window.DemCreepers.DrawBatch.draw @_viewport
 
+        ### HUD ###
+        do @_hud.draw
+
         ###
         # PAUSE
         ###
-        if @_paused
-            do @_pauseText.draw
+        #if @_paused
 
         (document.getElementById 'playerX').innerHTML = @_player.x
         (document.getElementById 'playerY').innerHTML = @_player.y
