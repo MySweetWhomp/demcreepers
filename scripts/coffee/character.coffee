@@ -41,13 +41,33 @@ class Character
         do (do @_box.rect).draw
 
     move : (map) =>
+        if @_vx is 0 and @_vy is 0
+            return
+        box = do @_box.rect
         @x += @_vx
+        @_box.moveTo @x, @y
+        atRect = map.atRect box
+        if atRect.length > 0
+            for cell in atRect
+                if (do cell.rect).collideRect box
+                    if cell.type is 'Gob'
+                        @x -= @_vx / 2
+                        @_box.moveTo @x, @y
+                    break
         @y += @_vy
         @_box.moveTo @x, @y
+        atRect = map.atRect box
+        if atRect.length > 0
+            for cell in atRect
+                if (do cell.rect).collideRect box
+                    if cell.type is 'Gob'
+                        @y -= @_vy / 2
+                        @_box.moveTo @x, @y
+                    break
 
 class Player extends Character
     constructor : (@x, @y) ->
-        super @x, @y, 5, 25, 25
+        super @x, @y, 5, 15, 15
         @_hp = 100
         @_attack = @attack
         @_changeStateOr = @changeStateOr
