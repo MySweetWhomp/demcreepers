@@ -13,6 +13,10 @@ class Wave
         @_mobs.push window.DemCreepers.Pools.Gobs.get 300, 300
         @_mobs.push window.DemCreepers.Pools.Gobs.get 400, 300
         @_mobs.push window.DemCreepers.Pools.Gobs.get 300, 400
+        @_mobs.push window.DemCreepers.Pools.Gobs.get 300, 500
+        @_mobs.push window.DemCreepers.Pools.Gobs.get 500, 300
+        @_mobs.push window.DemCreepers.Pools.Gobs.get 400, 400
+        @_mobs.push window.DemCreepers.Pools.Gobs.get 500, 500
 
     update : (player, map) =>
         toDel = []

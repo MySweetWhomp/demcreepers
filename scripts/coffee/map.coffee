@@ -29,6 +29,10 @@ class Map
         @_map = new jaws.TileMap
             size : [cols, rows]
             cell_size : [tileWidth, tileHeight]
+        @_gobs = new jaws.SpriteSheet
+            image : 'assets/img/Gob.gif'
+            frame_size : [50, 50]
+            orientation : "down"
 
         ###
         # Fill the ground
@@ -42,17 +46,17 @@ class Map
     add : (mob) =>
         tileWidth = window.DemCreepers.Config.TileSize[0]
         tileHeight = window.DemCreepers.Config.TileSize[1]
-        posX = Math.ceil mob.x / tileWidth
-        posY = Math.ceil mob.y / tileHeight
-        if (@_map.at posX - 1, posY - 1).length <= 0
-            cell = new jaws.Sprite
-                x : (posX - 1) * tileWidth
-                y : (posY - 1) * tileHeight
-                width : tileWidth
-                height : tileHeight
-            if mob instanceof window.DemCreepers.Gob
-                cell.type = 'Gob'
-            @_map.pushToCell posX - 1, posY - 1, cell
+        cell = new jaws.Sprite
+            x : mob.x
+            y : mob.y
+            width : 50
+            height : 50
+            scale : 2
+            anchor : 'center'
+        if mob instanceof window.DemCreepers.Gob
+            cell.type = 'Gob'
+            cell.image = @_gobs.frames[9]
+        @_map.push cell
 
     all : =>
         do @_map.all
