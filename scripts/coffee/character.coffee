@@ -51,7 +51,7 @@ class Character
             distance = window.DemCreepers.Utils.pointDistance @_box.x, @_box.y, @_box.coll.x, @_box.coll.y
             @_box.moveTo @x, @y
             distance2 = window.DemCreepers.Utils.pointDistance @_box.x, @_box.y, @_box.coll.x, @_box.coll.y
-            if distance2 <= distance
+            if distance2 < distance
                 @[comp] -= @["_v#{comp}"]
                 @_box.moveTo @x, @y
                 moved = no
