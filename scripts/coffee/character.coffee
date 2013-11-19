@@ -67,7 +67,7 @@ class Character
 
 class Player extends Character
     constructor : (@x, @y) ->
-        super @x, @y, 5, 12, 20
+        super @x, @y, 6, 12, 20
         @_hp = 100
         @_attack = @attack
         @_changeStateOr = @changeStateOr
@@ -296,7 +296,7 @@ class Monster extends Character
 
 class Gob extends Monster
     constructor : (@x, @y) ->
-        super @x, @y, 3, 1, 15, 15, 'Gob.gif', [50, 50]
+        super @x, @y, 4, 1, 15, 15, 'Gob.gif', [50, 50]
 
     update : (player, map) =>
         try
