@@ -117,7 +117,7 @@ class Player extends Character
         @_axes = []
 
     getToDraw : =>
-        _.union @_axes, @
+        _.union @_axes, [@]
 
     update : (viewport, map) =>
         if do @_anims[@_state][@_orientation].atLastFrame
