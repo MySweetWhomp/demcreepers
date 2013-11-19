@@ -60,13 +60,23 @@ class HUD
             x : 0
             y : 0
         ###
+        # HP
+        ###
+        @_hp = new jaws.SpriteList
+        _.map [0..2], (i) =>
+            @_hp.push new jaws.Sprite
+                image : @_letters.frames[0]
+                x : 85 - i * 17
+                y : 5
+                scale : 2
+        ###
         # Kills
         ###
         @_kills = new jaws.SpriteList
         _.map [0..3], (i) =>
             @_kills.push new jaws.Sprite
                 image : @_letters.frames[0]
-                x : 425 - i * 20
+                x : 410 - i * 17
                 y : 5
                 scale : 2
         ###
@@ -76,11 +86,13 @@ class HUD
         _.map [0..10], (i) =>
             @_score.push new jaws.Sprite
                 image : @_letters.frames[0]
-                x : 760 - i * 20
+                x : 760 - i * 17
                 y : 5
                 scale : 2
 
-    update : =>
+    update : (player) =>
+        _.map do ((String player._hp).split '').reverse, (n, i) =>
+            (@_hp.at i).setImage @_letters.frames[n]
         _.map do ((String Score).split '').reverse, (n, i) =>
             (@_score.at i).setImage @_letters.frames[n]
         _.map do ((String KillCount).split '').reverse, (n, i) =>
@@ -88,6 +100,7 @@ class HUD
 
     draw : =>
         do @_bg.draw
+        do @_hp.draw
         do @_score.draw
         do @_kills.draw
 
@@ -119,7 +132,7 @@ class MainGame
             ### Center viewport on Player ###
             @_viewport.centerAround @_player._box
             ### HUD ###
-            do @_hud.update
+            @_hud.update @_player
 
     draw : =>
         do jaws.clear

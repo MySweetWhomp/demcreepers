@@ -154,7 +154,9 @@ class Player extends Character
             @_orientation = old
             @_changeStateOr = @changeStateOr
             @_onlasframe = =>
-            @_attack = @attack
+            setTimeout (=>
+                @_attack = @attack
+            ), 200
 
     handleInputs : (viewport) =>
         ###
