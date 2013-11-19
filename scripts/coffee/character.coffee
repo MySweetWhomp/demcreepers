@@ -67,7 +67,7 @@ class Character
 
 class Player extends Character
     constructor : (@x, @y) ->
-        super @x, @y, 5, 15, 15
+        super @x, @y, 5, 12, 20
         @_hp = 100
         @_attack = @attack
         @_changeStateOr = @changeStateOr

@@ -7,6 +7,8 @@
 ##
 #####
 
+Score = 0
+
 class Wave
     constructor : ->
         @_mobs = []
@@ -17,6 +19,10 @@ class Wave
         @_mobs.push window.DemCreepers.Pools.Gobs.get 500, 300
         @_mobs.push window.DemCreepers.Pools.Gobs.get 400, 400
         @_mobs.push window.DemCreepers.Pools.Gobs.get 500, 500
+        @_mobs.push window.DemCreepers.Pools.Gobs.get 500, 600
+        @_mobs.push window.DemCreepers.Pools.Gobs.get 500, 700
+        @_mobs.push window.DemCreepers.Pools.Gobs.get 500, 800
+        @_mobs.push window.DemCreepers.Pools.Gobs.get 500, 900
 
     update : (player, map) =>
         toDel = []
@@ -29,6 +35,7 @@ class Wave
                         toDel.push index
                         del = yes
                         map.add mob
+                        Score += 10
             if not del
                 mob.update player, map._map
         toDel = toDel.sort (a, b) => b - a
@@ -39,54 +46,31 @@ class Wave
 
 class HUD
     constructor : ->
-        @_sheet = new jaws.SpriteSheet
-            image : 'assets/img/HUD.gif'
-            frame_size : [390, 80]
-        @_texts = new jaws.SpriteSheet
-            image : 'assets/img/HUDTEXT.gif'
-            frame_size : [90, 20]
-        @_icons = new jaws.SpriteSheet
-            image : 'assets/img/HUDICONS.gif'
-            frame_size : [20, 20]
+        @_letters =new jaws.SpriteSheet
+            image : 'assets/img/HUD-NUMBERSLETTERS.gif'
+            frame_size : [15, 15]
+            orientation : 'right'
         @_bg = new jaws.Sprite
-            image : @_sheet.frames[0]
+            image : 'assets/img/HUD.gif'
+            width: 400
+            height: 20
             scale : 2
-            x : 10
-            y : -20
-        @_lifeIcon = new jaws.Sprite
-            image : @_icons.frames[0]
-            x : 30
-            y : 15
-            scale : 2
-        @_wave = new jaws.Sprite
-            image : @_texts.frames[0]
-            scale : 2
-            x : 200
-            y : 20
-        @_ennemies = new jaws.Sprite
-            image : @_texts.frames[2]
-            scale : 2
-            x : 300
-            y : 20
-        @_combo = new jaws.Sprite
-            image : @_texts.frames[1]
-            scale : 2
-            x : 450
-            y : 20
-        @_score = new jaws.Sprite
-            image : @_texts.frames[3]
-            scale : 2
-            x : 600
-            y : 20
+            x : 0
+            y : 0
+        @_score = new jaws.SpriteList
+        _.map [0..10], (i) =>
+            @_score.push new jaws.Sprite
+                image : @_letters.frames[0]
+                x : 760 - i * 20
+                y : 5
+                scale : 2
 
     update : =>
+        _.map do ((String Score).split '').reverse, (n, i) =>
+            (@_score.at i).setImage @_letters.frames[n]
 
     draw : =>
         do @_bg.draw
-        do @_lifeIcon.draw
-        do @_wave.draw
-        do @_ennemies.draw
-        do @_combo.draw
         do @_score.draw
 
 
@@ -98,7 +82,7 @@ class MainGame
         [rows, cols] = [30, 40]
         @_viewport = new jaws.Viewport
             x : 0
-            y : 0
+            y : 20
             max_x : cols * window.DemCreepers.Config.TileSize[0]
             max_y : rows * window.DemCreepers.Config.TileSize[1]
         @_hud = new HUD
@@ -116,6 +100,8 @@ class MainGame
             @_wave.update @_player, @_map
             ### Center viewport on Player ###
             @_viewport.centerAround @_player._box
+            ### HUD ###
+            do @_hud.update
 
     draw : =>
         do jaws.clear

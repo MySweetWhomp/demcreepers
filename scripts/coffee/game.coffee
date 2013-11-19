@@ -31,10 +31,10 @@ class Game
                                      's', 'd', 'space', 'left_mouse_button']
             jaws.assets.add ['assets/img/Barbarian.gif'
                              'assets/img/Gob.gif'
+                             'assets/img/GobCorpse.gif'
                              'assets/img/Axe.gif'
                              'assets/img/HUD.gif'
-                             'assets/img/HUDTEXT.gif'
-                             'assets/img/HUDICONS.gif'
+                             'assets/img/HUD-NUMBERSLETTERS.gif'
                              'assets/img/ground.gif']
         else
             throw "Not Implemented"

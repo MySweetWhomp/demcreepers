@@ -30,8 +30,8 @@ class Map
             size : [cols, rows]
             cell_size : [tileWidth, tileHeight]
         @_gobs = new jaws.SpriteSheet
-            image : 'assets/img/Gob.gif'
-            frame_size : [50, 50]
+            image : 'assets/img/GobCorpse.gif'
+            frame_size : [50, 20]
             orientation : "down"
 
         ###
@@ -50,12 +50,12 @@ class Map
             x : mob.x
             y : mob.y
             width : 50
-            height : 50
+            height : 20
             scale : 2
             anchor : 'center'
         if mob instanceof window.DemCreepers.Gob
             cell.type = 'Gob'
-            cell.image = @_gobs.frames[9]
+            cell.image = @_gobs.frames[0]
         @_map.push cell
 
     all : =>
