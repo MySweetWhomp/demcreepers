@@ -254,7 +254,7 @@ class Axe extends Character
 # Monsters base class
 ###
 class Monster extends Character
-    constructor : (@x, @y, @speed, @pv, width, height, sheetName, frameSize) ->
+    constructor : (@x, @y, @speed, @pv, @reward, width, height, sheetName, frameSize) ->
         super @x, @y, @speed, width, height
         @_sheet = new jaws.Animation
             sprite_sheet : "assets/img/#{sheetName}"
@@ -296,7 +296,7 @@ class Monster extends Character
 
 class Gob extends Monster
     constructor : (@x, @y) ->
-        super @x, @y, 4, 1, 15, 15, 'Gob.gif', [50, 50]
+        super @x, @y, 4, 1, 10, 15, 15, 'Gob.gif', [50, 50]
 
     update : (player, map) =>
         try

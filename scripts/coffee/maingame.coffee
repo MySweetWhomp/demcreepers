@@ -8,6 +8,7 @@
 #####
 
 Score = 0
+KillCount = 0
 
 class Wave
     constructor : ->
@@ -35,7 +36,8 @@ class Wave
                         toDel.push index
                         del = yes
                         map.add mob
-                        Score += 10
+                        Score += mob.reward
+                        KillCount += 1
             if not del
                 mob.update player, map._map
         toDel = toDel.sort (a, b) => b - a
@@ -57,6 +59,19 @@ class HUD
             scale : 2
             x : 0
             y : 0
+        ###
+        # Kills
+        ###
+        @_kills = new jaws.SpriteList
+        _.map [0..3], (i) =>
+            @_kills.push new jaws.Sprite
+                image : @_letters.frames[0]
+                x : 425 - i * 20
+                y : 5
+                scale : 2
+        ###
+        # Score
+        ###
         @_score = new jaws.SpriteList
         _.map [0..10], (i) =>
             @_score.push new jaws.Sprite
@@ -68,10 +83,13 @@ class HUD
     update : =>
         _.map do ((String Score).split '').reverse, (n, i) =>
             (@_score.at i).setImage @_letters.frames[n]
+        _.map do ((String KillCount).split '').reverse, (n, i) =>
+            (@_kills.at i).setImage @_letters.frames[n]
 
     draw : =>
         do @_bg.draw
         do @_score.draw
+        do @_kills.draw
 
 
 class MainGame
