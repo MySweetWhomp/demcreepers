@@ -86,7 +86,7 @@ class HUD
         _.map [0..10], (i) =>
             @_score.push new jaws.Sprite
                 image : @_letters.frames[0]
-                x : 760 - i * 17
+                x : 750 - i * 17
                 y : 5
                 scale : 2
 
@@ -108,6 +108,9 @@ class HUD
 class MainGame
     constructor : ->
         @_paused = no
+        @_texts = new jaws.SpriteSheet
+            image : 'assets/img/HUD---TEXT.gif'
+            frame_size : [80, 20]
 
     setup : =>
         [rows, cols] = [30, 40]
@@ -120,6 +123,18 @@ class MainGame
         @_map = new window.DemCreepers.Map rows, cols
         @_player = new window.DemCreepers.Player 100, 100
         @_wave = new Wave
+        @_pauseOverlay = new jaws.Sprite
+            x : 0
+            y : 0
+            width : 800
+            height : 600
+            color : 'rgba(0,0,0,.5)'
+        @_pauseText = new jaws.Sprite
+            image : @_texts.frames[0]
+            anchor : 'center'
+            x : 450
+            y : 300
+            scale : 2
 
     update : =>
         if jaws.pressedWithoutRepeat 'space'
@@ -155,7 +170,9 @@ class MainGame
         ###
         # PAUSE
         ###
-        #if @_paused
+        if @_paused
+            do @_pauseOverlay.draw
+            do @_pauseText.draw
 
         (document.getElementById 'playerX').innerHTML = @_player.x
         (document.getElementById 'playerY').innerHTML = @_player.y

@@ -34,7 +34,9 @@ class Game
                              'assets/img/GobCorpse.gif'
                              'assets/img/Axe.gif'
                              'assets/img/HUD.gif'
+                             'assets/img/HUD---TEXT.gif'
                              'assets/img/HUD-NUMBERSLETTERS.gif'
+                             'assets/img/pause.gif'
                              'assets/img/ground.gif']
         else
             throw "Not Implemented"
