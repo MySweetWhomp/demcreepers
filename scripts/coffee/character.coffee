@@ -36,34 +36,43 @@ class Character
         @_bump = no
         @move map
         @_sprite.moveTo @x, @y
+        @_box.coll = undefined
 
     draw : =>
         do (do @_box.rect).draw
 
+    moveOneComp : (comp, map) =>
+        moved = yes
+        box = do @_box.rect
+
+        @[comp] += @["_v#{comp}"]
+
+        if @_box.coll?
+            distance = window.DemCreepers.Utils.pointDistance @_box.x, @_box.y, @_box.coll.x, @_box.coll.y
+            @_box.moveTo @x, @y
+            distance2 = window.DemCreepers.Utils.pointDistance @_box.x, @_box.y, @_box.coll.x, @_box.coll.y
+            if distance2 <= distance
+                @[comp] -= @["_v#{comp}"]
+                @_box.moveTo @x, @y
+                moved = no
+        else
+            @_box.moveTo @x, @y
+
+        if moved
+            atRect = map.atRect box
+            if atRect.length > 0
+                for cell in atRect
+                    if (do cell.rect).collideRect box
+                        if cell.type is 'Gob'
+                            @[comp] -= @["_v#{comp}"] / 2
+                            @_box.moveTo @x, @y
+                        break
+
     move : (map) =>
         if @_vx is 0 and @_vy is 0
             return
-        box = do @_box.rect
-        @x += @_vx
-        @_box.moveTo @x, @y
-        atRect = map.atRect box
-        if atRect.length > 0
-            for cell in atRect
-                if (do cell.rect).collideRect box
-                    if cell.type is 'Gob'
-                        @x -= @_vx / 2
-                        @_box.moveTo @x, @y
-                    break
-        @y += @_vy
-        @_box.moveTo @x, @y
-        atRect = map.atRect box
-        if atRect.length > 0
-            for cell in atRect
-                if (do cell.rect).collideRect box
-                    if cell.type is 'Gob'
-                        @y -= @_vy / 2
-                        @_box.moveTo @x, @y
-                    break
+        @moveOneComp 'x', map
+        @moveOneComp 'y', map
 
 class Player extends Character
     constructor : (@x, @y) ->
@@ -289,10 +298,7 @@ class Monster extends Character
     update : (player, map) =>
         @_orientation = window.DemCreepers.Utils.pointOrientation player.x, player.y, @x, @y
         @_sprite.setImage do @_anims[@_orientation].next
-        if not (do @_box.rect).collideRect (do player._box.rect)
-            do @_move[@_orientation]
-        else
-            @_vx = @_vy = 0
+        do @_move[@_orientation]
         try
             super map
 

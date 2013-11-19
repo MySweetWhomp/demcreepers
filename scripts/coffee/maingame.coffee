@@ -111,6 +111,7 @@ class MainGame
         @_texts = new jaws.SpriteSheet
             image : 'assets/img/HUD---TEXT.gif'
             frame_size : [80, 20]
+        @_quadtree = new jaws.QuadTree
 
     setup : =>
         [rows, cols] = [30, 40]
@@ -140,6 +141,10 @@ class MainGame
         if jaws.pressedWithoutRepeat 'space'
             @_paused = not @_paused
         if not @_paused
+            all = _.union (_.map @_wave._mobs, (item) -> item._box), [@_player._box]
+            @_quadtree.collide all, all, (a, b) =>
+                a.coll = b
+                b.coll = a
             ### Player ###
             @_player.update @_viewport, @_map._map
             ### Monsters ###

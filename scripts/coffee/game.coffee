@@ -55,6 +55,9 @@ class Utils
         (x1, y1, x2, y2) ->
             _ORFROMDIR[(Math.round ((@pointDirection x1, y1, x2, y2) / 45)) + 4]
 
+    pointDistance : (aX, aY, bX, bY) ->
+        Math.abs Math.sqrt ((bX - aX) * (bX - aX)) + ((bY - aY) * (bY - aY))
+
 window.DemCreepers =
     Game : Game
     Utils : new Utils
