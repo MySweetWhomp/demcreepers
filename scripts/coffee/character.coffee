@@ -153,6 +153,7 @@ class Player extends Character
             @_orientation = orientation
 
     attack : (dir) =>
+        do (new jaws.Audio audio : 'assets/audio/WOOSH.ogg', volume : 0.4).play
         old = @_orientation
         @_orientation = dir
         @_axes.push new Axe dir, @x, @y

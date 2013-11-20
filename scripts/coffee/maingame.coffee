@@ -38,6 +38,7 @@ class Wave
                         map.add mob
                         Score += mob.reward
                         KillCount += 1
+                        do (jaws.Audio audio : 'assets/audio/HIT.ogg', volume : 0.4).play
             if not del
                 mob.update player, map._map
         toDel = toDel.sort (a, b) => b - a
