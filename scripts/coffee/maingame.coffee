@@ -12,6 +12,7 @@ KillCount = 0
 
 class Wave
     constructor : ->
+        @HIT = new jaws.Audio audio : 'assets/audio/HIT.ogg', volume : 0.4
         @_mobs = []
         @_mobs.push window.DemCreepers.Pools.Gobs.get 300, 300
         @_mobs.push window.DemCreepers.Pools.Gobs.get 400, 300
@@ -38,7 +39,7 @@ class Wave
                         map.add mob
                         Score += mob.reward
                         KillCount += 1
-                        do (jaws.Audio audio : 'assets/audio/HIT.ogg', volume : 0.4).play
+                        do @HIT.play
             if not del
                 mob.update player, map._map
         toDel = toDel.sort (a, b) => b - a

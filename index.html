@@ -24,8 +24,8 @@
     </body>
     <script type="text/javascript">
         if (window.DemCreepers != null && window.DemCreepers.Game != null) {
-            var game = new window.DemCreepers.Game();
-            game.start();
+            window.DemCreepers.Game = new window.DemCreepers.Game();
+            window.DemCreepers.Game.start();
         } else {
             throw("Not Implemented")
         }

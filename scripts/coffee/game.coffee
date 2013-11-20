@@ -27,7 +27,6 @@ class DrawBatch
 class Game
     constructor : ->
         if jaws?
-            jaws.log.use_console = yes
             jaws.preventDefaultKeys ['up', 'right', 'down', 'left', 'w', 'a',
                                      's', 'd', 'space', 'left_mouse_button']
             jaws.assets.add ['assets/img/Barbarian.gif', 'assets/img/Gob.gif', 'assets/img/GobCorpse.gif',

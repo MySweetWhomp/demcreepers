@@ -77,6 +77,7 @@ class Character
 class Player extends Character
     constructor : (@x, @y) ->
         super @x, @y, 6, 12, 20
+        @WOOSH = new jaws.Audio audio : 'assets/audio/WOOSH.ogg', volume : 0.4
         @_hp = 100
         @_attack = @attack
         @_changeStateOr = @changeStateOr
@@ -153,7 +154,7 @@ class Player extends Character
             @_orientation = orientation
 
     attack : (dir) =>
-        do (new jaws.Audio audio : 'assets/audio/WOOSH.ogg', volume : 0.4).play
+        do @WOOSH.play
         old = @_orientation
         @_orientation = dir
         @_axes.push new Axe dir, @x, @y
