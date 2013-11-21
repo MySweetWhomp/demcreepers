@@ -39,7 +39,7 @@ class Character
         @_box.coll = undefined
 
     draw : =>
-        do (do @_box.rect).draw
+        #do (do @_box.rect).draw
 
     moveOneComp : (comp, map) =>
         moved = yes
@@ -269,20 +269,31 @@ class Axe extends Character
 class Monster extends Character
     constructor : (@x, @y, @speed, @pv, @reward, width, height, sheetName, frameSize) ->
         super @x, @y, @speed, width, height
+        @_state = 'run'
         @_sheet = new jaws.Animation
             sprite_sheet : "assets/img/#{sheetName}"
             frame_size : frameSize
             orientation : 'right'
             frame_duration : 70
         @_anims =
-            'N' : @_sheet.slice 20, 30
-            'NE' : @_sheet.slice 30, 40
-            'E' : @_sheet.slice 30, 40
-            'SE' : @_sheet.slice 30, 40
-            'S' : @_sheet.slice 0, 10
-            'SW' : @_sheet.slice 10, 20
-            'W' : @_sheet.slice 10, 20
-            'NW' : @_sheet.slice 10, 20
+            'run' :
+                'N' : @_sheet.slice 20, 30
+                'NE' : @_sheet.slice 30, 40
+                'E' : @_sheet.slice 30, 40
+                'SE' : @_sheet.slice 30, 40
+                'S' : @_sheet.slice 0, 10
+                'SW' : @_sheet.slice 10, 20
+                'W' : @_sheet.slice 10, 20
+                'NW' : @_sheet.slice 10, 20
+            'attack' :
+                'N' : @_sheet.slice 70, 76
+                'NE' : @_sheet.slice 60, 66
+                'E' : @_sheet.slice 60, 66
+                'SE' : @_sheet.slice 60, 66
+                'S' : @_sheet.slice 40, 46
+                'SW' : @_sheet.slice 50, 56
+                'W' : @_sheet.slice 50, 56
+                'NW' : @_sheet.slice 50, 56
         @_attack = @attack
         ###
         # Define orientation based move methods
@@ -301,9 +312,10 @@ class Monster extends Character
     update : (player, map) =>
         @_distToPlayer = window.DemCreepers.Utils.pointDistance player.x, player.y, @x, @y
         @_orientation = window.DemCreepers.Utils.pointOrientation player.x, player.y, @x, @y
-        @_sprite.setImage do @_anims[@_orientation].next
+        @_sprite.setImage do @_anims[@_state][@_orientation].next
         if @_distToPlayer > 35
             do @_move[@_orientation]
+            @_state = 'run'
         else
             @_vx = @_vy = 0
             @_attack player
@@ -311,6 +323,7 @@ class Monster extends Character
             super map
 
     attack : (player) =>
+        @_state = 'attack'
         player._hp -= 5
         @_attack = =>
         setTimeout (=>
