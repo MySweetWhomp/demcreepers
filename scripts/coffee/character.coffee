@@ -283,6 +283,7 @@ class Monster extends Character
             'SW' : @_sheet.slice 10, 20
             'W' : @_sheet.slice 10, 20
             'NW' : @_sheet.slice 10, 20
+        @_attack = @attack
         ###
         # Define orientation based move methods
         # Allows not to check direction each game loop iteration
@@ -298,11 +299,23 @@ class Monster extends Character
             'NW' : () => @_vy = -@speed ; @_vx = -@speed
 
     update : (player, map) =>
+        @_distToPlayer = window.DemCreepers.Utils.pointDistance player.x, player.y, @x, @y
         @_orientation = window.DemCreepers.Utils.pointOrientation player.x, player.y, @x, @y
         @_sprite.setImage do @_anims[@_orientation].next
-        do @_move[@_orientation]
+        if @_distToPlayer > 35
+            do @_move[@_orientation]
+        else
+            @_vx = @_vy = 0
+            @_attack player
         try
             super map
+
+    attack : (player) =>
+        player._hp -= 5
+        @_attack = =>
+        setTimeout (=>
+            @_attack = @attack
+        ), 1000
 
 class Gob extends Monster
     constructor : (@x, @y) ->

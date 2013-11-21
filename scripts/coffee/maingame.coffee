@@ -15,6 +15,7 @@ class Wave
         @HIT = new jaws.Audio audio : 'assets/audio/HIT.ogg', volume : 0.4
         @_mobs = []
         @_mobs.push window.DemCreepers.Pools.Gobs.get 300, 300
+        return
         @_mobs.push window.DemCreepers.Pools.Gobs.get 400, 300
         @_mobs.push window.DemCreepers.Pools.Gobs.get 300, 400
         @_mobs.push window.DemCreepers.Pools.Gobs.get 300, 500
@@ -93,6 +94,8 @@ class HUD
                 scale : 2
 
     update : (player) =>
+        _.map [0..2], (i) =>
+            (@_hp.at i).setImage @_letters.frames[0]
         _.map do ((String player._hp).split '').reverse, (n, i) =>
             (@_hp.at i).setImage @_letters.frames[n]
         _.map do ((String Score).split '').reverse, (n, i) =>
