@@ -54,10 +54,11 @@ class Utils
         parseInt Math.abs Math.sqrt ((bX - aX) * (bX - aX)) + ((bY - aY) * (bY - aY))
 
     getTileId : (x) ->
-        if isNaN (parseInt x)
-            10 + (do (do x.toLowerCase).charCodeAt) - 97 # 97 is 'a' ASCII cade
+        n = parseInt x
+        if isNaN n
+            10 + (do (do x.toLowerCase).charCodeAt) - 97 # 97 is 'a' ASCII code
         else
-            parseInt x
+            n
 
 window.DemCreepers =
     Game : Game
