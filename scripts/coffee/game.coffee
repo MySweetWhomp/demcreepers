@@ -19,7 +19,8 @@ class DrawBatch
             @_toDraw.push elem
 
     draw : (viewport) =>
-        @_toDraw = _.sortBy @_toDraw, 'y'
+        @_toDraw = _.sortBy @_toDraw, (a) =>
+            (do a._box.rect).bottom
         _.map @_toDraw, (item) =>
             do item.draw
         @_toDraw = []
