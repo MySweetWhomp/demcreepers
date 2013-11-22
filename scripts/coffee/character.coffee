@@ -39,7 +39,7 @@ class Character
         @_box.coll = undefined
 
     draw : =>
-        #do (do @_box.rect).draw
+        do (do @_box.rect).draw
 
     moveOneComp : (comp, map) =>
         moved = yes
@@ -115,6 +115,10 @@ class Player extends Character
                 'SW' : @_sheet.slice 99, 102
                 'W' : @_sheet.slice 102, 105
                 'NW' : @_sheet.slice 105, 108
+            'dead' :
+                'N' : @_sheet.slice 120, 127
+        @_anims['dead']['E'] = @_anims['dead']['NE'] = @_anims['dead']['SE'] = @_anims['dead']['S'] =
+        @_anims['dead']['SW'] = @_anims['dead']['W'] = @_anims['dead']['NW'] = @_anims['dead']['N']
         @_axes = []
 
     getToDraw : =>
@@ -123,14 +127,17 @@ class Player extends Character
     update : (viewport, map) =>
         if do @_anims[@_state][@_orientation].atLastFrame
             do @_onlasframe
-        @_vx = @_vy = 0
-        viewport.forceInsideVisibleArea @_sprite, 20
-        @x = @_sprite.x
-        @y = @_sprite.y
-        @handleInputs viewport
-        try
-            super map
+        if @_state isnt 'dead'
+            @_vx = @_vy = 0
+            viewport.forceInsideVisibleArea @_sprite, 20
+            @x = @_sprite.x
+            @y = @_sprite.y
+            @handleInputs viewport
+            try
+                super map
+
         @_sprite.setImage do @_anims[@_state][@_orientation].next
+
         ###
         # Manage axes
         ###
@@ -147,6 +154,12 @@ class Player extends Character
         do @_sprite.draw
         try
             do super
+
+    getHit : (n) =>
+        if (@_hp -= n) <= 0
+            console.log "HERE"
+            @_state = 'dead'
+
 
     changeStateOr : (state, orientation) =>
         @_state = state
@@ -275,25 +288,6 @@ class Monster extends Character
             frame_size : frameSize
             orientation : 'right'
             frame_duration : 70
-        @_anims =
-            'run' :
-                'N' : @_sheet.slice 20, 30
-                'NE' : @_sheet.slice 30, 40
-                'E' : @_sheet.slice 30, 40
-                'SE' : @_sheet.slice 30, 40
-                'S' : @_sheet.slice 0, 10
-                'SW' : @_sheet.slice 10, 20
-                'W' : @_sheet.slice 10, 20
-                'NW' : @_sheet.slice 10, 20
-            'attack' :
-                'N' : @_sheet.slice 70, 76
-                'NE' : @_sheet.slice 60, 66
-                'E' : @_sheet.slice 60, 66
-                'SE' : @_sheet.slice 60, 66
-                'S' : @_sheet.slice 40, 46
-                'SW' : @_sheet.slice 50, 56
-                'W' : @_sheet.slice 50, 56
-                'NW' : @_sheet.slice 50, 56
         @_attack = @attack
         ###
         # Define orientation based move methods
@@ -324,7 +318,7 @@ class Monster extends Character
 
     attack : (player) =>
         @_state = 'attack'
-        player._hp -= 5
+        player.getHit 5
         @_attack = =>
         setTimeout (=>
             @_attack = @attack
@@ -333,6 +327,57 @@ class Monster extends Character
 class Gob extends Monster
     constructor : (@x, @y) ->
         super @x, @y, 4, 1, 10, 15, 15, 'Gob.gif', [50, 50]
+        @_anims =
+            'run' :
+                'N' : @_sheet.slice 20, 30
+                'NE' : @_sheet.slice 30, 40
+                'E' : @_sheet.slice 30, 40
+                'SE' : @_sheet.slice 30, 40
+                'S' : @_sheet.slice 0, 10
+                'SW' : @_sheet.slice 10, 20
+                'W' : @_sheet.slice 10, 20
+                'NW' : @_sheet.slice 10, 20
+            'attack' :
+                'N' : @_sheet.slice 70, 76
+                'NE' : @_sheet.slice 60, 66
+                'E' : @_sheet.slice 60, 66
+                'SE' : @_sheet.slice 60, 66
+                'S' : @_sheet.slice 40, 46
+                'SW' : @_sheet.slice 50, 56
+                'W' : @_sheet.slice 50, 56
+                'NW' : @_sheet.slice 50, 56
+
+    update : (player, map) =>
+        try
+            super player, map
+
+    draw : =>
+        do @_sprite.draw
+        try
+            do super
+
+class Golem extends Monster
+    constructor : (@x, @y) ->
+        super @x, @y, 4, 7, 50, 50, 50, 'GOLEM.gif', [150, 160]
+        @_anims =
+            'run' :
+                'N' : @_sheet.slice 1, 2
+                'NE' : @_sheet.slice 1, 2
+                'E' : @_sheet.slice 1, 2
+                'SE' : @_sheet.slice 1, 2
+                'S' : @_sheet.slice 1, 2
+                'SW' : @_sheet.slice 1, 2
+                'W' : @_sheet.slice 1, 2
+                'NW' : @_sheet.slice 1, 2
+            'attack' :
+                'N' : @_sheet.slice 1, 2
+                'NE' : @_sheet.slice 1, 2
+                'E' : @_sheet.slice 1, 2
+                'SE' : @_sheet.slice 1, 2
+                'S' : @_sheet.slice 1, 2
+                'SW' : @_sheet.slice 1, 2
+                'W' : @_sheet.slice 1, 2
+                'NW' : @_sheet.slice 1, 2
 
     update : (player, map) =>
         try
@@ -347,3 +392,4 @@ if window.DemCreepers?
     window.DemCreepers.Character = Character
     window.DemCreepers.Player = Player
     window.DemCreepers.Gob = Gob
+    window.DemCreepers.Golem = Golem

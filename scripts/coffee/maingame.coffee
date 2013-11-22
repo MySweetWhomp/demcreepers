@@ -14,8 +14,7 @@ class Wave
     constructor : ->
         @HIT = new jaws.Audio audio : 'assets/audio/HIT.ogg', volume : 0.4
         @_mobs = []
-        @_mobs.push window.DemCreepers.Pools.Gobs.get 300, 300
-        return
+        @_mobs.push window.DemCreepers.Pools.Golems.get 300, 300
         @_mobs.push window.DemCreepers.Pools.Gobs.get 400, 300
         @_mobs.push window.DemCreepers.Pools.Gobs.get 300, 400
         @_mobs.push window.DemCreepers.Pools.Gobs.get 300, 500

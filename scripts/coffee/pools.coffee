@@ -34,6 +34,22 @@ class GobPool extends Pool
         try
             do super
 
+class GolemPool extends Pool
+    get : (x, y) =>
+        if @_queue.length > 0
+            golem = do @_queue.shift
+            golem.x = x
+            golem.y = y
+            golem
+        else
+            new window.DemCreepers.Golem x, y
+
+    add : (item) =>
+        item.pv = 1
+        try
+            do super
+
 if window.DemCreepers?
     window.DemCreepers.Pools =
         Gobs : new GobPool
+        Golems : new GolemPool
