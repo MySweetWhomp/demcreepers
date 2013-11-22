@@ -21,6 +21,14 @@ _createBlock = (x, y) ->
 
 class Map
     constructor : (rows, cols) ->
+        @_tileset = new jaws.SpriteSheet
+            image : 'assets/img/BG---Tiles.gif'
+            frame_size : [50, 50]
+            orientation : 'right'
+        @_gobs = new jaws.SpriteSheet
+            image : 'assets/img/GobCorpse.gif'
+            frame_size : [50, 20]
+            orientation : "down"
         tileWidth = window.DemCreepers.Config.TileSize[0]
         tileHeight = window.DemCreepers.Config.TileSize[1]
         @_ground = new jaws.TileMap
@@ -29,10 +37,6 @@ class Map
         @_map = new jaws.TileMap
             size : [cols, rows]
             cell_size : [tileWidth, tileHeight]
-        @_gobs = new jaws.SpriteSheet
-            image : 'assets/img/GobCorpse.gif'
-            frame_size : [50, 20]
-            orientation : "down"
 
         ###
         # Fill the ground
@@ -40,7 +44,7 @@ class Map
         _.map [0..rows - 1], (y) =>
             _.map [0..cols - 1], (x) =>
                 block = _createBlock x, y
-                block.setImage 'assets/img/ground.gif'
+                block.setImage @_tileset.frames[20]
                 @_ground.push block
 
     add : (mob) =>
