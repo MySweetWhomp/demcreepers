@@ -20,9 +20,8 @@ class DrawBatch
 
     draw : (viewport) =>
         @_toDraw = _.sortBy @_toDraw, (a) =>
-            (do a._box.rect).bottom
-        _.map @_toDraw, (item) =>
-            do item.draw
+            if a._box? then (do a._box.rect).bottom else a.y
+        _.map @_toDraw, (item) => do item.draw
         @_toDraw = []
 
 class Game
