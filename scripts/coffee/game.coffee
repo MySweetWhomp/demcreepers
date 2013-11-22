@@ -53,6 +53,12 @@ class Utils
     pointDistance : (aX, aY, bX, bY) ->
         parseInt Math.abs Math.sqrt ((bX - aX) * (bX - aX)) + ((bY - aY) * (bY - aY))
 
+    getTileId : (x) ->
+        if isNaN (parseInt x)
+            10 + (do (do x.toLowerCase).charCodeAt) - 97 # 97 is 'a' ASCII cade
+        else
+            parseInt x
+
 window.DemCreepers =
     Game : Game
     Utils : new Utils

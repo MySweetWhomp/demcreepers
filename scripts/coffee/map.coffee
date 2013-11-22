@@ -8,6 +8,38 @@
 #####
 
 ###
+## The Map
+###
+
+_THEMAP = '''
+KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
+KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
+KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
+KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
+KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
+KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
+KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
+KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
+KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
+KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
+KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
+KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
+KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
+KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
+KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
+KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
+KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
+KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
+KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
+KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
+KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
+KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
+KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
+KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
+'''
+
+
+###
 # Instanciate a block at a given position
 ###
 _createBlock = (x, y) ->
@@ -41,10 +73,12 @@ class Map
         ###
         # Fill the ground
         ###
+        map = _THEMAP.split '\n'
         _.map [0..rows - 1], (y) =>
+            row = map[y].split ''
             _.map [0..cols - 1], (x) =>
                 block = _createBlock x, y
-                block.setImage @_tileset.frames[20]
+                block.setImage @_tileset.frames[window.DemCreepers.Utils.getTileId row[x]]
                 @_ground.push block
 
     add : (mob) =>
@@ -60,6 +94,8 @@ class Map
         if mob instanceof window.DemCreepers.Gob
             cell.type = 'Gob'
             cell.image = @_gobs.frames[0]
+        else
+            cell.type = 'Golem'
         @_map.push cell
 
     all : =>
