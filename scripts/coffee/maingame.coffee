@@ -148,12 +148,12 @@ class MainGame
     setup : =>
         @_music = new jaws.Audio audio : 'assets/audio/GAME_LOOP.ogg', volume : 0.7, loop : 1
         do @_music.play
-        [rows, cols] = [18, 24]
+        [rows, cols] = [9, 12]
         @_viewport = new jaws.Viewport
             x : 0
             y : 20
-            max_x : cols * window.DemCreepers.Config.TileSize[0]
-            max_y : rows * window.DemCreepers.Config.TileSize[1]
+            max_x : cols * (window.DemCreepers.Config.TileSize[0] * 2)
+            max_y : rows * (window.DemCreepers.Config.TileSize[1] * 2)
         @_hud = new HUD
         @_map = new window.DemCreepers.Map rows, cols
         @_player = new window.DemCreepers.Player 100, 100
