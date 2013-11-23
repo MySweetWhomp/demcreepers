@@ -369,7 +369,7 @@ class Gob extends Monster
 
 class Golem extends Monster
     constructor : (@x, @y) ->
-        super @x, @y, 2, 1, 50, 50, 50, 'GOLEM.gif', [150, 160]
+        super @x, @y, 2, 7, 50, 50, 50, 'GOLEM.gif', [150, 160]
         @_anims =
             'run' :
                 'N' : @_sheet.slice 1, 2

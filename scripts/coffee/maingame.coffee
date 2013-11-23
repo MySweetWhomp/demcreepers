@@ -15,16 +15,16 @@ class Wave
         @HIT = new jaws.Audio audio : 'assets/audio/HIT.ogg', volume : 0.4
         @_mobs = []
         @_mobs.push window.DemCreepers.Pools.Golems.get 300, 300
-        # @_mobs.push window.DemCreepers.Pools.Gobs.get 400, 300
-        # @_mobs.push window.DemCreepers.Pools.Gobs.get 300, 400
-        # @_mobs.push window.DemCreepers.Pools.Gobs.get 300, 500
-        # @_mobs.push window.DemCreepers.Pools.Gobs.get 500, 300
-        # @_mobs.push window.DemCreepers.Pools.Gobs.get 400, 400
-        # @_mobs.push window.DemCreepers.Pools.Gobs.get 500, 500
-        # @_mobs.push window.DemCreepers.Pools.Gobs.get 500, 600
-        # @_mobs.push window.DemCreepers.Pools.Gobs.get 500, 700
-        # @_mobs.push window.DemCreepers.Pools.Gobs.get 500, 800
-        # @_mobs.push window.DemCreepers.Pools.Gobs.get 500, 900
+        @_mobs.push window.DemCreepers.Pools.Gobs.get 400, 300
+        @_mobs.push window.DemCreepers.Pools.Gobs.get 300, 400
+        @_mobs.push window.DemCreepers.Pools.Gobs.get 300, 500
+        @_mobs.push window.DemCreepers.Pools.Gobs.get 500, 300
+        @_mobs.push window.DemCreepers.Pools.Gobs.get 400, 400
+        @_mobs.push window.DemCreepers.Pools.Gobs.get 500, 500
+        @_mobs.push window.DemCreepers.Pools.Gobs.get 500, 600
+        @_mobs.push window.DemCreepers.Pools.Gobs.get 500, 700
+        @_mobs.push window.DemCreepers.Pools.Gobs.get 500, 800
+        @_mobs.push window.DemCreepers.Pools.Gobs.get 500, 900
 
     update : (player, map) =>
         toDel = []
