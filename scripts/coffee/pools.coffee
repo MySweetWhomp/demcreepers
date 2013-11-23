@@ -30,12 +30,12 @@ class GobPool extends Pool
             gob = do @_queue.shift
             gob.x = x
             gob.y = y
+            gob.pv = 1
             gob
         else
             new window.DemCreepers.Gob x, y
 
     add : (item) =>
-        item.pv = 1
         try
             do super
 
@@ -45,12 +45,12 @@ class GolemPool extends Pool
             golem = do @_queue.shift
             golem.x = x
             golem.y = y
+            golem.pv = 7
             golem
         else
             new window.DemCreepers.Golem x, y
 
     add : (item) =>
-        item.pv = 1
         try
             do super
 

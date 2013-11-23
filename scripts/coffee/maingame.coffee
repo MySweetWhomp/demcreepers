@@ -183,9 +183,10 @@ class MainGame
             if @_paused then do @_music.pause else do @_music.play
         if not @_paused
             all = _.union (_.map @_wave._mobs, (item) -> item._box), [@_player._box]
-            @_quadtree.collide all, all, (a, b) =>
-                a.coll = b
-                b.coll = a
+            try
+                @_quadtree.collide all, all, (a, b) =>
+                    a.coll = b
+                    b.coll = a
             ### Player ###
             @_player.update @_viewport, @_map._map
             ### Monsters ###
