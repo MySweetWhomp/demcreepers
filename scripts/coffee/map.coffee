@@ -43,13 +43,12 @@ KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
 # Instanciate a block at a given position
 ###
 _createBlock = (x, y) ->
-    tileWidth = window.DemCreepers.Config.TileSize[0]
-    tileHeight = window.DemCreepers.Config.TileSize[1]
+    tileWidth = window.DemCreepers.Config.TileSize[0] * 2
+    tileHeight = window.DemCreepers.Config.TileSize[1] * 2
     new jaws.Sprite
         x : x * tileWidth
         y : y * tileHeight
-        width : tileWidth
-        height : tileHeight
+        scale : 2
 
 class Map
     constructor : (rows, cols) ->
@@ -65,7 +64,7 @@ class Map
         tileHeight = window.DemCreepers.Config.TileSize[1]
         @_ground = new jaws.TileMap
             size : [cols, rows]
-            cell_size : [tileWidth, tileHeight]
+            cell_size : [tileWidth * 2, tileHeight * 2]
         @_map = new jaws.TileMap
             size : [cols, rows]
             cell_size : [tileWidth, tileHeight]
