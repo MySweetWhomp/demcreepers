@@ -180,7 +180,7 @@ class Player extends Character
             @_onlasframe = =>
             setTimeout (=>
                 @_attack = @attack
-            ), 200
+            ), 50
 
     handleInputs : (viewport) =>
         ###
@@ -358,7 +358,7 @@ class Gob extends Monster
 
 class Golem extends Monster
     constructor : (@x, @y) ->
-        super @x, @y, 4, 7, 50, 50, 50, 'GOLEM.gif', [150, 160]
+        super @x, @y, 2, 7, 50, 50, 50, 'GOLEM.gif', [150, 160]
         @_anims =
             'run' :
                 'N' : @_sheet.slice 1, 2
