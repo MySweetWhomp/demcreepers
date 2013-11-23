@@ -142,8 +142,9 @@ class Map
         @_map = new jaws.TileMap
             size : [@cols, @rows]
             cell_size : [tileWidth, tileHeight]
-        @_map.push _.uniq gobs[0].all
-        @_map.push _.uniq gobs[1].all
+        try
+            @_map.push _.uniq gobs[0].all
+            @_map.push _.uniq gobs[1].all
 
     all : =>
         do @_map.all

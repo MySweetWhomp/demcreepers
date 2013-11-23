@@ -64,6 +64,25 @@ class Utils
         else
             n
 
+    getRandomSpawn : ->
+        n = _.random 0, 7
+        if n is 0
+            [800, -200]
+        else if n is 1
+            [1800, -200]
+        else if n is 2
+            [1800, 600]
+        else if n is 3
+            [1800, 1400]
+        else if n is 4
+            [800, 1400]
+        else if n is 5
+            [-200, 1400]
+        else if n is 6
+            [-200, 600]
+        else if n is 7
+            [-200, -200]
+
 window.DemCreepers =
     Game : Game
     Utils : new Utils

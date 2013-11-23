@@ -48,8 +48,9 @@ class Wave1 extends Wave
         do @regen
 
     regen : =>
+        [x, y] = do window.DemCreepers.Utils.getRandomSpawn
         _.map [0..9], () =>
-            @_mobs.push window.DemCreepers.Pools.Gobs.get 400, -100
+            @_mobs.push window.DemCreepers.Pools.Gobs.get x, y
 
     nextPack : =>
         ++@_pack
@@ -173,6 +174,7 @@ class MainGame
     update : =>
         if @_wave._mobs.length  is 0
             if not (do @_wave.nextPack)
+                @_quadtree = new jaws.QuadTree
                 do @_map.updateForNextWave
                 @_wave = new Wave1
                 ++Waves
@@ -192,6 +194,7 @@ class MainGame
             @_viewport.centerAround @_player._box
             ### HUD ###
             @_hud.update @_player
+        do @_quadtree.clear
 
     draw : =>
         do jaws.clear
