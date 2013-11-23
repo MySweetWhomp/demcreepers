@@ -120,6 +120,8 @@ class MainGame
         @_quadtree = new jaws.QuadTree
 
     setup : =>
+        @_music = new jaws.Audio audio : 'assets/audio/GAME_LOOP.ogg', volume : 0.7, loop : 1
+        do @_music.play
         [rows, cols] = [24, 32]
         @_viewport = new jaws.Viewport
             x : 0
@@ -146,6 +148,7 @@ class MainGame
     update : =>
         if jaws.pressedWithoutRepeat 'space'
             @_paused = not @_paused
+            if @_paused then do @_music.pause else do @_music.play
         if not @_paused
             all = _.union (_.map @_wave._mobs, (item) -> item._box), [@_player._box]
             @_quadtree.collide all, all, (a, b) =>

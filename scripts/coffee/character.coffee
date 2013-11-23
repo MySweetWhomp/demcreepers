@@ -425,7 +425,7 @@ class Golem extends Monster
             @_fist.move 0, -140
 
         if @_state is 'attack' and (do @_fist.rect).collideRect (do player._box.rect)
-            player._getHit 50
+            player._getHit 15
 
     draw : =>
         do @_sprite.draw
