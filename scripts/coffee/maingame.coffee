@@ -34,6 +34,7 @@ class Wave
                 if ((do axe._box.rect).collideRect (do mob._box.rect)) and axe._toGo >= 0
                     axe._toGo = -1
                     if --mob.pv <= 0
+                        #do mob._DEATH.play
                         toDel.push index
                         del = yes
                         map.add mob

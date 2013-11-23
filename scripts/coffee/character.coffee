@@ -263,14 +263,20 @@ class Axe extends Character
         if atRect.length > 0
             for cell in atRect
                 if (do cell.rect).collideRect box
-                    break
+                    if cell.type isnt 'Gob'
+                        @x -= @_vx
+                        @_box.moveTo @x, @y
+                        @_bump = yes
         @y += @_vy
         @_box.moveTo @x, @y
         atRect = map.atRect box
         if atRect.length > 0
             for cell in atRect
                 if (do cell.rect).collideRect box
-                    break
+                    if cell.type isnt 'Gob'
+                        @y -= @_vy
+                        @_box.moveTo @x, @y
+                        @_bump = yes
 
     update : (map) =>
         @_vx = @speed * @_dirx
@@ -357,6 +363,7 @@ class Gob extends Monster
                 'SW' : @_sheet.slice 50, 56
                 'W' : @_sheet.slice 50, 56
                 'NW' : @_sheet.slice 50, 56
+        @_DEATH = new jaws.Audio audio : 'assets/audio/GOBMORT.ogg', volume : 0.2
 
     update : (player, map) =>
         try
@@ -389,6 +396,7 @@ class Golem extends Monster
                 'SW' : @_sheet.slice 1, 2
                 'W' : @_sheet.slice 1, 2
                 'NW' : @_sheet.slice 1, 2
+        @_DEATH = new jaws.Audio audio : 'assets/audio/GOLEMMORT.ogg', volume : 0.2
 
     update : (player, map) =>
         try
