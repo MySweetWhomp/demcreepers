@@ -93,6 +93,7 @@ class Player extends Character
         @_hp = 100
         @_attack = @attack
         @_changeStateOr = @changeStateOr
+        @_getHit = @getHit
         @_onlasframe = =>
         @_sheet = new jaws.Animation
             sprite_sheet : 'assets/img/Barbarian.gif'
@@ -168,8 +169,11 @@ class Player extends Character
             do super
 
     getHit : (n) =>
+        @_getHit = =>
+        setTimeout (=>
+            @_getHit = @getHit
+        ), 1000
         if (@_hp -= n) <= 0
-            console.log "HERE"
             @_state = 'dead'
 
 
@@ -298,7 +302,7 @@ class Axe extends Character
 # Monsters base class
 ###
 class Monster extends Character
-    constructor : (@x, @y, @speed, @pv, @reward, width, height, sheetName, frameSize) ->
+    constructor : (@x, @y, @speed, @pv, @reward, @distAttack, width, height, sheetName, frameSize) ->
         super @x, @y, @speed, width, height
         @_state = 'run'
         @_sheet = new jaws.Animation
@@ -325,7 +329,7 @@ class Monster extends Character
         @_distToPlayer = window.DemCreepers.Utils.pointDistance player.x, player.y, @x, @y
         @_orientation = window.DemCreepers.Utils.pointOrientation player.x, player.y, @x, @y
         @_sprite.setImage do @_anims[@_state][@_orientation].next
-        if @_distToPlayer > 35
+        if @_distToPlayer > @distAttack
             do @_move[@_orientation]
             @_state = 'run'
         else
@@ -336,7 +340,7 @@ class Monster extends Character
 
     attack : (player) =>
         @_state = 'attack'
-        player.getHit 5
+        player._getHit 5
         @_attack = =>
         setTimeout (=>
             @_attack = @attack
@@ -344,7 +348,7 @@ class Monster extends Character
 
 class Gob extends Monster
     constructor : (@x, @y) ->
-        super @x, @y, 4, 1, 10, 15, 15, 'Gob.gif', [50, 50]
+        super @x, @y, 4, 1, 10, 35, 15, 15, 'Gob.gif', [50, 50]
         @_anims =
             'run' :
                 'N' : @_sheet.slice 20, 30
@@ -377,7 +381,7 @@ class Gob extends Monster
 
 class Golem extends Monster
     constructor : (@x, @y) ->
-        super @x, @y, 2, 7, 50, 50, 50, 'GOLEM.gif', [150, 160]
+        super @x, @y, 2, 7, 50, 200, 50, 50, 'GOLEM.gif', [150, 160]
         @_anims =
             'run' :
                 'N' : @_sheet.slice 1, 2
@@ -398,15 +402,44 @@ class Golem extends Monster
                 'W' : @_sheet.slice 1, 2
                 'NW' : @_sheet.slice 1, 2
         @_DEATH = new jaws.Audio audio : 'assets/audio/GOLEMMORT.ogg', volume : 0.2
+        @_fist = new jaws.Sprite
+            anchor : 'center'
+            x : @x
+            y : @y
+            width: 70
+            height : 70
 
     update : (player, map) =>
         try
             super player, map
 
+        @_fist.moveTo @x, @y
+
+        if 'E' in @_orientation
+            @_fist.move 140, 0
+        else if 'W' in @_orientation
+            @_fist.move -140, 0
+        if 'S' in @_orientation
+            @_fist.move 0, 140
+        else if 'N' in @_orientation
+            @_fist.move 0, -140
+
+        if @_state is 'attack' and (do @_fist.rect).collideRect (do player._box.rect)
+            player._getHit 50
+
     draw : =>
         do @_sprite.draw
+        if @_state is 'attack'
+            do @_fist.draw
         try
             do super
+
+    attack : (player) =>
+        @_state = 'attack'
+        @_attack = =>
+        setTimeout (=>
+            @_attack = @attack
+        ), 1000
 
 if window.DemCreepers?
     window.DemCreepers.Character = Character
