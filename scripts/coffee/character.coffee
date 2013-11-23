@@ -71,10 +71,10 @@ class Character
                         else
                             @[comp] -= @["_v#{comp}"]
                             @_box.moveTo @x, @y
-                            distance = Math.abs window.DemCreepers.Utils.pointDistance @_box.x, @_box.y, cellRect.right, cellRect.bottom
+                            distance = Math.abs window.DemCreepers.Utils.pointDistance @_box.x, @_box.y, cell.x, cell.y
                             @[comp] += @["_v#{comp}"]
                             @_box.moveTo @x, @y
-                            distance2 = Math.abs window.DemCreepers.Utils.pointDistance @_box.x, @_box.y, cellRect.right, cellRect.bottom
+                            distance2 = Math.abs window.DemCreepers.Utils.pointDistance @_box.x, @_box.y, cell.x, cell.y
                             if distance2 < distance
                                 @[comp] -= @["_v#{comp}"]
                                 @_box.moveTo @x, @y
