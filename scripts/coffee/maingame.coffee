@@ -148,7 +148,7 @@ class MainGame
     setup : =>
         @_music = new jaws.Audio audio : 'assets/audio/GAME_LOOP.ogg', volume : 0.7, loop : 1
         do @_music.play
-        [rows, cols] = [24, 32]
+        [rows, cols] = [18, 24]
         @_viewport = new jaws.Viewport
             x : 0
             y : 20
