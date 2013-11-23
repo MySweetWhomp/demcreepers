@@ -51,7 +51,7 @@ _createBlock = (x, y) ->
         scale : 2
 
 class Map
-    constructor : (rows, cols) ->
+    constructor : (@rows, @cols) ->
         @_tileset = new jaws.SpriteSheet
             image : 'assets/img/BG---Tiles.gif'
             frame_size : [50, 50]
@@ -68,7 +68,7 @@ class Map
             size : [cols, rows]
             cell_size : [tileWidth * 2, tileHeight * 2]
         @_map = new jaws.TileMap
-            size : [cols, rows]
+            size : [@cols, @rows]
             cell_size : [tileWidth, tileHeight]
 
         ###
@@ -93,6 +93,7 @@ class Map
                 anchor : 'center'
                 image : @_gobs.frames[0]
             cell.type = 'Gob'
+            cell.state = 0
             try
                 @_map.push cell
         else
@@ -116,6 +117,33 @@ class Map
                         @_map.push cell
                     x += 64
                 y += 32
+
+    updateForNextWave : =>
+        gobs =
+            0 :
+                next : 1
+                all : []
+            1 :
+                next : 4
+                all : []
+            4 :
+                all : []
+
+        _.map (do @_map.all), (cell) =>
+            if cell.type is 'Gob'
+                gobs[cell.state].all.push cell
+        _.map [0, 1], (i) =>
+            _.map gobs[i].all, (cell) =>
+                cell.state = gobs[i].next
+                cell.setImage @_gobs.frames[cell.state]
+
+        tileWidth = window.DemCreepers.Config.TileSize[0]
+        tileHeight = window.DemCreepers.Config.TileSize[1]
+        @_map = new jaws.TileMap
+            size : [@cols, @rows]
+            cell_size : [tileWidth, tileHeight]
+        @_map.push gobs[0].all
+        @_map.push gobs[1].all
 
     all : =>
         do @_map.all

@@ -48,7 +48,7 @@ class Wave1 extends Wave
         do @regen
 
     regen : =>
-        _.map [0..9], () =>
+        _.map [0..0], () =>
             @_mobs.push window.DemCreepers.Pools.Gobs.get 400, -100
 
     nextPack : =>
@@ -173,6 +173,7 @@ class MainGame
     update : =>
         if @_wave._mobs.length  is 0
             if not (do @_wave.nextPack)
+                do @_map.updateForNextWave
                 @_wave = new Wave1
                 ++Waves
         if jaws.pressedWithoutRepeat 'space'
