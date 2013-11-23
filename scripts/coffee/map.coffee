@@ -93,7 +93,8 @@ class Map
                 anchor : 'center'
                 image : @_gobs.frames[0]
             cell.type = 'Gob'
-            @_map.push cell
+            try
+                @_map.push cell
         else
             y = mob.y - 32
             while y <= mob.y + 32
@@ -111,7 +112,8 @@ class Map
                         anchor : 'center'
                         image : @_block.frames[0]
                     cell.type = 'Golem'
-                    @_map.push cell
+                    try
+                        @_map.push cell
                     x += 64
                 y += 32
 

@@ -25,8 +25,7 @@ class GobPool extends Pool
         @IN = new jaws.Audio audio : 'assets/audio/GOBGNAW.ogg', volume : 0.4
 
     get : (x, y) =>
-        do @IN.play
-        console.log @IN
+        #do @IN.play
         if @_queue.length > 0
             gob = do @_queue.shift
             gob.x = x

@@ -9,23 +9,13 @@
 
 Score = 0
 KillCount = 0
+Waves = 1
 
 class Wave
     constructor : ->
         @HIT = new jaws.Audio audio : 'assets/audio/HIT.ogg', volume : 0.4
         @_mobs = []
-        @_mobs.push window.DemCreepers.Pools.Golems.get 300, 300
-        return
-        @_mobs.push window.DemCreepers.Pools.Gobs.get 400, 300
-        @_mobs.push window.DemCreepers.Pools.Gobs.get 300, 400
-        @_mobs.push window.DemCreepers.Pools.Gobs.get 300, 500
-        @_mobs.push window.DemCreepers.Pools.Gobs.get 500, 300
-        @_mobs.push window.DemCreepers.Pools.Gobs.get 400, 400
-        @_mobs.push window.DemCreepers.Pools.Gobs.get 500, 500
-        @_mobs.push window.DemCreepers.Pools.Gobs.get 500, 600
-        @_mobs.push window.DemCreepers.Pools.Gobs.get 500, 700
-        @_mobs.push window.DemCreepers.Pools.Gobs.get 500, 800
-        @_mobs.push window.DemCreepers.Pools.Gobs.get 500, 900
+        @_pack = 0
 
     update : (player, map) =>
         toDel = []
@@ -50,6 +40,25 @@ class Wave
 
     getToDraw : (viewport) => _.filter @_mobs, (mob) -> viewport.isPartlyInside mob._sprite
 
+    nextPack : =>
+
+class Wave1 extends Wave
+    constructor : ->
+        super 0
+        do @regen
+
+    regen : =>
+        _.map [0..9], () =>
+            @_mobs.push window.DemCreepers.Pools.Gobs.get 400, -100
+
+    nextPack : =>
+        ++@_pack
+        if @_pack < 2
+            do @regen
+            return yes
+        else
+            return no
+
 class HUD
     constructor : ->
         @_letters =new jaws.SpriteSheet
@@ -71,6 +80,16 @@ class HUD
             @_hp.push new jaws.Sprite
                 image : @_letters.frames[0]
                 x : 85 - i * 17
+                y : 5
+                scale : 2
+        ###
+        # Waves
+        ###
+        @_waves = new jaws.SpriteList
+        _.map [0..2], (i) =>
+            @_waves.push new jaws.Sprite
+                image : @_letters.frames[0]
+                x : 250 - i * 17
                 y : 5
                 scale : 2
         ###
@@ -99,14 +118,20 @@ class HUD
             (@_hp.at i).setImage @_letters.frames[0]
         _.map do ((String player._hp).split '').reverse, (n, i) =>
             (@_hp.at i).setImage @_letters.frames[n]
+
+        _.map do ((String Waves).split '').reverse, (n, i) =>
+            (@_waves.at i).setImage @_letters.frames[n]
+
         _.map do ((String Score).split '').reverse, (n, i) =>
             (@_score.at i).setImage @_letters.frames[n]
+
         _.map do ((String KillCount).split '').reverse, (n, i) =>
             (@_kills.at i).setImage @_letters.frames[n]
 
     draw : =>
         do @_bg.draw
         do @_hp.draw
+        do @_waves.draw
         do @_score.draw
         do @_kills.draw
 
@@ -131,7 +156,7 @@ class MainGame
         @_hud = new HUD
         @_map = new window.DemCreepers.Map rows, cols
         @_player = new window.DemCreepers.Player 100, 100
-        @_wave = new Wave
+        @_wave = new Wave1
         @_pauseOverlay = new jaws.Sprite
             x : 0
             y : 0
@@ -146,6 +171,10 @@ class MainGame
             scale : 2
 
     update : =>
+        if @_wave._mobs.length  is 0
+            if not (do @_wave.nextPack)
+                @_wave = new Wave1
+                ++Waves
         if jaws.pressedWithoutRepeat 'space'
             @_paused = not @_paused
             if @_paused then do @_music.pause else do @_music.play
