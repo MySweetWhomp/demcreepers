@@ -54,7 +54,7 @@ class Map
             cell_size : [tileWidth * 2, tileHeight * 2]
         @_map = new jaws.TileMap
             size : [@cols, @rows]
-            cell_size : [tileWidth, tileHeight]
+            cell_size : [tileWidth * 2, tileHeight * 2]
 
         ###
         # Fill the ground
