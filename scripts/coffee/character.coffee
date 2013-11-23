@@ -62,10 +62,21 @@ class Character
             atRect = map.atRect box
             if atRect.length > 0
                 for cell in atRect
-                    if (do cell.rect).collideRect box
+                    cellRect = do cell.rect
+                    if cellRect.collideRect box
                         if cell.type is 'Gob'
                             @[comp] -= @["_v#{comp}"] / 2
                             @_box.moveTo @x, @y
+                        else
+                            @[comp] -= @["_v#{comp}"]
+                            @_box.moveTo @x, @y
+                            distance = Math.abs (@[comp] - cellRect[comp])
+                            @[comp] += @["_v#{comp}"]
+                            @_box.moveTo @x, @y
+                            distance2 = Math.abs (@[comp] - cellRect[comp])
+                            if distance2 < distance
+                                @[comp] -= @["_v#{comp}"]
+                                @_box.moveTo @x, @y
                         break
 
     move : (map) =>
@@ -358,7 +369,7 @@ class Gob extends Monster
 
 class Golem extends Monster
     constructor : (@x, @y) ->
-        super @x, @y, 2, 7, 50, 50, 50, 'GOLEM.gif', [150, 160]
+        super @x, @y, 2, 1, 50, 50, 50, 'GOLEM.gif', [150, 160]
         @_anims =
             'run' :
                 'N' : @_sheet.slice 1, 2

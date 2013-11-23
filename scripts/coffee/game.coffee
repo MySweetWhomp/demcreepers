@@ -32,7 +32,8 @@ class Game
             jaws.assets.add ['assets/img/Barbarian.gif', 'assets/img/Gob.gif', 'assets/img/GobCorpse.gif',
                              'assets/img/Axe.gif', 'assets/img/HUD.gif', 'assets/img/HUD---TEXT.gif',
                              'assets/img/HUD-NUMBERSLETTERS.gif', 'assets/img/ground.gif', 'assets/audio/HIT.ogg',
-                             'assets/audio/WOOSH.ogg', 'assets/img/GOLEM.gif', 'assets/img/BG---Tiles.gif']
+                             'assets/audio/WOOSH.ogg', 'assets/img/GOLEM.gif', 'assets/img/BG---Tiles.gif'
+                             'assets/img/Block.gif']
         else
             throw "Not Implemented"
 

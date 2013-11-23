@@ -59,7 +59,9 @@ class Map
         @_gobs = new jaws.SpriteSheet
             image : 'assets/img/GobCorpse.gif'
             frame_size : [50, 20]
-            orientation : "down"
+        @_block = new jaws.SpriteSheet
+            image : 'assets/img/Block.gif'
+            frame_size : [32, 32]
         tileWidth = window.DemCreepers.Config.TileSize[0]
         tileHeight = window.DemCreepers.Config.TileSize[1]
         @_ground = new jaws.TileMap
@@ -83,19 +85,35 @@ class Map
     add : (mob) =>
         tileWidth = window.DemCreepers.Config.TileSize[0]
         tileHeight = window.DemCreepers.Config.TileSize[1]
-        cell = new jaws.Sprite
-            x : mob.x
-            y : mob.y
-            width : 50
-            height : 20
-            scale : 2
-            anchor : 'center'
         if mob instanceof window.DemCreepers.Gob
+            cell = new jaws.Sprite
+                x : mob.x
+                y : mob.y
+                scale : 2
+                anchor : 'center'
+                image : @_gobs.frames[0]
             cell.type = 'Gob'
-            cell.image = @_gobs.frames[0]
+            @_map.push cell
         else
-            cell.type = 'Golem'
-        @_map.push cell
+            y = mob.y - 32
+            while y <= mob.y + 32
+                x = mob.x - 64
+                while x <= mob.x + 64
+                    theX = x
+                    if y < mob.y
+                        theX += 10
+                    else if y > mob.y
+                        theX -= 10
+                    cell = new jaws.Sprite
+                        x : theX
+                        y : y
+                        scale : 2
+                        anchor : 'center'
+                        image : @_block.frames[0]
+                    cell.type = 'Golem'
+                    @_map.push cell
+                    x += 64
+                y += 32
 
     all : =>
         do @_map.all
