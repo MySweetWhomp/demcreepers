@@ -50,7 +50,7 @@ class Map
         tileWidth = window.DemCreepers.Config.TileSize[0]
         tileHeight = window.DemCreepers.Config.TileSize[1]
         @_ground = new jaws.TileMap
-            size : [cols, rows]
+            size : [@cols, @rows]
             cell_size : [tileWidth * 2, tileHeight * 2]
         @_map = new jaws.TileMap
             size : [@cols, @rows]
@@ -122,8 +122,8 @@ class Map
                 cell.state = gobs[i].next
                 cell.setImage @_gobs.frames[cell.state]
 
-        tileWidth = window.DemCreepers.Config.TileSize[0]
-        tileHeight = window.DemCreepers.Config.TileSize[1]
+        tileWidth = window.DemCreepers.Config.TileSize[0] * 2
+        tileHeight = window.DemCreepers.Config.TileSize[1] * 2
         @_map = new jaws.TileMap
             size : [@cols, @rows]
             cell_size : [tileWidth, tileHeight]
