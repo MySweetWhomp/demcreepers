@@ -53,7 +53,9 @@ class Utils
             _ORFROMDIR[(Math.round ((@pointDirection x1, y1, x2, y2) / 45)) + 4]
 
     pointDistance : (aX, aY, bX, bY) ->
-        parseInt Math.abs Math.sqrt ((bX - aX) * (bX - aX)) + ((bY - aY) * (bY - aY))
+        x = if aX > bX then aX - bX else bX - aX
+        y = if aY > bY then aY - bY else bY - aY
+        parseInt Math.abs Math.sqrt (x * x) + (y * y)
 
     getTileId : (x) ->
         n = parseInt x

@@ -61,6 +61,7 @@ class Character
         if moved
             atRect = map.atRect box
             if atRect.length > 0
+                atRect = _.sortBy atRect, (a) => - a.type.length
                 for cell in atRect
                     cellRect = do cell.rect
                     if cellRect.collideRect box
@@ -70,10 +71,10 @@ class Character
                         else
                             @[comp] -= @["_v#{comp}"]
                             @_box.moveTo @x, @y
-                            distance = Math.abs (@[comp] - cellRect[comp])
+                            distance = Math.abs window.DemCreepers.Utils.pointDistance @_box.x, @_box.y, cellRect.right, cellRect.bottom
                             @[comp] += @["_v#{comp}"]
                             @_box.moveTo @x, @y
-                            distance2 = Math.abs (@[comp] - cellRect[comp])
+                            distance2 = Math.abs window.DemCreepers.Utils.pointDistance @_box.x, @_box.y, cellRect.right, cellRect.bottom
                             if distance2 < distance
                                 @[comp] -= @["_v#{comp}"]
                                 @_box.moveTo @x, @y
@@ -237,7 +238,7 @@ class Player extends Character
 class Axe extends Character
     constructor : (dir, @x, @y) ->
         super @x, @y, 7, 10, 10
-        @_toGo = 300
+        @_toGo = 500
         @_dirx = @_diry = 0
         if (dir.indexOf 'N') >= 0
             @_diry = -1
