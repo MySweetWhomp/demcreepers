@@ -39,7 +39,7 @@ class Character
         @_box.coll = undefined
 
     draw : =>
-        do (do @_box.rect).draw
+        #do (do @_box.rect).draw
 
     moveOneComp : (comp, map) =>
         moved = yes

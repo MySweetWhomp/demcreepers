@@ -48,7 +48,7 @@ class Wave1 extends Wave
         do @regen
 
     regen : =>
-        _.map [0..0], () =>
+        _.map [0..9], () =>
             @_mobs.push window.DemCreepers.Pools.Gobs.get 400, -100
 
     nextPack : =>
