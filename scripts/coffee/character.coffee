@@ -75,11 +75,11 @@ class Character
                 for cell in atRect
                     cellRect = do cell.rect
                     if cellRect.collideRect box
-                        moved = no
                         if cell.type is 'Gob'
                             @[comp] -= @["_v#{comp}"] / 2
                             @_feets.moveTo @x, @y + @feetShift
                         else
+                            moved = no
                             @_bump = yes
                             step = @["_v#{comp}"] / Math.abs @["_v#{comp}"]
                             @[comp] -= step
@@ -363,7 +363,7 @@ class Monster extends Character
         if @_distToPlayer > @distAttack
             do @_move[@_orientation]
             moved = @move map
-            if @_bump
+            if not moved
                 oldOr = @_orientation
                 ors = window.DemCreepers.Utils.getNextOr @_orientation
                 i = 0
