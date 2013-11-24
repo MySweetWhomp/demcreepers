@@ -82,17 +82,12 @@ class Map
             try
                 @_map.push cell
         else
-            y = mob.y - 32
-            while y <= mob.y + 32
+            if ('S' in mob._orientation)  or ('N' in mob._orientation)
+                y = mob.y
                 x = mob.x - 64
                 while x <= mob.x + 64
-                    theX = x
-                    if y < mob.y
-                        theX += 10
-                    else if y > mob.y
-                        theX -= 10
                     cell = new jaws.Sprite
-                        x : theX
+                        x : x
                         y : y
                         scale : 2
                         anchor : 'center'
@@ -101,7 +96,20 @@ class Map
                     try
                         @_map.push cell
                     x += 64
-                y += 32
+            else
+                y = mob.y - 55
+                x = mob.x
+                while y <= mob.y + 55
+                    cell = new jaws.Sprite
+                        x : x
+                        y : y
+                        scale : 2
+                        anchor : 'center'
+                        image : @_block.frames[0]
+                    cell.type = 'Golem'
+                    try
+                        @_map.push cell
+                    y += 55
 
     updateForNextWave : =>
         gobs =
