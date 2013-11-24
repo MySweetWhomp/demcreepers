@@ -234,6 +234,13 @@ class MainGame
             x : 450
             y : 300
             scale : 2
+        @_gameOverText = new jaws.Sprite
+            image : @_texts.frames[2]
+            anchor : 'center'
+            x : 450
+            y : 300
+            scale : 2
+        @_overlayText = 'pauseText'
 
     nextWave : =>
         do @_map.updateForNextWave
@@ -251,7 +258,7 @@ class MainGame
             @_hud._end[1] = yes
 
     update : =>
-        if jaws.pressedWithoutRepeat 'space'
+        if (@_overlayText isnt 'gameOverText') and jaws.pressedWithoutRepeat 'space'
             @_paused = not @_paused
             if @_paused then do @_music.pause else do @_music.play
 
@@ -270,7 +277,10 @@ class MainGame
                         b.coll = a
 
             ### Player ###
-            @_player.update @_viewport, @_map._map
+            if not (@_player.update @_viewport, @_map._map)
+                @_paused = yes
+                @_overlayText = 'gameOverText'
+                do @_music.stop
             ### Monsters ###
             @_wave.update @_player, @_map
             ### Center viewport on Player ###
@@ -303,7 +313,7 @@ class MainGame
         ###
         if @_paused
             do @_pauseOverlay.draw
-            do @_pauseText.draw
+            do @["_#{@_overlayText}"].draw
 
         (document.getElementById 'playerX').innerHTML = @_player.x
         (document.getElementById 'playerY').innerHTML = @_player.y

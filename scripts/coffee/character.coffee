@@ -89,8 +89,14 @@ class Character
 class Player extends Character
     constructor : (@x, @y) ->
         super @x, @y, 6, 12, 20
+        @Dead = no
         @WOOSH = new jaws.Audio audio : 'assets/audio/WOOSH.ogg', volume : 0.4
-        @_hp = 100
+        @DEAD = [
+            new jaws.Audio audio : 'assets/audio/MORT01.ogg', volume : 0.4
+            new jaws.Audio audio : 'assets/audio/MORT02.ogg', volume : 0.4
+        ]
+        @GAMEOVER = new jaws.Audio audio : 'assets/audio/GAMEOVER.ogg', volume : 0.4
+        @_hp = 10
         @_attack = @attack
         @_changeStateOr = @changeStateOr
         @_getHit = @getHit
@@ -143,6 +149,8 @@ class Player extends Character
         _.union @_axes, [@]
 
     update : (viewport, map) =>
+        if @Dead
+            return no
         if do @_anims[@_state][@_orientation].atLastFrame
             do @_onlasframe
         if @_state isnt 'dead'
@@ -167,6 +175,7 @@ class Player extends Character
         toDel = toDel.sort (a, b) => b - a
         _.map toDel, (index) =>
             @_axes.splice index, 1
+        return yes
 
     draw : =>
         do @_sprite.draw
@@ -179,7 +188,17 @@ class Player extends Character
             @_getHit = @getHit
         ), 1000
         if (@_hp -= n) <= 0
+            if @_hp is 0
+                do @DEAD[_.random 0, 1].play
+                setTimeout (=>
+                    do @GAMEOVER.play
+                ), 800
+            else
+                @_hp = 0
             @_state = 'dead'
+            @_onlasframe = =>
+                @Dead = yes
+                @_onlasframe = =>
 
 
     changeStateOr : (state, orientation) =>

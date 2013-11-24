@@ -34,7 +34,8 @@ class Game
                              'assets/img/HUD-NUMBERSLETTERS.gif', 'assets/audio/HIT.ogg', 'assets/img/HUD-ANIMATED.gif',
                              'assets/audio/WOOSH.ogg', 'assets/img/GOLEM.gif', 'assets/img/BG---Tiles.gif'
                              'assets/img/Block.gif', 'assets/audio/GOBGNAW.ogg', 'assets/audio/GOBMORT.ogg',
-                             'assets/audio/GOLEMMORT.ogg', 'assets/audio/GAME_LOOP.ogg']
+                             'assets/audio/GOLEMMORT.ogg', 'assets/audio/GAME_LOOP.ogg', 'assets/audio/MORT02.ogg',
+                             'assets/audio/GAMEOVER.ogg', 'assets/audio/MORT01.ogg']
         else
             throw "Not Implemented"
 
