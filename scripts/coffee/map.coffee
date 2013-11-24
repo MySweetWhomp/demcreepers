@@ -114,9 +114,14 @@ class Map
             4 :
                 all : []
 
+        blocks = []
+
         _.map (do @_map.all), (cell) =>
             if cell.type is 'Gob'
                 gobs[cell.state].all.push cell
+            else
+                blocks.push cell
+
         _.map [0, 1], (i) =>
             _.map gobs[i].all, (cell) =>
                 cell.state = gobs[i].next
@@ -130,6 +135,7 @@ class Map
         try
             @_map.push _.uniq gobs[0].all
             @_map.push _.uniq gobs[1].all
+            @_map.push _.uniq blocks
 
     all : =>
         do @_map.all

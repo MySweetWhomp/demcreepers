@@ -64,6 +64,28 @@ class Wave1 extends Wave
         else
             return no
 
+class Wave2 extends Wave
+    constructor : ->
+        super 0
+        do @regen
+
+    regen : =>
+        @_mobs = []
+        [x, y] = do window.DemCreepers.Utils.getRandomSpawn
+        @_mobs.push new window.DemCreepers.Golem x, y
+        _.map [1..6], (i) =>
+            setTimeout (=>
+                @_mobs.push new window.DemCreepers.Gob x, y
+            ), i * 100
+
+    nextPack : =>
+        ++@_pack
+        if @_pack < 2
+            do @regen
+            return yes
+        else
+            return no
+
 class HUD
     constructor : ->
         @_letters =new jaws.SpriteSheet
@@ -213,6 +235,21 @@ class MainGame
             y : 300
             scale : 2
 
+    nextWave : =>
+        do @_map.updateForNextWave
+
+        if Waves < 2
+            @_wave = new Wave1
+        else
+            @_wave = new Wave2
+
+        ++Waves
+        Score += 100
+        @_hud._end[0] = yes
+        if @_player._hp is 100
+            Score += 500
+            @_hud._end[1] = yes
+
     update : =>
         if jaws.pressedWithoutRepeat 'space'
             @_paused = not @_paused
@@ -222,14 +259,7 @@ class MainGame
             if @_wave._mobs.length  is 0
                 @_quadtree = new jaws.QuadTree
                 if not (do @_wave.nextPack)
-                    do @_map.updateForNextWave
-                    @_wave = new Wave1
-                    ++Waves
-                    Score += 100
-                    @_hud._end[0] = yes
-                    if @_player._hp is 100
-                        Score += 500
-                        @_hud._end[1] = yes
+                    do @nextWave
 
             all = _.union (_.map @_wave._mobs, (item) -> item._box), [@_player._box]
             all = _.filter all, (x) => @_viewport.isPartlyInside x
