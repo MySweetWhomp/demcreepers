@@ -208,6 +208,8 @@ class MainGame
             image : 'assets/img/HUD---TEXT.gif'
             frame_size : [80, 20]
         @_quadtree = new jaws.QuadTree
+        @_update = @gameupdate
+        @_draw = @gamedraw
 
     setup : =>
         @_music = new jaws.Audio audio : 'assets/audio/GAME_LOOP.ogg', volume : 0.7, loop : 1
@@ -257,7 +259,7 @@ class MainGame
             Score += 500
             @_hud._end[1] = yes
 
-    update : =>
+    gameupdate : =>
         if (@_overlayText isnt 'gameOverText') and jaws.pressedWithoutRepeat 'space'
             @_paused = not @_paused
             if @_paused then do @_music.pause else do @_music.play
@@ -290,7 +292,7 @@ class MainGame
 
             do @_quadtree.clear
 
-    draw : =>
+    gamedraw : =>
         do jaws.clear
         ### Draw the ground below everything ###
         @_viewport.drawTileMap @_map._ground
@@ -319,6 +321,12 @@ class MainGame
         (document.getElementById 'playerY').innerHTML = @_player.y
         (document.getElementById 'viewportX').innerHTML = @_viewport.x
         (document.getElementById 'viewportY').innerHTML = @_viewport.y
+
+    update : =>
+        do @_update
+
+    draw : =>
+        do @_draw
 
 if window.DemCreepers?
     window.DemCreepers.MainGame = MainGame

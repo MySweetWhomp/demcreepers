@@ -96,7 +96,7 @@ class Player extends Character
             new jaws.Audio audio : 'assets/audio/MORT02.ogg', volume : 0.4
         ]
         @GAMEOVER = new jaws.Audio audio : 'assets/audio/GAMEOVER.ogg', volume : 0.4
-        @_hp = 10
+        @_hp = 100
         @_attack = @attack
         @_changeStateOr = @changeStateOr
         @_getHit = @getHit
