@@ -229,7 +229,10 @@ class MainGame
             x : 20
             y : 20
         @START = new jaws.Audio audio : 'assets/audio/START.ogg', volume : window.DemCreepers.Volumes.FX
-        @MENU = new jaws.Audio audio : 'assets/audio/MENU.ogg', volume : window.DemCreepers.Volumes.Music
+        @MENU = new jaws.Audio
+            audio : 'assets/audio/MENU.ogg'
+            volume : window.DemCreepers.Volumes.Music
+            loop : yes
 
     setup : =>
         do @MENU.play
