@@ -77,6 +77,15 @@ class HUD
             scale : 2
             x : 0
             y : 0
+        do @createMessages
+        @_msg = new jaws.Sprite
+            width : 300
+            height : 20
+            anchor : 'center'
+            x : 400
+            y : 300
+            scale : 2
+        @_currentMessage = undefined
         ###
         # HP
         ###
@@ -118,6 +127,21 @@ class HUD
                 y : 5
                 scale : 2
 
+    createMessages : =>
+        @_messages =new jaws.Animation
+            sprite_sheet : 'assets/img/HUD-ANIMATED.gif'
+            frame_size : [300, 20]
+            frame_duration : 70
+            loop : no
+            subsets :
+                'wave' : [0, 6]
+                'perfect' : [6, 13]
+            on_end : =>
+                setTimeout (=>
+                    @_currentMessage = undefined
+                    do @createMessages
+                ), 1000
+
     update : (player) =>
         _.map [0..2], (i) =>
             (@_hp.at i).setImage @_letters.frames[0]
@@ -133,12 +157,17 @@ class HUD
         _.map do ((String KillCount).split '').reverse, (n, i) =>
             (@_kills.at i).setImage @_letters.frames[n]
 
+        if @_currentMessage?
+            @_msg.setImage do @_messages.subsets[@_currentMessage].next
+
     draw : =>
         do @_bg.draw
         do @_hp.draw
         do @_waves.draw
         do @_score.draw
         do @_kills.draw
+        if @_currentMessage?
+            do @_msg.draw
 
 
 class MainGame
@@ -181,14 +210,17 @@ class MainGame
             if @_paused then do @_music.pause else do @_music.play
         if not @_paused
             if @_wave._mobs.length  is 0
+                @_quadtree = new jaws.QuadTree
                 if not (do @_wave.nextPack)
-                    @_quadtree = new jaws.QuadTree
                     do @_map.updateForNextWave
                     @_wave = new Wave1
                     ++Waves
                     Score += 100
                     if @_player._hp is 100
                         Score += 500
+                        @_hud._currentMessage = 'perfect'
+                    else
+                        @_hud._currentMessage = 'wave'
             all = _.union (_.map @_wave._mobs, (item) -> item._box), [@_player._box]
             all = _.filter all, (x) => @_viewport.isPartlyInside x
             try
