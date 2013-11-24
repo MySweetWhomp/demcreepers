@@ -73,10 +73,10 @@ class Wave2 extends Wave
         @_mobs = []
         [x, y] = do window.DemCreepers.Utils.getRandomSpawn
         @_mobs.push new window.DemCreepers.Golem x, y
-        _.map [1..6], (i) =>
-            setTimeout (=>
-                @_mobs.push new window.DemCreepers.Gob x, y
-            ), i * 100
+        # _.map [1..6], (i) =>
+        #     setTimeout (=>
+        #         @_mobs.push new window.DemCreepers.Gob x, y
+        #     ), i * 100
 
     nextPack : =>
         ++@_pack

@@ -39,11 +39,12 @@ class Character
         @_box.coll = undefined
 
     draw : =>
-        #do (do @_box.rect).draw
+        do (do @_box.rect).draw
 
     moveOneComp : (comp, map) =>
         moved = yes
-        box = do @_box.rect
+
+        old = @[comp]
 
         @[comp] += @["_v#{comp}"]
 
@@ -58,6 +59,8 @@ class Character
         else
             @_box.moveTo @x, @y
 
+        box = do @_box.rect
+
         if moved
             atRect = map.atRect box
             if atRect.length > 0
@@ -69,22 +72,22 @@ class Character
                             @[comp] -= @["_v#{comp}"] / 2
                             @_box.moveTo @x, @y
                         else
-                            @[comp] -= @["_v#{comp}"]
+                            step = @["_v#{comp}"] / Math.abs @["_v#{comp}"]
+                            @[comp] -= step
                             @_box.moveTo @x, @y
-                            distance = Math.abs window.DemCreepers.Utils.pointDistance @_box.x, @_box.y, cell.x, cell.y
-                            @[comp] += @["_v#{comp}"]
-                            @_box.moveTo @x, @y
-                            distance2 = Math.abs window.DemCreepers.Utils.pointDistance @_box.x, @_box.y, cell.x, cell.y
-                            if distance2 < distance
-                                @[comp] -= @["_v#{comp}"]
+                            box = do @_box.rect
+                            i = 0
+                            while (cellRect.collideRect box)
+                                @[comp] -= step
                                 @_box.moveTo @x, @y
+                                box = do @_box.rect
                         break
 
     move : (map) =>
         if @_vx is 0 and @_vy is 0
             return
-        @moveOneComp 'x', map
-        @moveOneComp 'y', map
+        (@moveOneComp 'x', map) if @_vx isnt 0
+        (@moveOneComp 'y', map) if @_vy isnt 0
 
 class Player extends Character
     constructor : (@x, @y) ->
