@@ -165,7 +165,6 @@ class HUD
             (@_kills.at i).setImage @_letters.frames[n]
 
         if @_end[0]
-            console.log 'HERE'
             @_msg.setImage do @_messages.subsets['wave'].next
             @_msg2.setImage do @_messages.subsets['perfect'].next
 
@@ -179,7 +178,6 @@ class HUD
             do @_msg.draw
             if @_end[1]
                 do @_msg2.draw
-
 
 class MainGame
     constructor : ->
@@ -200,7 +198,7 @@ class MainGame
             max_y : rows * (window.DemCreepers.Config.TileSize[1] * 2)
         @_hud = new HUD
         @_map = new window.DemCreepers.Map rows, cols
-        @_player = new window.DemCreepers.Player 100, 100
+        @_player = new window.DemCreepers.Player 600, 450
         @_wave = new Wave1
         @_pauseOverlay = new jaws.Sprite
             x : 0
@@ -219,6 +217,7 @@ class MainGame
         if jaws.pressedWithoutRepeat 'space'
             @_paused = not @_paused
             if @_paused then do @_music.pause else do @_music.play
+
         if not @_paused
             if @_wave._mobs.length  is 0
                 @_quadtree = new jaws.QuadTree
@@ -231,6 +230,7 @@ class MainGame
                     if @_player._hp is 100
                         Score += 500
                         @_hud._end[1] = yes
+
             all = _.union (_.map @_wave._mobs, (item) -> item._box), [@_player._box]
             all = _.filter all, (x) => @_viewport.isPartlyInside x
             try
@@ -238,6 +238,7 @@ class MainGame
                     @_quadtree.collide all, all, (a, b) =>
                         a.coll = b
                         b.coll = a
+
             ### Player ###
             @_player.update @_viewport, @_map._map
             ### Monsters ###
@@ -246,7 +247,8 @@ class MainGame
             @_viewport.centerAround @_player._box
             ### HUD ###
             @_hud.update @_player
-        do @_quadtree.clear
+
+            do @_quadtree.clear
 
     draw : =>
         do jaws.clear
