@@ -292,27 +292,13 @@ class Axe extends Character
     move : (map) =>
         if @_vx is 0 and @_vy is 0
             return
-        box = do @_box.rect
+
         @x += @_vx
         @_box.moveTo @x, @y
-        atRect = map.atRect box
-        if atRect.length > 0
-            for cell in atRect
-                if (do cell.rect).collideRect box
-                    if cell.type isnt 'Gob'
-                        @x -= @_vx
-                        @_box.moveTo @x, @y
-                        @_bump = yes
+
         @y += @_vy
         @_box.moveTo @x, @y
-        atRect = map.atRect box
-        if atRect.length > 0
-            for cell in atRect
-                if (do cell.rect).collideRect box
-                    if cell.type isnt 'Gob'
-                        @y -= @_vy
-                        @_box.moveTo @x, @y
-                        @_bump = yes
+
 
     update : (map) =>
         @_vx = @speed * @_dirx
