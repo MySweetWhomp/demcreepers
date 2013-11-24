@@ -355,7 +355,7 @@ class MainGame
                 do @_music.play
                 @_update = @gameupdate
                 @_draw = @gamedraw
-                @_wave = new Wave2
+                @_wave = new Wave1
             ), 500
 
     titleDraw : =>
