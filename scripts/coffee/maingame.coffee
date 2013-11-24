@@ -73,10 +73,10 @@ class Wave2 extends Wave
         @_mobs = []
         [x, y] = do window.DemCreepers.Utils.getRandomSpawn
         @_mobs.push new window.DemCreepers.Golem x, y
-        # _.map [1..6], (i) =>
-        #     setTimeout (=>
-        #         @_mobs.push new window.DemCreepers.Gob x, y
-        #     ), i * 100
+        _.map [1..6], (i) =>
+            setTimeout (=>
+                @_mobs.push new window.DemCreepers.Gob x, y
+            ), i * 100
 
     nextPack : =>
         ++@_pack
@@ -229,8 +229,10 @@ class MainGame
             x : 20
             y : 20
         @START = new jaws.Audio audio : 'assets/audio/START.ogg', volume : window.DemCreepers.Volumes.FX
+        @MENU = new jaws.Audio audio : 'assets/audio/MENU.ogg', volume : window.DemCreepers.Volumes.Music
 
     setup : =>
+        do @MENU.play
         [rows, cols] = [9, 12]
         @_viewport = new jaws.Viewport
             x : 0
@@ -347,6 +349,7 @@ class MainGame
         @_viewport.centerAround @_player._box
 
         if jaws.pressedWithoutRepeat 'enter'
+            do @MENU.stop
             do @START.play
             setTimeout (=>
                 @_music = new jaws.Audio {

@@ -35,7 +35,8 @@ class Game
                              'assets/audio/WOOSH.ogg', 'assets/img/GOLEM.gif', 'assets/img/BG---Tiles.gif'
                              'assets/img/Block.gif', 'assets/img/Title.gif', 'assets/audio/START.ogg',
                              'assets/audio/GOLEMMORT.ogg', 'assets/audio/GAME_LOOP.ogg', 'assets/audio/MORT02.ogg',
-                             'assets/audio/GAMEOVER.ogg', 'assets/audio/MORT01.ogg', 'assets/img/HUD---PICTURES.gif']
+                             'assets/audio/GAMEOVER.ogg', 'assets/audio/MORT01.ogg', 'assets/img/HUD---PICTURES.gif',
+                             'assets/audio/MENU.ogg']
         else
             throw "Not Implemented"
 
@@ -93,7 +94,7 @@ window.DemCreepers =
         TileSize : [50, 50]
     Volumes :
         FX : 0.1
-        Music : 0.3
+        Music : 0.4
     Controls : [
         {
             'up' : 'w'
