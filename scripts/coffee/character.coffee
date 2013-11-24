@@ -376,7 +376,7 @@ class Monster extends Character
                     @_changeOrientation = =>
                     setTimeout (=>
                         @_changeOrientation = (o) => @_orientation = o
-                    ), 400
+                    ), (if @_bump then (@speed * 200) else (@speed * 100))
             @_state = 'run'
         else
             @_vx = @_vy = 0
