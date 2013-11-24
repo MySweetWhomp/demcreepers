@@ -85,6 +85,24 @@ class Utils
         else if n is 7
             [-200, -200]
 
+    getNextOr : (_or) ->
+        if _or is 'N'
+            return 'NE'
+        else if _or is 'NE'
+            return 'E'
+        else if _or is 'E'
+            return 'SE'
+        else if _or is 'SE'
+            return 'S'
+        else if _or is 'S'
+            return 'SW'
+        else if _or is 'SW'
+            return 'W'
+        else if _or is 'W'
+            return 'NW'
+        else if _or is 'NW'
+            return 'N'
+
 window.DemCreepers =
     Game : Game
     Utils : new Utils

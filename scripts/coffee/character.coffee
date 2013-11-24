@@ -68,10 +68,12 @@ class Character
                 for cell in atRect
                     cellRect = do cell.rect
                     if cellRect.collideRect box
+                        moved = no
                         if cell.type is 'Gob'
                             @[comp] -= @["_v#{comp}"] / 2
                             @_box.moveTo @x, @y
                         else
+                            @_bump = yes
                             step = @["_v#{comp}"] / Math.abs @["_v#{comp}"]
                             @[comp] -= step
                             @_box.moveTo @x, @y
@@ -82,12 +84,14 @@ class Character
                                 @_box.moveTo @x, @y
                                 box = do @_box.rect
                         break
+        return moved
 
     move : (map) =>
         if @_vx is 0 and @_vy is 0
             return
-        (@moveOneComp 'x', map) if @_vx isnt 0
-        (@moveOneComp 'y', map) if @_vy isnt 0
+        movedX = (@moveOneComp 'x', map) if @_vx isnt 0
+        movedY = (@moveOneComp 'y', map) if @_vy isnt 0
+        movedX or movedY
 
 class Player extends Character
     constructor : (@x, @y) ->
@@ -343,17 +347,26 @@ class Monster extends Character
             'NW' : () => @_vy = -@speed ; @_vx = -@speed
 
     update : (player, map) =>
+        @_bump = no
         @_distToPlayer = window.DemCreepers.Utils.pointDistance player.x, player.y, @x, @y
         @_orientation = window.DemCreepers.Utils.pointOrientation player.x, player.y, @x, @y
         @_sprite.setImage do @_anims[@_state][@_orientation].next
         if @_distToPlayer > @distAttack
             do @_move[@_orientation]
+            moved = @move map
+            oldOr = @_orientation
+            if @_bump
+                while not moved
+                    @_orientation = window.DemCreepers.Utils.getNextOr @_orientation
+                    break if @_orientation is oldOr
+                    do @_move[@_orientation]
+                    moved = @move map
             @_state = 'run'
         else
             @_vx = @_vy = 0
             @_attack player
-        try
-            super map
+        @_box.coll = undefined
+        @_sprite.moveTo @x, @y
 
     attack : (player) =>
         @_state = 'attack'
