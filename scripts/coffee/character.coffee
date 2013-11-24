@@ -89,6 +89,7 @@ class Character
 class Player extends Character
     constructor : (@x, @y) ->
         super @x, @y, 6, 12, 20
+        @_orientation = 'S'
         @Dead = no
         @WOOSH = new jaws.Audio audio : 'assets/audio/WOOSH.ogg', volume : 0.4
         @DEAD = [

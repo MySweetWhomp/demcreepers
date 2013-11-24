@@ -208,12 +208,12 @@ class MainGame
             image : 'assets/img/HUD---TEXT.gif'
             frame_size : [80, 20]
         @_quadtree = new jaws.QuadTree
-        @_update = @gameupdate
-        @_draw = @gamedraw
+        @_update = @titleUpdate
+        @_draw = @titleDraw
 
     setup : =>
-        @_music = new jaws.Audio audio : 'assets/audio/GAME_LOOP.ogg', volume : 0.7, loop : 1
-        do @_music.play
+        #@_music = new jaws.Audio audio : 'assets/audio/GAME_LOOP.ogg', volume : 0.7, loop : 1
+        #do @_music.play
         [rows, cols] = [9, 12]
         @_viewport = new jaws.Viewport
             x : 0
@@ -321,6 +321,22 @@ class MainGame
         (document.getElementById 'playerY').innerHTML = @_player.y
         (document.getElementById 'viewportX').innerHTML = @_viewport.x
         (document.getElementById 'viewportY').innerHTML = @_viewport.y
+
+    titleUpdate : =>
+        @_player.update @_viewport, @_map._map
+
+        ### Center viewport on Player ###
+        @_viewport.centerAround @_player._box
+
+    titleDraw : =>
+        do jaws.clear
+        ### Draw the ground below everything ###
+        @_viewport.drawTileMap @_map._ground
+        ### Player ###
+        window.DemCreepers.DrawBatch.add do @_player.getToDraw
+        @_viewport.apply =>
+            ### Draw all ###
+            window.DemCreepers.DrawBatch.draw @_viewport
 
     update : =>
         do @_update
