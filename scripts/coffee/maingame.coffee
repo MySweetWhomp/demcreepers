@@ -207,13 +207,29 @@ class MainGame
         @_texts = new jaws.SpriteSheet
             image : 'assets/img/HUD---TEXT.gif'
             frame_size : [80, 20]
+        @_titleSheet = new jaws.SpriteSheet
+            image : 'assets/img/HUD---PICTURES.gif'
+            frame_size : [100, 80]
         @_quadtree = new jaws.QuadTree
         @_update = @titleUpdate
         @_draw = @titleDraw
+        @_pressStart = new jaws.Sprite
+            image : @_titleSheet.frames[2]
+            anchor : 'center'
+            scale : 2
+            width : 100
+            height : 80
+            x : 400
+            y : 220
+        @_title = new jaws.Sprite
+            image : 'assets/img/Title.gif'
+            width : 380
+            height : 53
+            scale : 2
+            x : 20
+            y : 20
 
     setup : =>
-        #@_music = new jaws.Audio audio : 'assets/audio/GAME_LOOP.ogg', volume : 0.7, loop : 1
-        #do @_music.play
         [rows, cols] = [9, 12]
         @_viewport = new jaws.Viewport
             x : 0
@@ -223,7 +239,6 @@ class MainGame
         @_hud = new HUD
         @_map = new window.DemCreepers.Map rows, cols
         @_player = new window.DemCreepers.Player 600, 450
-        @_wave = new Wave1
         @_pauseOverlay = new jaws.Sprite
             x : 0
             y : 0
@@ -323,10 +338,19 @@ class MainGame
         (document.getElementById 'viewportY').innerHTML = @_viewport.y
 
     titleUpdate : =>
-        @_player.update @_viewport, @_map._map
+        do @_player.simpleUpdate
 
         ### Center viewport on Player ###
         @_viewport.centerAround @_player._box
+
+        if jaws.pressedWithoutRepeat 'enter'
+            @_music = new jaws.Audio audio : 'assets/audio/GAME_LOOP.ogg', volume : 0.7, loop : 1
+            do @_music.play
+            @_update = @gameupdate
+            @_draw = @gamedraw
+            @_wave = new Wave1
+            @_title = undefined
+            @_pressStart = undefined
 
     titleDraw : =>
         do jaws.clear
@@ -337,6 +361,8 @@ class MainGame
         @_viewport.apply =>
             ### Draw all ###
             window.DemCreepers.DrawBatch.draw @_viewport
+        do @_pressStart.draw
+        do @_title.draw
 
     update : =>
         do @_update

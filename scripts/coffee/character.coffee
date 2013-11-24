@@ -89,7 +89,7 @@ class Character
 class Player extends Character
     constructor : (@x, @y) ->
         super @x, @y, 6, 12, 20
-        @_orientation = 'S'
+        @_orientation = 'SW'
         @Dead = no
         @WOOSH = new jaws.Audio audio : 'assets/audio/WOOSH.ogg', volume : 0.4
         @DEAD = [
@@ -111,7 +111,7 @@ class Player extends Character
             frame_size : [50, 50]
             orientation : 'right'
             frame_duration : 60
-        @_state = 'attack'
+        @_state = 'idle'
         @_anims =
             'idle' :
                 'N' : @_sheet.slice 24, 28
@@ -148,6 +148,9 @@ class Player extends Character
 
     getToDraw : =>
         _.union @_axes, [@]
+
+    simpleUpdate : =>
+        @_sprite.setImage do @_anims[@_state][@_orientation].next
 
     update : (viewport, map) =>
         if @Dead
