@@ -11,7 +11,7 @@
 # Characters base class
 ###
 class Character
-    constructor : (@x, @y, @speed, width, height) ->
+    constructor : (@x, @y, @speed, @feetShift, width, height) ->
         @_box = new jaws.Sprite
             x : @x
             y : @y
@@ -22,6 +22,11 @@ class Character
         @_sprite = new jaws.Sprite
             x : @x
             y : @y
+            anchor : 'center'
+            scale : 2
+        @_feets = new jaws.Sprite
+            x : @x
+            y : @y + @feetShift
             anchor : 'center'
             scale : 2
         @_vx = 0
@@ -40,6 +45,7 @@ class Character
 
     draw : =>
         #do (do @_box.rect).draw
+        #do (do @_feets.rect).draw
 
     moveOneComp : (comp, map) =>
         moved = yes
@@ -59,7 +65,8 @@ class Character
         else
             @_box.moveTo @x, @y
 
-        box = do @_box.rect
+        @_feets.moveTo @x, @y + @feetShift
+        box = do @_feets.rect
 
         if moved
             atRect = map.atRect box
@@ -71,19 +78,20 @@ class Character
                         moved = no
                         if cell.type is 'Gob'
                             @[comp] -= @["_v#{comp}"] / 2
-                            @_box.moveTo @x, @y
+                            @_feets.moveTo @x, @y + @feetShift
                         else
                             @_bump = yes
                             step = @["_v#{comp}"] / Math.abs @["_v#{comp}"]
                             @[comp] -= step
-                            @_box.moveTo @x, @y
-                            box = do @_box.rect
+                            @_feets.moveTo @x, @y + @feetShift
+                            box = do @_feets.rect
                             i = 0
                             while (cellRect.collideRect box)
                                 @[comp] -= step
-                                @_box.moveTo @x, @y
-                                box = do @_box.rect
+                                @_feets.moveTo @x, @y + @feetShift
+                                box = do @_feets.rect
                         break
+                    @_box.moveTo @x, @y
         return moved
 
     move : (map) =>
@@ -95,7 +103,8 @@ class Character
 
 class Player extends Character
     constructor : (@x, @y) ->
-        super @x, @y, 6, 12, 20
+        super @x, @y, 6, 35, 12, 20
+        @_feets.resizeTo 30, 25
         @_orientation = 'SW'
         @Dead = no
         @WOOSH = new jaws.Audio audio : 'assets/audio/WOOSH.ogg', volume : window.DemCreepers.Volumes.FX
@@ -276,7 +285,7 @@ class Player extends Character
 
 class Axe extends Character
     constructor : (dir, @x, @y) ->
-        super @x, @y, 7, 10, 10
+        super @x, @y, 7, 0, 10, 10
         @_toGo = 500
         @_dirx = @_diry = 0
         if (dir.indexOf 'N') >= 0
@@ -323,8 +332,8 @@ class Axe extends Character
 # Monsters base class
 ###
 class Monster extends Character
-    constructor : (@x, @y, @speed, @pv, @reward, @distAttack, width, height, sheetName, frameSize) ->
-        super @x, @y, @speed, width, height
+    constructor : (@x, @y, @speed, @feetShift, @pv, @reward, @distAttack, width, height, sheetName, frameSize) ->
+        super @x, @y, @speed, @feetShift, 10, width, height
         @_state = 'run'
         @_sheet = new jaws.Animation
             sprite_sheet : "assets/img/#{sheetName}"
@@ -378,7 +387,8 @@ class Monster extends Character
 
 class Gob extends Monster
     constructor : (@x, @y) ->
-        super @x, @y, 4, 1, 10, 35, 15, 15, 'Gob.gif', [50, 50]
+        super @x, @y, 4, 10, 1, 10, 35, 15, 15, 'Gob.gif', [50, 50]
+        @_feets.resizeTo 30, 20
         @_anims =
             'run' :
                 'N' : @_sheet.slice 20, 30
@@ -410,7 +420,8 @@ class Gob extends Monster
 
 class Golem extends Monster
     constructor : (@x, @y) ->
-        super @x, @y, 2, 7, 50, 200, 50, 50, 'GOLEM.gif', [150, 160]
+        super @x, @y, 2, 75, 7, 50, 200, 50, 50, 'GOLEM.gif', [150, 160]
+        @_feets.resizeTo 150, 40
         @_anims =
             'run' :
                 'N' : @_sheet.slice 1, 2
