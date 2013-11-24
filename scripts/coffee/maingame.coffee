@@ -48,9 +48,13 @@ class Wave1 extends Wave
         do @regen
 
     regen : =>
+        @_mobs = []
         [x, y] = do window.DemCreepers.Utils.getRandomSpawn
-        _.map [0..9], () =>
-            @_mobs.push window.DemCreepers.Pools.Gobs.get x, y
+        @_mobs.push new window.DemCreepers.Gob x, y
+        _.map [1..8], (i) =>
+            setTimeout (=>
+                @_mobs.push new window.DemCreepers.Gob x, y
+            ), i * 100
 
     nextPack : =>
         ++@_pack
@@ -183,10 +187,12 @@ class MainGame
             if @_paused then do @_music.pause else do @_music.play
         if not @_paused
             all = _.union (_.map @_wave._mobs, (item) -> item._box), [@_player._box]
+            all = _.filter all, (x) => @_viewport.isPartlyInside x
             try
-                @_quadtree.collide all, all, (a, b) =>
-                    a.coll = b
-                    b.coll = a
+                if all.length > 1
+                    @_quadtree.collide all, all, (a, b) =>
+                        a.coll = b
+                        b.coll = a
             ### Player ###
             @_player.update @_viewport, @_map._map
             ### Monsters ###
