@@ -22,10 +22,8 @@ class Pool
 class GobPool extends Pool
     constructor : ->
         super 0
-        @IN = new jaws.Audio audio : 'assets/audio/GOBGNAW.ogg', volume : 0.4
 
     get : (x, y) =>
-        #do @IN.play
         if @_queue.length > 0
             gob = do @_queue.shift
             gob.x = x

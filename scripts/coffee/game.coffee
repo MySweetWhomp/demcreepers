@@ -91,6 +91,9 @@ window.DemCreepers =
     Config :
         ActiveControls : 1
         TileSize : [50, 50]
+    Volumes :
+        FX : 0.1
+        Music : 0.3
     Controls : [
         {
             'up' : 'w'

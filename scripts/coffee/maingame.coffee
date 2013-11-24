@@ -13,7 +13,7 @@ Waves = 1
 
 class Wave
     constructor : ->
-        @HIT = new jaws.Audio audio : 'assets/audio/HIT.ogg', volume : 0.4
+        @HIT = new jaws.Audio audio : 'assets/audio/HIT.ogg', volume : window.DemCreepers.Volumes.FX
         @_mobs = []
         @_pack = 0
 
@@ -228,7 +228,7 @@ class MainGame
             scale : 2
             x : 20
             y : 20
-        @START = new jaws.Audio audio : 'assets/audio/START.ogg', volume : 0.4
+        @START = new jaws.Audio audio : 'assets/audio/START.ogg', volume : window.DemCreepers.Volumes.FX
 
     setup : =>
         [rows, cols] = [9, 12]
@@ -347,7 +347,11 @@ class MainGame
         if jaws.pressedWithoutRepeat 'enter'
             do @START.play
             setTimeout (=>
-                @_music = new jaws.Audio audio : 'assets/audio/GAME_LOOP.ogg', volume : 0.7, loop : 1
+                @_music = new jaws.Audio {
+                    audio : 'assets/audio/GAME_LOOP.ogg'
+                    volume : window.DemCreepers.Volumes.Music
+                    loop : 1
+                }
                 do @_music.play
                 @_update = @gameupdate
                 @_draw = @gamedraw

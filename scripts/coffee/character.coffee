@@ -91,12 +91,12 @@ class Player extends Character
         super @x, @y, 6, 12, 20
         @_orientation = 'SW'
         @Dead = no
-        @WOOSH = new jaws.Audio audio : 'assets/audio/WOOSH.ogg', volume : 0.4
+        @WOOSH = new jaws.Audio audio : 'assets/audio/WOOSH.ogg', volume : window.DemCreepers.Volumes.FX
         @DEAD = [
-            new jaws.Audio audio : 'assets/audio/MORT01.ogg', volume : 0.4
-            new jaws.Audio audio : 'assets/audio/MORT02.ogg', volume : 0.4
+            new jaws.Audio audio : 'assets/audio/MORT01.ogg', volume : window.DemCreepers.Volumes.FX
+            new jaws.Audio audio : 'assets/audio/MORT02.ogg', volume : window.DemCreepers.Volumes.FX
         ]
-        @GAMEOVER = new jaws.Audio audio : 'assets/audio/GAMEOVER.ogg', volume : 0.4
+        @GAMEOVER = new jaws.Audio audio : 'assets/audio/GAMEOVER.ogg', volume : window.DemCreepers.Volumes.FX
         @_hp = 100
         @_attack = @attack
         @_changeStateOr = @changeStateOr
@@ -396,7 +396,6 @@ class Gob extends Monster
                 'SW' : @_sheet.slice 50, 56
                 'W' : @_sheet.slice 50, 56
                 'NW' : @_sheet.slice 50, 56
-        @_DEATH = new jaws.Audio audio : 'assets/audio/GOBMORT.ogg', volume : 0.2
 
     update : (player, map) =>
         try
@@ -429,7 +428,6 @@ class Golem extends Monster
                 'SW' : @_sheet.slice 1, 2
                 'W' : @_sheet.slice 1, 2
                 'NW' : @_sheet.slice 1, 2
-        @_DEATH = new jaws.Audio audio : 'assets/audio/GOLEMMORT.ogg', volume : 0.2
         @_fist = new jaws.Sprite
             anchor : 'center'
             x : @x
