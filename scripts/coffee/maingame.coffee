@@ -85,7 +85,14 @@ class HUD
             x : 400
             y : 300
             scale : 2
-        @_currentMessage = undefined
+        @_msg2 = new jaws.Sprite
+            width : 300
+            height : 20
+            anchor : 'center'
+            x : 400
+            y : 340
+            scale : 2
+        @_end = [no, no]
         ###
         # HP
         ###
@@ -138,7 +145,7 @@ class HUD
                 'perfect' : [6, 13]
             on_end : =>
                 setTimeout (=>
-                    @_currentMessage = undefined
+                    @_end = [no, no]
                     do @createMessages
                 ), 1000
 
@@ -157,8 +164,10 @@ class HUD
         _.map do ((String KillCount).split '').reverse, (n, i) =>
             (@_kills.at i).setImage @_letters.frames[n]
 
-        if @_currentMessage?
-            @_msg.setImage do @_messages.subsets[@_currentMessage].next
+        if @_end[0]
+            console.log 'HERE'
+            @_msg.setImage do @_messages.subsets['wave'].next
+            @_msg2.setImage do @_messages.subsets['perfect'].next
 
     draw : =>
         do @_bg.draw
@@ -166,8 +175,10 @@ class HUD
         do @_waves.draw
         do @_score.draw
         do @_kills.draw
-        if @_currentMessage?
+        if @_end[0]
             do @_msg.draw
+            if @_end[1]
+                do @_msg2.draw
 
 
 class MainGame
@@ -216,11 +227,10 @@ class MainGame
                     @_wave = new Wave1
                     ++Waves
                     Score += 100
+                    @_hud._end[0] = yes
                     if @_player._hp is 100
                         Score += 500
-                        @_hud._currentMessage = 'perfect'
-                    else
-                        @_hud._currentMessage = 'wave'
+                        @_hud._end[1] = yes
             all = _.union (_.map @_wave._mobs, (item) -> item._box), [@_player._box]
             all = _.filter all, (x) => @_viewport.isPartlyInside x
             try
