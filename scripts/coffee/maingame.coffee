@@ -228,6 +228,7 @@ class MainGame
             scale : 2
             x : 20
             y : 20
+        @START = new jaws.Audio audio : 'assets/audio/START.ogg', volume : 0.4
 
     setup : =>
         [rows, cols] = [9, 12]
@@ -344,13 +345,14 @@ class MainGame
         @_viewport.centerAround @_player._box
 
         if jaws.pressedWithoutRepeat 'enter'
-            @_music = new jaws.Audio audio : 'assets/audio/GAME_LOOP.ogg', volume : 0.7, loop : 1
-            do @_music.play
-            @_update = @gameupdate
-            @_draw = @gamedraw
-            @_wave = new Wave1
-            @_title = undefined
-            @_pressStart = undefined
+            do @START.play
+            setTimeout (=>
+                @_music = new jaws.Audio audio : 'assets/audio/GAME_LOOP.ogg', volume : 0.7, loop : 1
+                do @_music.play
+                @_update = @gameupdate
+                @_draw = @gamedraw
+                @_wave = new Wave2
+            ), 500
 
     titleDraw : =>
         do jaws.clear
