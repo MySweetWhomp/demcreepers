@@ -87,21 +87,21 @@ class Utils
 
     getNextOr : (_or) ->
         if _or is 'N'
-            return 'NE'
+            ['NE','NW','E','W','SE','SW','S','N']
         else if _or is 'NE'
-            return 'E'
+            ['E','N','SE','NW','S','W','SW','NE']
         else if _or is 'E'
-            return 'SE'
+            ['SE','NE','S','N','SW','SE','W','E']
         else if _or is 'SE'
-            return 'S'
+            ['S','E','SW','NE','W','N','NW','SE']
         else if _or is 'S'
-            return 'SW'
+            ['SW','SE','W','E','NW','NE','N','S']
         else if _or is 'SW'
-            return 'W'
+            ['W','S','NW','SE','N','E','NE','SW']
         else if _or is 'W'
-            return 'NW'
+            ['NW','SW','N','S','NE','SE','E','W']
         else if _or is 'NW'
-            return 'N'
+            ['N','W','NE','SW','S','E','SE','NW']
 
 window.DemCreepers =
     Game : Game

@@ -208,7 +208,7 @@ class Player extends Character
             @_getHit = @getHit
         ), 1000
         if (@_hp -= n) <= 0
-            if @_hp is 0
+            if @_state isnt 'dead'
                 do @DEAD[_.random 0, 1].play
                 setTimeout (=>
                     do @GAMEOVER.play
@@ -219,7 +219,6 @@ class Player extends Character
             @_onlasframe = =>
                 @Dead = yes
                 @_onlasframe = =>
-
 
     changeStateOr : (state, orientation) =>
         @_state = state
@@ -340,6 +339,7 @@ class Monster extends Character
             frame_size : frameSize
             orientation : 'right'
             frame_duration : 70
+        @_changeOrientation = (o) => @_orientation = o
         @_attack = @attack
         ###
         # Define orientation based move methods
@@ -358,18 +358,25 @@ class Monster extends Character
     update : (player, map) =>
         @_bump = no
         @_distToPlayer = window.DemCreepers.Utils.pointDistance player.x, player.y, @x, @y
-        @_orientation = window.DemCreepers.Utils.pointOrientation player.x, player.y, @x, @y
+        @_changeOrientation window.DemCreepers.Utils.pointOrientation player.x, player.y, @x, @y
         @_sprite.setImage do @_anims[@_state][@_orientation].next
         if @_distToPlayer > @distAttack
             do @_move[@_orientation]
             moved = @move map
-            oldOr = @_orientation
             if @_bump
+                oldOr = @_orientation
+                ors = window.DemCreepers.Utils.getNextOr @_orientation
+                i = 0
                 while not moved
-                    @_orientation = window.DemCreepers.Utils.getNextOr @_orientation
+                    @_orientation = ors[i++]
                     break if @_orientation is oldOr
                     do @_move[@_orientation]
                     moved = @move map
+                if moved
+                    @_changeOrientation = =>
+                    setTimeout (=>
+                        @_changeOrientation = (o) => @_orientation = o
+                    ), 400
             @_state = 'run'
         else
             @_vx = @_vy = 0
