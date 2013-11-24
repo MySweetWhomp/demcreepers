@@ -99,6 +99,11 @@ class Player extends Character
             sprite_sheet : 'assets/img/Barbarian.gif'
             frame_size : [50, 50]
             orientation : 'right'
+        @_sheet2 = new jaws.Animation
+            sprite_sheet : 'assets/img/Barbarian.gif'
+            frame_size : [50, 50]
+            orientation : 'right'
+            frame_duration : 60
         @_state = 'attack'
         @_anims =
             'idle' :
@@ -120,14 +125,14 @@ class Player extends Character
                 'W' : @_sheet.slice 60, 66
                 'NW' : @_sheet.slice 66, 72
             'attack' :
-                'N' : @_sheet.slice 108, 111
-                'NE' : @_sheet.slice 111, 114
-                'E' : @_sheet.slice 114, 117
-                'SE' : @_sheet.slice 117, 120
-                'S' : @_sheet.slice 96, 99
-                'SW' : @_sheet.slice 99, 102
-                'W' : @_sheet.slice 102, 105
-                'NW' : @_sheet.slice 105, 108
+                'N' : @_sheet2.slice 108, 111
+                'NE' : @_sheet2.slice 111, 114
+                'E' : @_sheet2.slice 114, 117
+                'SE' : @_sheet2.slice 117, 120
+                'S' : @_sheet2.slice 96, 99
+                'SW' : @_sheet2.slice 99, 102
+                'W' : @_sheet2.slice 102, 105
+                'NW' : @_sheet2.slice 105, 108
             'dead' :
                 'N' : @_sheet.slice 120, 127
         @_anims['dead']['E'] = @_anims['dead']['NE'] = @_anims['dead']['SE'] = @_anims['dead']['S'] =
