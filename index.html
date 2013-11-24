@@ -14,8 +14,18 @@
     </head>
     <body>
         <canvas id="viewport" width="800" height="600"></canvas>
+        <!--
         <p>Player : <span id="playerX"></span> - <span id="playerY"></span></p>
         <p>Viewport : <span id="viewportX"></span> - <span id="viewportY"></span></p>
+        -->
+        <div class='center'>
+            <p>Move with:</p>
+            <label>WASD <input type='radio' name='buttons' value='0' /></label>
+            <br />
+            <label>ZQSD <input type='radio' name='buttons' value='2' /></label>
+            <br />
+            <label>Arrows <input type='radio' name='buttons' value='1' checked /></label>
+        </div>
     </body>
     <script type="text/javascript" src="./scripts/js/game.js"></script>
     <script type="text/javascript" src="./scripts/js/pools.js"></script>
@@ -24,6 +34,13 @@
     <script type="text/javascript" src="./scripts/js/map.js"></script>
     <script type="text/javascript">
         if (window.DemCreepers != null && window.DemCreepers.Game != null) {
+            var buttons = document.getElementsByTagName('input');
+            for (var i = 0; i < buttons.length; ++i) {
+                buttons.item(i).onchange = function() {
+                    window.DemCreepers.Config.ActiveControls = this.value;
+                }
+            }
+
             window.DemCreepers.Game = new window.DemCreepers.Game();
             window.DemCreepers.Game.start();
         } else {

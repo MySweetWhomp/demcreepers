@@ -333,10 +333,12 @@ class MainGame
             do @_pauseOverlay.draw
             do @["_#{@_overlayText}"].draw
 
+        ###
         (document.getElementById 'playerX').innerHTML = @_player.x
         (document.getElementById 'playerY').innerHTML = @_player.y
         (document.getElementById 'viewportX').innerHTML = @_viewport.x
         (document.getElementById 'viewportY').innerHTML = @_viewport.y
+        ###
 
     titleUpdate : =>
         do @_player.simpleUpdate
