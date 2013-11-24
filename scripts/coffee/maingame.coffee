@@ -176,16 +176,19 @@ class MainGame
             scale : 2
 
     update : =>
-        if @_wave._mobs.length  is 0
-            if not (do @_wave.nextPack)
-                @_quadtree = new jaws.QuadTree
-                do @_map.updateForNextWave
-                @_wave = new Wave1
-                ++Waves
         if jaws.pressedWithoutRepeat 'space'
             @_paused = not @_paused
             if @_paused then do @_music.pause else do @_music.play
         if not @_paused
+            if @_wave._mobs.length  is 0
+                if not (do @_wave.nextPack)
+                    @_quadtree = new jaws.QuadTree
+                    do @_map.updateForNextWave
+                    @_wave = new Wave1
+                    ++Waves
+                    Score += 100
+                    if @_player._hp is 100
+                        Score += 500
             all = _.union (_.map @_wave._mobs, (item) -> item._box), [@_player._box]
             all = _.filter all, (x) => @_viewport.isPartlyInside x
             try
