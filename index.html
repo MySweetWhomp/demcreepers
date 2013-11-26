@@ -24,7 +24,7 @@
             /
             <label><input type='radio' name='buttons' value='2' /> ZQSD</label>
             /
-            <label><input type='radio' name='buttons' value='1' checked /> Arrows</label>
+            <label><input type='radio' name='buttons' value='1' /> Arrows</label>
         </div>
     </body>
     <script type="text/javascript" src="./scripts/js/game.js"></script>
@@ -36,7 +36,11 @@
         if (window.DemCreepers != null && window.DemCreepers.Game != null) {
             var buttons = document.getElementsByTagName('input');
             for (var i = 0; i < buttons.length; ++i) {
-                buttons.item(i).onchange = function() {
+                var button = buttons.item(i);
+                if (window.DemCreepers.Config.ActiveControls == button.value) {
+                    button.setAttribute('checked', '');
+                }
+                button.onchange = function() {
                     window.DemCreepers.Config.ActiveControls = this.value;
                 }
             }
