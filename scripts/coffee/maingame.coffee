@@ -11,6 +11,10 @@ Score = 0
 KillCount = 0
 Waves = 1
 
+Packs =
+    Count : 3
+    Value : 20
+
 class Wave
     constructor : ->
         @HIT = new jaws.Audio audio : 'assets/audio/HIT.ogg', volume : window.DemCreepers.Volumes.FX
@@ -85,6 +89,43 @@ class Wave2 extends Wave
             return yes
         else
             return no
+
+class RandWave extends Wave
+    constructor : (@nbPacks, @packsValue) ->
+        super 0
+        do @regen
+
+    genPack : =>
+        [x, y] = do window.DemCreepers.Utils.getRandomSpawn
+        n = @packsValue
+        while n > 0
+            if n >= 10
+                rand = _.random 0, 1
+                if rand
+                    @_mobs.push new window.DemCreepers.Golem x, y
+                else
+                    _.map [0..9], () =>
+                        @_mobs.push new window.DemCreepers.Gob x, y
+                n -= 10
+            else
+                @_mobs.push new window.DemCreepers.Gob x, y
+                n -= 1
+
+    regen : =>
+        @_mobs = []
+        max = Math.round ((@nbPacks - @_pack) / 2)
+        n = _.random 1, max
+        _.map [1..n], =>
+            do @genPack
+            ++@_pack
+        return
+
+    nextPack : =>
+        if @_pack >= @nbPacks
+            return no
+        else
+            do @regen
+            return yes
 
 class HUD
     constructor : ->
@@ -270,8 +311,10 @@ class MainGame
 
         if Waves < 2
             @_wave = new Wave1
-        else
+        else if Waves < 3
             @_wave = new Wave2
+        else
+            @_wave = new RandWave Packs.Count, Packs.Value
 
         ++Waves
         Score += 100
