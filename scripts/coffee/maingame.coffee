@@ -316,6 +316,12 @@ class MainGame
         else if Waves < 3
             @_wave = new Wave2
         else
+            if not (Waves % 4)
+                rand = _.random 1, 2
+                if rand is 1
+                    ++Packs.Count
+                else
+                    Packs.Value += 5
             @_wave = new RandWave Packs.Count, Packs.Value
 
         ++Waves
