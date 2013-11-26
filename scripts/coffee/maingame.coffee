@@ -113,8 +113,10 @@ class RandWave extends Wave
 
     regen : =>
         @_mobs = []
-        max = Math.round ((@nbPacks - @_pack) / 2)
+        max = Math.round (@nbPacks / 2)
         n = _.random 1, max
+        while n > @nbPacks - @_pack
+            n = _.random 1, max
         _.map [1..n], =>
             do @genPack
             ++@_pack
