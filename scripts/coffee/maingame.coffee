@@ -12,8 +12,8 @@ KillCount = 0
 Waves = 1
 
 Packs =
-    Count : 3
-    Value : 20
+    Count : 2
+    Value : 15
 
 class Wave
     constructor : ->
