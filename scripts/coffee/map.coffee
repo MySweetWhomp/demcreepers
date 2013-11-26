@@ -142,7 +142,9 @@ class Map
             cell_size : [tileWidth, tileHeight]
         try
             @_map.push _.uniq gobs[0].all
+        try
             @_map.push _.uniq gobs[1].all
+        try
             @_map.push _.uniq blocks
 
     all : =>
