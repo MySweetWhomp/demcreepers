@@ -1,0 +1,21 @@
+{
+  "name": "dem-creepers",
+  "version": "0.0.0",
+  "description": "![Dem Creepers!](./README/demcreepers.png)",
+  "main": "demcreepers.coffee",
+  "dependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-coffee": "~0.7.0",
+    "grunt-contrib-watch": "~0.5.3",
+    "express": "~3.4.4",
+    "jade": "~0.35.0",
+    "connect-assets": "~2.5.3",
+    "coffee-script": "~1.6.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Paulloz/game-off-2013.git"
+  },
+  "author": "Paul Joannon for H-Bomb",
+  "license": "Apache"
+}

@@ -17,7 +17,7 @@ Packs =
 
 class Wave
     constructor : ->
-        @HIT = new jaws.Audio audio : 'assets/audio/HIT.ogg', volume : window.DemCreepers.Volumes.FX
+        @HIT = new jaws.Audio audio : 'audio/HIT.ogg', volume : window.DemCreepers.Volumes.FX
         @_mobs = []
         @_pack = 0
 
@@ -40,7 +40,7 @@ class Wave
                 mob.update player, map._map
         toDel = toDel.sort (a, b) => b - a
         _.map toDel, (index) =>
-            window.DemCreepers.Pools.Gobs.add (@_mobs.splice index, 1)[0]
+            @_mobs.splice index, 1
 
     getToDraw : (viewport) => _.filter @_mobs, (mob) -> viewport.isPartlyInside mob._sprite
 
@@ -132,11 +132,11 @@ class RandWave extends Wave
 class HUD
     constructor : ->
         @_letters =new jaws.SpriteSheet
-            image : 'assets/img/HUD-NUMBERSLETTERS.gif'
+            image : 'img/HUD-NUMBERSLETTERS.gif'
             frame_size : [15, 15]
             orientation : 'right'
         @_bg = new jaws.Sprite
-            image : 'assets/img/HUD.gif'
+            image : 'img/HUD.gif'
             width: 400
             height: 20
             scale : 2
@@ -201,7 +201,7 @@ class HUD
 
     createMessages : =>
         @_messages =new jaws.Animation
-            sprite_sheet : 'assets/img/HUD-ANIMATED.gif'
+            sprite_sheet : 'img/HUD-ANIMATED.gif'
             frame_size : [300, 20]
             frame_duration : 70
             loop : no
@@ -248,10 +248,10 @@ class MainGame
     constructor : ->
         @_paused = no
         @_texts = new jaws.SpriteSheet
-            image : 'assets/img/HUD---TEXT.gif'
+            image : 'img/HUD---TEXT.gif'
             frame_size : [80, 20]
         @_titleSheet = new jaws.SpriteSheet
-            image : 'assets/img/HUD---PICTURES.gif'
+            image : 'img/HUD---PICTURES.gif'
             frame_size : [100, 80]
         @_quadtree = new jaws.QuadTree
         @_update = @titleUpdate
@@ -265,15 +265,15 @@ class MainGame
             x : 400
             y : 220
         @_title = new jaws.Sprite
-            image : 'assets/img/Title.gif'
+            image : 'img/Title.gif'
             width : 380
             height : 53
             scale : 2
             x : 20
             y : 20
-        @START = new jaws.Audio audio : 'assets/audio/START.ogg', volume : window.DemCreepers.Volumes.FX
+        @START = new jaws.Audio audio : 'audio/START.ogg', volume : window.DemCreepers.Volumes.FX
         @MENU = new jaws.Audio
-            audio : 'assets/audio/MENU.ogg'
+            audio : 'audio/MENU.ogg'
             volume : window.DemCreepers.Volumes.Music
             loop : yes
 
@@ -435,7 +435,7 @@ class MainGame
             do @START.play
             setTimeout (=>
                 @_music = new jaws.Audio {
-                    audio : 'assets/audio/GAME_LOOP.ogg'
+                    audio : 'audio/GAME_LOOP.ogg'
                     volume : window.DemCreepers.Volumes.Music
                     loop : 1
                 }

@@ -29,14 +29,14 @@ class Game
         if jaws?
             jaws.preventDefaultKeys ['up', 'right', 'down', 'left', 'w', 'a',
                                      's', 'd', 'space', 'left_mouse_button']
-            jaws.assets.add ['assets/img/Barbarian.gif', 'assets/img/Gob.gif', 'assets/img/GobCorpse.gif',
-                             'assets/img/Axe.gif', 'assets/img/HUD.gif', 'assets/img/HUD---TEXT.gif',
-                             'assets/img/HUD-NUMBERSLETTERS.gif', 'assets/audio/HIT.ogg', 'assets/img/HUD-ANIMATED.gif',
-                             'assets/audio/WOOSH.ogg', 'assets/img/GOLEM.gif', 'assets/img/BG---Tiles.gif'
-                             'assets/img/Block.gif', 'assets/img/Title.gif', 'assets/audio/START.ogg',
-                             'assets/audio/GOLEMMORT.ogg', 'assets/audio/GAME_LOOP.ogg', 'assets/audio/MORT02.ogg',
-                             'assets/audio/GAMEOVER.ogg', 'assets/audio/MORT01.ogg', 'assets/img/HUD---PICTURES.gif',
-                             'assets/audio/MENU.ogg']
+            jaws.assets.add ['img/Barbarian.gif', 'img/Gob.gif', 'img/GobCorpse.gif',
+                             'img/Axe.gif', 'img/HUD.gif', 'img/HUD---TEXT.gif',
+                             'img/HUD-NUMBERSLETTERS.gif', 'audio/HIT.ogg', 'img/HUD-ANIMATED.gif',
+                             'audio/WOOSH.ogg', 'img/GOLEM.gif', 'img/BG---Tiles.gif'
+                             'img/Block.gif', 'img/Title.gif', 'audio/START.ogg',
+                             'audio/GOLEMMORT.ogg', 'audio/GAME_LOOP.ogg', 'audio/MORT02.ogg',
+                             'audio/GAMEOVER.ogg', 'audio/MORT01.ogg', 'img/HUD---PICTURES.gif',
+                             'audio/MENU.ogg']
         else
             throw "Not Implemented"
 

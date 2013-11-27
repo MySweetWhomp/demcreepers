@@ -108,23 +108,23 @@ class Player extends Character
         @_feets.resizeTo 30, 25
         @_orientation = 'SW'
         @Dead = no
-        @WOOSH = new jaws.Audio audio : 'assets/audio/WOOSH.ogg', volume : window.DemCreepers.Volumes.FX
+        @WOOSH = new jaws.Audio audio : 'audio/WOOSH.ogg', volume : window.DemCreepers.Volumes.FX
         @DEAD = [
-            new jaws.Audio audio : 'assets/audio/MORT01.ogg', volume : window.DemCreepers.Volumes.FX
-            new jaws.Audio audio : 'assets/audio/MORT02.ogg', volume : window.DemCreepers.Volumes.FX
+            new jaws.Audio audio : 'audio/MORT01.ogg', volume : window.DemCreepers.Volumes.FX
+            new jaws.Audio audio : 'audio/MORT02.ogg', volume : window.DemCreepers.Volumes.FX
         ]
-        @GAMEOVER = new jaws.Audio audio : 'assets/audio/GAMEOVER.ogg', volume : window.DemCreepers.Volumes.FX
+        @GAMEOVER = new jaws.Audio audio : 'audio/GAMEOVER.ogg', volume : window.DemCreepers.Volumes.FX
         @_hp = 100
         @_attack = @attack
         @_changeStateOr = @changeStateOr
         @_getHit = @getHit
         @_onlasframe = =>
         @_sheet = new jaws.Animation
-            sprite_sheet : 'assets/img/Barbarian.gif'
+            sprite_sheet : 'img/Barbarian.gif'
             frame_size : [50, 50]
             orientation : 'right'
         @_sheet2 = new jaws.Animation
-            sprite_sheet : 'assets/img/Barbarian.gif'
+            sprite_sheet : 'img/Barbarian.gif'
             frame_size : [50, 50]
             orientation : 'right'
             frame_duration : 60
@@ -297,7 +297,7 @@ class Axe extends Character
         else if (dir.indexOf 'E') >= 0
             @_dirx = 1
         @_sheet = new jaws.Animation
-            sprite_sheet : 'assets/img/Axe.gif'
+            sprite_sheet : 'img/Axe.gif'
             frame_size : [20, 20]
             orientation : 'right'
             frame_duration : 75
@@ -336,7 +336,7 @@ class Monster extends Character
         super @x, @y, @speed, @feetShift, 10, width, height
         @_state = 'run'
         @_sheet = new jaws.Animation
-            sprite_sheet : "assets/img/#{sheetName}"
+            sprite_sheet : "img/#{sheetName}"
             frame_size : frameSize
             orientation : 'right'
             frame_duration : 70

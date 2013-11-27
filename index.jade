@@ -1,0 +1,49 @@
+doctype 5
+html
+    head
+        meta(http-equiv='Content-Type', content='text/html; charset=utf-8')
+        title Dem Creepers!
+
+        !=css('style.css')
+
+        !=js('vendor/lodash.underscore.min.js')
+        !=js('vendor/jaws.js')
+        !=js('vendor/jaws.tile_map.js')
+        !=js('vendor/jaws.sprite_list.js')
+        !=js('vendor/jaws.audio.js')
+
+    body
+        canvas#viewport(width='800', height='600')
+
+        .center
+            p Move with:
+            label
+                input(type='radio', name='buttons', value='0')
+                |  WASD
+            |  / 
+            label
+                input(type='radio', name='buttons', value='2')
+                |  ZQSD
+            |  / 
+            label
+                input(type='radio', name='buttons', value='1')
+                |  Arrows
+
+    !=js('coffee/game.js')
+    !=js('coffee/maingame.js')
+    !=js('coffee/character.js')
+    !=js('coffee/map.js')
+    :coffee
+        if window.DemCreepers? and window.DemCreepers.Game?
+            buttons = document.getElementsByTagName 'input'
+            _.map [0..buttons.length-1], (i) ->
+                button = buttons.item i
+                if window.DemCreepers.Config.ActiveControls is parseInt button.value
+                    button.setAttribute 'checked', ''
+                button.onchange = ->
+                    window.DemCreepers.Config.ActiveControls = @value
+
+            window.DemCreepers.Game = new window.DemCreepers.Game
+            do window.DemCreepers.Game.start
+        else
+            throw "Not Implemented"

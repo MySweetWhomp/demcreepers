@@ -38,14 +38,14 @@ _createBlock = (x, y) ->
 class Map
     constructor : (@rows, @cols) ->
         @_tileset = new jaws.SpriteSheet
-            image : 'assets/img/BG---Tiles.gif'
+            image : 'img/BG---Tiles.gif'
             frame_size : [50, 50]
             orientation : 'right'
         @_gobs = new jaws.SpriteSheet
-            image : 'assets/img/GobCorpse.gif'
+            image : 'img/GobCorpse.gif'
             frame_size : [50, 20]
         @_block = new jaws.SpriteSheet
-            image : 'assets/img/Block.gif'
+            image : 'img/Block.gif'
             frame_size : [32, 32]
         tileWidth = window.DemCreepers.Config.TileSize[0]
         tileHeight = window.DemCreepers.Config.TileSize[1]
