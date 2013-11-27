@@ -461,7 +461,6 @@ class MainGame
         Req = new XMLHttpRequest
         Req.onload = =>
             @Scores = JSON.parse Req.response
-            console.log @Scores
             @_Names = []
             @_Scores = []
             i = 0
@@ -525,7 +524,16 @@ class MainGame
                 if @Pos < 3
                     ++@Pos
                 else
-                    @Valid = yes
+                    Req = new XMLHttpRequest
+                    Req.onload = =>
+                        @Valid = yes
+                        do @updateScores
+                    Req.open 'post', '/score', yes
+                    params = "name=#{@Name.join ''}&score=#{Score}"
+                    Req.setRequestHeader "Content-type", "application/x-www-form-urlencoded"
+                    Req.setRequestHeader "Content-length", params.length
+                    Req.setRequestHeader "Connection", "close"
+                    Req.send params
             _.map [0..2], (i) =>
                 (@_Name.at i).setImage @_hud._letters.frames[window.DemCreepers.Utils.getTileId @Name[i]]
 
