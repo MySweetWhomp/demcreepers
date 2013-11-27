@@ -22,5 +22,15 @@ demcreepers.use express.static './assets'
 demcreepers.get '/', (req, res) ->
     res.render 'index'
 
+demcreepers.get '/scores', (req, res) ->
+    res.json [
+        {name:'PAU',value:'100000'}
+        {name:'ASA',value:'78382'}
+        {name:'ASS',value:'42940'}
+        {name:'OSY',value:'38022'}
+        {name:'DED',value:'984'}
+        {name:'TKH',value:'101'}
+    ]
+
 (http.createServer demcreepers).listen (demcreepers.get 'port'), ->
     console.log "Dem Creepers! up and running on #{demcreepers.get 'port'}"

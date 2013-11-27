@@ -458,46 +458,45 @@ class MainGame
         do @_title.draw
 
     updateScores : =>
-        @Scores = _.sortBy [
-            {name:'PAU',value:'100000'}
-            {name:'ASS',value:'42940'}
-            {name:'DED',value:'984'}
-            {name:'OSY',value:'38022'}
-            {name:'TKH',value:'101'}
-            {name:'ASA',value:'78382'}
-        ], (elem) => - parseInt elem.value
-        @_Names = []
-        @_Scores = []
-        i = 0
-        x = 50
-        y = 400
-        _.map @Scores, (score) =>
-            @_Names.push new jaws.SpriteList
-            @_Scores.push new jaws.SpriteList
+        Req = new XMLHttpRequest
+        Req.onload = =>
+            @Scores = JSON.parse Req.response
+            console.log @Scores
+            @_Names = []
+            @_Scores = []
+            i = 0
+            x = 50
+            y = 400
+            _.map @Scores, (score) =>
+                @_Names.push new jaws.SpriteList
+                @_Scores.push new jaws.SpriteList
 
-            _.map score.name, (letter, j) =>
-                @_Names[i].push new jaws.Sprite
-                    anchor : 'center'
-                    x : x + j * 20
-                    y : y
-                    scale : 2
-                    image : @_hud._letters.frames[(window.DemCreepers.Utils.getTileId letter)]
-                    @_score = new jaws.SpriteList
+                _.map score.name, (letter, j) =>
+                    @_Names[i].push new jaws.Sprite
+                        anchor : 'center'
+                        x : x + j * 20
+                        y : y
+                        scale : 2
+                        image : @_hud._letters.frames[(window.DemCreepers.Utils.getTileId letter)]
+                        @_score = new jaws.SpriteList
 
-            _.map [0..10], (j) =>
-                @_Scores[i].push new jaws.Sprite
-                    image : @_hud._letters.frames[0]
-                    x : x + 80 + (10 * 20) - (j * 20)
-                    y : y
-                    scale : 2
-                    anchor : 'center'
-            _.map do ((String score.value).split '').reverse, (n, j) =>
-                (@_Scores[i].at j).setImage @_hud._letters.frames[n]
+                _.map [0..10], (j) =>
+                    @_Scores[i].push new jaws.Sprite
+                        image : @_hud._letters.frames[0]
+                        x : x + 80 + (10 * 20) - (j * 20)
+                        y : y
+                        scale : 2
+                        anchor : 'center'
+                _.map do ((String score.value).split '').reverse, (n, j) =>
+                    (@_Scores[i].at j).setImage @_hud._letters.frames[n]
 
-            y += 40
-            if ++i is 5
-                x += 400
-                y = 400
+                y += 40
+                if ++i is 5
+                    x += 400
+                    y = 400
+
+        Req.open 'get', '/scores', yes
+        do Req.send
 
     endupdate : =>
         if not @Valid
