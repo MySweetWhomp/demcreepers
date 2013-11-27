@@ -306,7 +306,6 @@ class MainGame
             x : 400
             y : 300
             scale : 2
-        @_overlayText = 'pauseText'
 
     nextWave : =>
         do @_map.updateForNextWave
@@ -355,6 +354,8 @@ class MainGame
                 @_paused = yes
                 @_overlayText = 'gameOverText'
                 do @_music.stop
+                @_update = @endupdate
+                @_draw = @enddraw
             ### Monsters ###
             @_wave.update @_player, @_map
             ### Center viewport on Player ###
@@ -387,7 +388,7 @@ class MainGame
         ###
         if @_paused
             do @_pauseOverlay.draw
-            do @["_#{@_overlayText}"].draw
+            do @_pauseText.draw
 
         ###
         (document.getElementById 'playerX').innerHTML = @_player.x
@@ -428,6 +429,23 @@ class MainGame
             window.DemCreepers.DrawBatch.draw @_viewport
         do @_pressStart.draw
         do @_title.draw
+
+    endupdate : =>
+
+    enddraw : =>
+        do jaws.clear
+        ### Draw the ground below everything ###
+        @_viewport.drawTileMap @_map._ground
+        ### Player ###
+        window.DemCreepers.DrawBatch.add do @_player.getToDraw
+        ### Monsters ###
+        window.DemCreepers.DrawBatch.add @_wave.getToDraw @_viewport
+        @_viewport.apply =>
+            ### Draw all ###
+            window.DemCreepers.DrawBatch.draw @_viewport
+        do @_hud.draw
+        do @_pauseOverlay.draw
+        do @_gameOverText.draw
 
     update : =>
         do @_update
