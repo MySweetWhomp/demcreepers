@@ -5,6 +5,8 @@
 The player incarnates a barbarian that tries to survive against monsters coming un ever growing attack waves.  
 To defend himself, the barbarian can throw axes in all directions, **changing** the corpses of fallen ennemies into improvised defenses to face future assaults more efficiently.
 
+**Dem Creepers!** is powered by [Jaws](http://www.jawsjs.com/).
+
 ## The team
 
 **Dem Creepers!** is developed by **H-Bomb**.
