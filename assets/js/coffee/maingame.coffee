@@ -524,9 +524,9 @@ class MainGame
                 if @Pos < 3
                     ++@Pos
                 else
+                    @Valid = yes
                     Req = new XMLHttpRequest
                     Req.onload = =>
-                        @Valid = yes
                         do @updateScores
                     Req.open 'post', '/score', yes
                     params = "name=#{@Name.join ''}&score=#{Score}"
