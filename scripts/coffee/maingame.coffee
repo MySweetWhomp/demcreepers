@@ -304,6 +304,30 @@ class MainGame
             image : @_texts.frames[2]
             anchor : 'center'
             x : 400
+            y : 200
+            scale : 2
+
+    setupEnd : =>
+        do @updateScores
+        @Valid = no
+        @Name = [ 'A' , 'A' , 'A' ]
+        @Pos = 0
+        @_Name = new jaws.SpriteList
+        @_Cursor = new jaws.Sprite
+            anchor : 'center'
+            image : @_hud._letters.frames[(window.DemCreepers.Utils.getTileId 'z') + 1]
+            scale : 2
+        _.map [0..2], (i) =>
+            @_Name.push new jaws.Sprite
+                image : @_hud._letters.frames[window.DemCreepers.Utils.getTileId @Name[i]]
+                x : (400 - 30) + (i * 20)
+                y : 300
+                scale : 2
+                anchor : 'center'
+        @_Enter = new jaws.Sprite
+            anchor : 'center'
+            image : @_hud._letters.frames[(window.DemCreepers.Utils.getTileId 'z') + 2]
+            x : (400 - 30) + (3 * 22)
             y : 300
             scale : 2
 
@@ -356,6 +380,7 @@ class MainGame
                 @_paused = yes
                 @_overlayText = 'gameOverText'
                 do @_music.stop
+                do @setupEnd
                 @_update = @endupdate
                 @_draw = @enddraw
             ### Monsters ###
@@ -432,7 +457,78 @@ class MainGame
         do @_pressStart.draw
         do @_title.draw
 
+    updateScores : =>
+        @Scores = _.sortBy [
+            {name:'PAU',value:'100000'}
+            {name:'ASS',value:'42940'}
+            {name:'DED',value:'984'}
+            {name:'OSY',value:'38022'}
+            {name:'TKH',value:'101'}
+            {name:'ASA',value:'78382'}
+        ], (elem) => - parseInt elem.value
+        @_Names = []
+        @_Scores = []
+        i = 0
+        x = 50
+        y = 400
+        _.map @Scores, (score) =>
+            @_Names.push new jaws.SpriteList
+            @_Scores.push new jaws.SpriteList
+
+            _.map score.name, (letter, j) =>
+                @_Names[i].push new jaws.Sprite
+                    anchor : 'center'
+                    x : x + j * 20
+                    y : y
+                    scale : 2
+                    image : @_hud._letters.frames[(window.DemCreepers.Utils.getTileId letter)]
+                    @_score = new jaws.SpriteList
+
+            _.map [0..10], (j) =>
+                @_Scores[i].push new jaws.Sprite
+                    image : @_hud._letters.frames[0]
+                    x : x + 80 + (10 * 20) - (j * 20)
+                    y : y
+                    scale : 2
+                    anchor : 'center'
+            _.map do ((String score.value).split '').reverse, (n, j) =>
+                (@_Scores[i].at j).setImage @_hud._letters.frames[n]
+
+            y += 40
+            if ++i is 5
+                x += 400
+                y = 400
+
     endupdate : =>
+        if not @Valid
+            controls = window.DemCreepers.Controls[window.DemCreepers.Config.ActiveControls]
+            @_Cursor.moveTo (400 - 30) + (@Pos * 20), 320
+            if @Pos < 3
+                if jaws.pressedWithoutRepeat "#{controls.down}"
+                    if @Name[@Pos] is 'A'
+                        @Name[@Pos] = '9'
+                    else if @Name[@Pos] is '0'
+                        @Name[@Pos] = 'Z'
+                    else
+                        @Name[@Pos] = String.fromCharCode (do @Name[@Pos].charCodeAt) - 1
+                else if jaws.pressedWithoutRepeat "#{controls.up}"
+                    if @Name[@Pos] is 'Z'
+                        @Name[@Pos] = '0'
+                    else if @Name[@Pos] is '9'
+                        @Name[@Pos] = 'A'
+                    else
+                        @Name[@Pos] = String.fromCharCode (do @Name[@Pos].charCodeAt) + 1
+            if jaws.pressedWithoutRepeat "#{controls.left}"
+                --@Pos if @Pos > 0
+            else if jaws.pressedWithoutRepeat "#{controls.right}"
+                ++@Pos if @Pos < 3
+            else if jaws.pressedWithoutRepeat 'enter'
+                if @Pos < 3
+                    ++@Pos
+                else
+                    @Valid = yes
+            _.map [0..2], (i) =>
+                (@_Name.at i).setImage @_hud._letters.frames[window.DemCreepers.Utils.getTileId @Name[i]]
 
     enddraw : =>
         do jaws.clear
@@ -448,6 +544,12 @@ class MainGame
         do @_hud.draw
         do @_pauseOverlay.draw
         do @_gameOverText.draw
+        _.map @_Names, (name) -> do name.draw
+        _.map @_Scores, (score) -> do score.draw
+        if not @Valid
+            do @_Name.draw
+            do @_Enter.draw
+            do @_Cursor.draw
 
     update : =>
         do @_update
