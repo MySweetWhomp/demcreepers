@@ -104,6 +104,7 @@ class Character
 class Player extends Character
     constructor : (@x, @y) ->
         super @x, @y, 6, 35, 12, 20
+        @_hit = no
         @_feets.resizeTo 30, 25
         @_orientation = 'SW'
         @Dead = no
@@ -207,6 +208,7 @@ class Player extends Character
         setTimeout (=>
             @_getHit = @getHit
         ), 1000
+        @_hit = yes
         if (@_hp -= n) <= 0
             if @_state isnt 'dead'
                 do @DEAD[_.random 0, 1].play

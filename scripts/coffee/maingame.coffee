@@ -326,9 +326,11 @@ class MainGame
         ++Waves
         Score += 100
         @_hud._end[0] = yes
-        if @_player._hp is 100
+        if not @_player._hit
             Score += 500
             @_hud._end[1] = yes
+
+        @_player._hit = no
 
     gameupdate : =>
         if (@_overlayText isnt 'gameOverText') and jaws.pressedWithoutRepeat 'space'
