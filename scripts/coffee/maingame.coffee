@@ -297,13 +297,13 @@ class MainGame
         @_pauseText = new jaws.Sprite
             image : @_texts.frames[0]
             anchor : 'center'
-            x : 450
+            x : 400
             y : 300
             scale : 2
         @_gameOverText = new jaws.Sprite
             image : @_texts.frames[2]
             anchor : 'center'
-            x : 450
+            x : 400
             y : 300
             scale : 2
         @_overlayText = 'pauseText'
