@@ -1,7 +1,5 @@
-scripts/vendor/*
-scripts/js/*
+assets/js/vendor/*
 node_modules/*
 assets/img/*
 assets/audio/*
-.htpasswd
 sync
