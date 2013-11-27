@@ -213,8 +213,7 @@ class Player extends Character
                 setTimeout (=>
                     do @GAMEOVER.play
                 ), 800
-            else
-                @_hp = 0
+            @_hp = 0
             @_state = 'dead'
             @_onlasframe = =>
                 @Dead = yes
