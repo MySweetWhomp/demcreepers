@@ -106,6 +106,7 @@ class Player extends Character
         super @x, @y, 6, 35, 12, 20
         @Mult = 1
         @Chain = 0
+        @PerfectChain = 0
         @_hit = no
         @_feets.resizeTo 30, 25
         @_orientation = 'SW'
@@ -116,7 +117,7 @@ class Player extends Character
             new jaws.Audio audio : 'audio/MORT02.ogg', volume : window.DemCreepers.Volumes.FX
         ]
         @GAMEOVER = new jaws.Audio audio : 'audio/GAMEOVER.ogg', volume : window.DemCreepers.Volumes.FX
-        @_hp = 100
+        @_hp = 10
         @_attack = @attack
         @_changeStateOr = @changeStateOr
         @_getHit = @getHit
@@ -212,6 +213,7 @@ class Player extends Character
         ), 1000
         @_hit = yes
         @Chain = 0
+        @PerfectChain = 0
         @Mult = 1
         if (@_hp -= n) <= 0
             if @_state isnt 'dead'

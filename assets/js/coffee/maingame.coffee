@@ -15,6 +15,8 @@ Packs =
     Count : 2
     Value : 15
 
+Bonus = [100, 500]
+
 class Wave
     constructor : ->
         @HIT = new jaws.Audio audio : 'audio/HIT.ogg', volume : window.DemCreepers.Volumes.FX
@@ -351,10 +353,11 @@ class MainGame
             @_wave = new RandWave Packs.Count, Packs.Value
 
         ++Waves
-        Score += 100
+        Score += Bonus[0]
+        Bonus[0] += 100
         @_hud._end[0] = yes
         if not @_player._hit
-            Score += 500
+            Score += 500 + 500 * @_player.PerfectChain++
             @_hud._end[1] = yes
 
         @_player._hit = no
