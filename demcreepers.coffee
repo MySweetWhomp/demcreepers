@@ -33,7 +33,7 @@ demcreepers.post '/score', (req, res) ->
     if req.body.name? and req.body.score?
         item =
             name : req.body.name
-            value : req.body.score
+            value : parseInt req.body.score
         (db.collection 'score').insert item, {w:1}, (err, obj) =>
             if err?
                 console.error err
