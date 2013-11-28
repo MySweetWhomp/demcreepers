@@ -117,7 +117,7 @@ class Player extends Character
             new jaws.Audio audio : 'audio/MORT02.ogg', volume : window.DemCreepers.Volumes.FX
         ]
         @GAMEOVER = new jaws.Audio audio : 'audio/GAMEOVER.ogg', volume : window.DemCreepers.Volumes.FX
-        @_hp = 10
+        @_hp = 100
         @_attack = @attack
         @_changeStateOr = @changeStateOr
         @_getHit = @getHit
