@@ -104,6 +104,8 @@ class Character
 class Player extends Character
     constructor : (@x, @y) ->
         super @x, @y, 6, 35, 12, 20
+        @Mult = 1
+        @Chain = 0
         @_hit = no
         @_feets.resizeTo 30, 25
         @_orientation = 'SW'
@@ -209,6 +211,8 @@ class Player extends Character
             @_getHit = @getHit
         ), 1000
         @_hit = yes
+        @Chain = 0
+        @Mult = 1
         if (@_hp -= n) <= 0
             if @_state isnt 'dead'
                 do @DEAD[_.random 0, 1].play

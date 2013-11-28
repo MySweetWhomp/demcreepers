@@ -33,7 +33,10 @@ class Wave
                         toDel.push index
                         del = yes
                         map.add mob
-                        Score += mob.reward
+                        Score += mob.reward * player.Mult
+                        if ++player.Chain is 10
+                            player.Chain = 0
+                            ++player.Mult
                         KillCount += 1
                         do @HIT.play
             if not del
