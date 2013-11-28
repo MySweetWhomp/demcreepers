@@ -91,8 +91,9 @@ class Map
                         y : y
                         scale : 2
                         anchor : 'center'
-                        image : @_block.frames[0]
                     cell.type = 'Golem'
+                    cell.pv = _.random 3, 5
+                    cell.setImage @_block.frames[5 - cell.pv]
                     try
                         @_map.push cell
                     x += 64
@@ -105,8 +106,9 @@ class Map
                         y : y
                         scale : 2
                         anchor : 'center'
-                        image : @_block.frames[0]
                     cell.type = 'Golem'
+                    cell.pv = _.random 3, 5
+                    cell.setImage @_block.frames[5 - cell.pv]
                     try
                         @_map.push cell
                     y += 55
@@ -122,30 +124,33 @@ class Map
             4 :
                 all : []
 
-        blocks = []
+        blocks = 1 : [], 2 : [], 3 : [], 4 : [], 5 : []
 
         _.map (do @_map.all), (cell) =>
             if cell.type is 'Gob'
                 gobs[cell.state].all.push cell
             else
-                blocks.push cell
-
-        _.map [0, 1], (i) =>
-            _.map gobs[i].all, (cell) =>
-                cell.state = gobs[i].next
-                cell.setImage @_gobs.frames[cell.state]
+                if cell.pv >= 1
+                    blocks[cell.pv].push cell
 
         tileWidth = window.DemCreepers.Config.TileSize[0] * 2
         tileHeight = window.DemCreepers.Config.TileSize[1] * 2
         @_map = new jaws.TileMap
             size : [@cols, @rows]
             cell_size : [tileWidth, tileHeight]
-        try
-            @_map.push _.uniq gobs[0].all
-        try
-            @_map.push _.uniq gobs[1].all
-        try
-            @_map.push _.uniq blocks
+
+        _.map [0, 1], (i) =>
+            gobs[i].all = _.uniq gobs[i].all
+            _.map gobs[i].all, (cell) =>
+                cell.state = gobs[i].next
+                cell.setImage @_gobs.frames[cell.state]
+                @_map.push cell
+
+        _.map [1..5], (i) =>
+            blocks[i] = _.uniq blocks[i]
+            _.map blocks[i], (cell) =>
+                cell.setImage @_block.frames[5 - --cell.pv]
+                @_map.push cell
 
     all : =>
         do @_map.all
