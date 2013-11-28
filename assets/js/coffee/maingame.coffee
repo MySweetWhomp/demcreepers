@@ -543,6 +543,9 @@ class MainGame
         @_viewport.drawTileMap @_map._ground
         ### Player ###
         window.DemCreepers.DrawBatch.add do @_player.getToDraw
+        ### Ground ###
+        _.map (do @_map.all), (tile) =>
+            window.DemCreepers.DrawBatch.add tile
         ### Monsters ###
         window.DemCreepers.DrawBatch.add @_wave.getToDraw @_viewport
         @_viewport.apply =>
