@@ -144,13 +144,15 @@ class Map
             _.map gobs[i].all, (cell) =>
                 cell.state = gobs[i].next
                 cell.setImage @_gobs.frames[cell.state]
-                @_map.push cell
+                try
+                    @_map.push cell
 
         _.map [1..5], (i) =>
             blocks[i] = _.uniq blocks[i]
             _.map blocks[i], (cell) =>
                 cell.setImage @_block.frames[5 - --cell.pv]
-                @_map.push cell
+                try
+                    @_map.push cell
 
     all : =>
         do @_map.all
