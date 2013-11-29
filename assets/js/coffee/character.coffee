@@ -339,7 +339,7 @@ class Axe extends Character
 ###
 class Monster extends Character
     constructor : (@x, @y, @speed, @feetShift, @pv, @reward, @distAttack, width, height, sheetName, frameSize) ->
-        super @x, @y, @speed, @feetShift, 10, width, height
+        super @x, @y, @speed, @feetShift, width, height
         @_state = 'run'
         @_sheet = new jaws.Animation
             sprite_sheet : "img/#{sheetName}"
@@ -347,6 +347,7 @@ class Monster extends Character
             orientation : 'right'
             frame_duration : 70
         @_changeOrientation = (o) => @_orientation = o
+        @_changestate = (s) => @_state = s
         @_attack = @attack
         ###
         # Define orientation based move methods
@@ -367,7 +368,7 @@ class Monster extends Character
         @_distToPlayer = window.DemCreepers.Utils.pointDistance player.x, player.y, @x, @y
         @_changeOrientation window.DemCreepers.Utils.pointOrientation player.x, player.y, @x, @y
         @_sprite.setImage do @_anims[@_state][@_orientation].next
-        if @_distToPlayer > @distAttack
+        if @_state isnt 'attack' and @_distToPlayer > @distAttack
             do @_move[@_orientation]
             moved = @move map
             if not moved
@@ -384,7 +385,7 @@ class Monster extends Character
                     setTimeout (=>
                         @_changeOrientation = (o) => @_orientation = o
                     ), (if @_bump then (@speed * 200) else (@speed * 100))
-            @_state = 'run'
+            @_changestate 'run'
         else
             @_vx = @_vy = 0
             @_attack player
@@ -392,7 +393,7 @@ class Monster extends Character
         @_sprite.moveTo @x, @y
 
     attack : (player) =>
-        @_state = 'attack'
+        @_changestate 'attack'
         player._getHit 5
         @_attack = =>
         setTimeout (=>
@@ -434,27 +435,33 @@ class Gob extends Monster
 
 class Golem extends Monster
     constructor : (@x, @y) ->
-        super @x, @y, 2, 75, 7, 50, 200, 50, 50, 'GOLEM.gif', [150, 160]
+        super @x, @y, 2, 75, 7, 50, 140, 75, 75, 'GOLEM.gif', [200, 200]
         @_feets.resizeTo 150, 40
+        @_sheet.frame_duration = 150
+        @_sheet2 = new jaws.Animation
+            sprite_sheet : "img/GOLEM.gif"
+            frame_size : [200, 200]
+            orientation : 'right'
+            frame_duration : 100
         @_anims =
             'run' :
-                'N' : @_sheet.slice 1, 2
-                'NE' : @_sheet.slice 1, 2
-                'E' : @_sheet.slice 1, 2
-                'SE' : @_sheet.slice 1, 2
-                'S' : @_sheet.slice 1, 2
-                'SW' : @_sheet.slice 1, 2
-                'W' : @_sheet.slice 1, 2
-                'NW' : @_sheet.slice 1, 2
+                'N' : @_sheet.slice 10, 20
+                'NE' : @_sheet.slice 10, 20
+                'E' : @_sheet.slice 20, 30
+                'SE' : @_sheet.slice 20, 30
+                'S' : @_sheet.slice 0, 10
+                'SW' : @_sheet.slice 0, 10
+                'W' : @_sheet.slice 0, 10
+                'NW' : @_sheet.slice 30, 40
             'attack' :
-                'N' : @_sheet.slice 1, 2
-                'NE' : @_sheet.slice 1, 2
-                'E' : @_sheet.slice 1, 2
-                'SE' : @_sheet.slice 1, 2
-                'S' : @_sheet.slice 1, 2
-                'SW' : @_sheet.slice 1, 2
-                'W' : @_sheet.slice 1, 2
-                'NW' : @_sheet.slice 1, 2
+                'N' : @_sheet2.slice 70, 79
+                'NE' : @_sheet2.slice 70, 79
+                'E' : @_sheet2.slice 50, 59
+                'SE' : @_sheet2.slice 50, 59
+                'S' : @_sheet2.slice 60, 69
+                'SW' : @_sheet2.slice 40, 49
+                'W' : @_sheet2.slice 40, 49
+                'NW' : @_sheet2.slice 70, 79
         @_fist = new jaws.Sprite
             anchor : 'center'
             x : @x
@@ -465,6 +472,8 @@ class Golem extends Monster
     update : (player, map) =>
         try
             super player, map
+
+        @frame = @_anims[@_state][@_orientation].index
 
         @_fist.moveTo @x, @y
 
@@ -477,22 +486,28 @@ class Golem extends Monster
         else if 'N' in @_orientation
             @_fist.move 0, -140
 
-        if @_state is 'attack' and (do @_fist.rect).collideRect (do player._box.rect)
+        if @_state is 'attack' and 3 < @frame < 8 and (do @_fist.rect).collideRect (do player._box.rect)
             player._getHit 15
 
     draw : =>
         do @_sprite.draw
-        if @_state is 'attack'
-            do @_fist.draw
+        # if @_state is 'attack'
+        #     if 3 < @frame < 8
+        #         do @_fist.draw
         try
             do super
 
     attack : (player) =>
         @_state = 'attack'
         @_attack = =>
+        @_changestate = =>
+        @_changeOrientation = =>
         setTimeout (=>
             @_attack = @attack
-        ), 1000
+            @_changestate = (s) => @_state = s
+            @_changeOrientation = (o) => @_orientation = o
+            @_changestate 'run'
+        ), 900
 
 if window.DemCreepers?
     window.DemCreepers.Character = Character
