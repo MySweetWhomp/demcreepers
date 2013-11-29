@@ -398,8 +398,8 @@ class Monster extends Character
         @_attack = =>
         setTimeout (=>
             @_attack = @attack
-            @_changestate 'run'
-        ), 210
+            (@_changestate 'run') if @_distToPlayer > @distAttack
+        ), 420
 
 class Gob extends Monster
     constructor : (@x, @y) ->
@@ -436,14 +436,14 @@ class Gob extends Monster
 
 class Golem extends Monster
     constructor : (@x, @y) ->
-        super @x, @y, 2, 75, 7, 50, 140, 75, 75, 'GOLEM.gif', [200, 200]
+        super @x, @y, 2, 75, 7, 50, 200, 75, 75, 'GOLEM.gif', [200, 200]
         @_feets.resizeTo 150, 40
         @_sheet.frame_duration = 150
         @_sheet2 = new jaws.Animation
             sprite_sheet : "img/GOLEM.gif"
             frame_size : [200, 200]
             orientation : 'right'
-            frame_duration : 100
+            frame_duration : 80
         @_anims =
             'run' :
                 'N' : @_sheet.slice 10, 20
@@ -507,8 +507,8 @@ class Golem extends Monster
             @_attack = @attack
             @_changestate = (s) => @_state = s
             @_changeOrientation = (o) => @_orientation = o
-            @_changestate 'run'
-        ), 900
+            (@_changestate 'run') if @_distToPlayer > @distAttack
+        ), 720
 
 if window.DemCreepers?
     window.DemCreepers.Character = Character
