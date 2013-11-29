@@ -398,7 +398,8 @@ class Monster extends Character
         @_attack = =>
         setTimeout (=>
             @_attack = @attack
-        ), 1000
+            @_changestate 'run'
+        ), 210
 
 class Gob extends Monster
     constructor : (@x, @y) ->
