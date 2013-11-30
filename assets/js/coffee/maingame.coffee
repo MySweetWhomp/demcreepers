@@ -204,12 +204,18 @@ class HUD
                 y : 5
                 scale : 2
 
+        ###
+        # Wave Bonus
+        ###
+        @_wavebonus = new jaws.SpriteList
+
     createMessages : =>
         @_messages =new jaws.Animation
             sprite_sheet : 'img/HUD-ANIMATED.gif'
             frame_size : [300, 20]
             frame_duration : 70
             loop : no
+            anchor : 'center'
             subsets :
                 'wave' : [0, 6]
                 'perfect' : [6, 13]
@@ -217,7 +223,7 @@ class HUD
                 setTimeout (=>
                     @_end = [no, no]
                     do @createMessages
-                ), 1000
+                ), 2000
 
     update : (player) =>
         _.map [0..2], (i) =>
@@ -235,8 +241,25 @@ class HUD
             (@_kills.at i).setImage @_letters.frames[n]
 
         if @_end[0]
+            if @_wavebonus.length is 0
+                bonus = Bonus[0] - 100
+                if @_end[1]
+                    bonus += 500 + 500 * (player.PerfectChain - 1)
+                bonus = (String bonus) + 'pts'
+                baseX = 400 - (bonus.length / 2) * 30
+                if not (bonus.length % 2)
+                    baseX += 15
+                _.map (bonus.split ''), (n, i) =>
+                    @_wavebonus.push new jaws.Sprite
+                        image : @_letters.frames[window.DemCreepers.Utils.getTileId n]
+                        x : baseX + i * 30
+                        y : 400
+                        scale : 3
+                        anchor : 'center'
             @_msg.setImage do @_messages.subsets['wave'].next
             @_msg2.setImage do @_messages.subsets['perfect'].next
+        else if @_wavebonus.length > 0
+            @_wavebonus.removeIf () => true
 
     draw : =>
         do @_bg.draw
@@ -245,6 +268,7 @@ class HUD
         do @_score.draw
         do @_kills.draw
         if @_end[0]
+            do @_wavebonus.draw
             do @_msg.draw
             if @_end[1]
                 do @_msg2.draw
