@@ -456,13 +456,13 @@ class Golem extends Monster
                 'NW' : @_sheet.slice 30, 40
             'attack' :
                 'N' : @_sheet2.slice 70, 79
-                'NE' : @_sheet2.slice 70, 79
+                'NE' : @_sheet2.slice 110, 119
                 'E' : @_sheet2.slice 50, 59
-                'SE' : @_sheet2.slice 50, 59
+                'SE' : @_sheet2.slice 90, 99
                 'S' : @_sheet2.slice 60, 69
-                'SW' : @_sheet2.slice 40, 49
+                'SW' : @_sheet2.slice 80, 89
                 'W' : @_sheet2.slice 40, 49
-                'NW' : @_sheet2.slice 70, 79
+                'NW' : @_sheet2.slice 100, 109
         @_fist = new jaws.Sprite
             anchor : 'center'
             x : @x
