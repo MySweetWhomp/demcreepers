@@ -279,27 +279,14 @@ class MainGame
         @_texts = new jaws.SpriteSheet
             image : 'img/HUD---TEXT.gif'
             frame_size : [80, 20]
-        @_titleSheet = new jaws.SpriteSheet
-            image : 'img/HUD---PICTURES.gif'
-            frame_size : [100, 80]
         @_quadtree = new jaws.QuadTree
         @_update = @titleUpdate
         @_draw = @titleDraw
-        @_pressStart = new jaws.Sprite
-            image : @_titleSheet.frames[2]
-            anchor : 'center'
-            scale : 2
-            width : 100
-            height : 80
-            x : 400
-            y : 220
         @_title = new jaws.Sprite
-            image : 'img/Title.gif'
-            width : 380
-            height : 53
+            image : 'img/HUD---PICTURES---V1.gif'
             scale : 2
-            x : 20
-            y : 20
+            x : 0
+            y : 0
         @START = new jaws.Audio audio : 'audio/START.ogg', volume : window.DemCreepers.Volumes.FX
         @MENU = new jaws.Audio
             audio : 'audio/MENU.ogg'
@@ -484,7 +471,6 @@ class MainGame
         @_viewport.apply =>
             ### Draw all ###
             window.DemCreepers.DrawBatch.draw @_viewport
-        do @_pressStart.draw
         do @_title.draw
 
     updateScores : =>
