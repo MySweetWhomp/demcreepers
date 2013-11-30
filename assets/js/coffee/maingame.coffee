@@ -246,7 +246,7 @@ class HUD
                 if @_end[1]
                     bonus += 500 + 500 * (player.PerfectChain - 1)
                 bonus = (String bonus) + 'pts'
-                baseX = 400 - (bonus.length / 2) * 30
+                baseX = 400 - (Math.floor (bonus.length / 2)) * 30
                 if not (bonus.length % 2)
                     baseX += 15
                 _.map (bonus.split ''), (n, i) =>
