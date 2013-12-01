@@ -2,7 +2,7 @@
 
 ![Dem Creepers!](./README/demcreepers.png)
 
-The player incarnates a barbarian that tries to survive against monsters coming in ever growing attack waves.  
+The player is a barbarian that tries to survive against monsters coming in ever growing attack waves.  
 To defend himself, the barbarian can throw axes in all directions, **changing** the corpses of fallen enemies into improvised obstacles to face future assaults more efficiently.
 
 **Dem Creepers!** is powered by [Jaws](http://www.jawsjs.com/).
